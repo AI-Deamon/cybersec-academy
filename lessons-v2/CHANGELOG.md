@@ -132,3 +132,16 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   §6 Day 11 aligned.
 - **`week3/student-pack.md` started** — Day 11 section + checklist; lab-safety note; Week 3
   assignment placeholder.
+- **Day 12 built + reviewed + fixes applied** — `day12/day12.md` (deck + speaker notes): the
+  penetration testing lifecycle spine. Pentest vs vuln-scan vs red-team vs bounty; the **6
+  phases** + what "done" means for each; **Phase 1 as a document** — scope (in *and* out),
+  ROE, signed authorization ("no scope, no test" as a checklist); the reporting mindset (a
+  finding = risk + evidence + repro + fix); the **Engagement Journal**; the Blue-team mirror
+  (Cyber Kill Chain / MITRE ATT&CK — "one map, opposite ends"); the **lab-connect gate**.
+  `day12/teacher-notes.md` (lab-gate logistics, PTES/OSSTMM/NIST names, phase "done"
+  criteria, ROE contents, ATT&CK detail, FAQ). `day12/assets/`: `roe-template.md` (a real
+  ROE, `<LAB_HOST>` placeholders), `engagement-journal-template.md` (6-phase, becomes the
+  Day 15 report), `lab-connect-checklist.md` (Path A own-VM / Path B shared-Kali).
+  Review fixes: §6 Day 12 flags the lab host as a blocking pre-req (design §11 open item) and
+  notes the "Northwind Traders" naming reuse; Wireshark stays Day 13.
+- **`week3/student-pack.md`** — Day 12 section + marking checklist.

@@ -250,10 +250,12 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 **Day 12 — The pentest lifecycle + stand up the lab**
 - **Core idea:** offensive work is a repeatable process, not improvisation: scope → recon → enumerate → exploit → post-exploit → report. Same shape every engagement.
 - **Must land:** the phases and what "done" looks like for each; rules of engagement, scope, authorization letter, get-out-of-jail; the reporting mindset (a finding = risk + evidence + reproduction + fix).
-- **Do:** everyone connects to the lab (light Kali VM → central hosted targets) and snapshots; write a mock ROE for the class engagement.
-- **Attack ↔ Defense:** defenders map this to the kill chain / MITRE ATT&CK (one slide).
-- **Artifact:** an **Engagement Journal** started — one section per phase (mirrors the existing Northwind Traders model).
-- **Trap:** "just start hacking" — no scope, no test.
+- **Do (2 beats):** write a mock ROE for the class engagement (**"Northwind Traders"** = the lab — reuses the naming from the instructor's 5-day pentest program); then **connect to the lab** (own Kali VM or shared Kali → central targets), verify with `curl`/`scanner.py`, snapshot. **This is the Day 12 gate** (§7) — track who's in; stragglers go to the shared Kali (Path B) and are not "behind".
+- **Attack ↔ Defense:** defenders map this to the Cyber Kill Chain / MITRE ATT&CK (one slide) — "one map, opposite ends."
+- **Artifact:** a mock **ROE** (`assets/roe-template.md`) + the **Engagement Journal** started — one section per phase, filled all week, becomes the Day 15 report (`assets/engagement-journal-template.md`, mirrors the Northwind Traders model).
+- **Blocking pre-req (design §11 open item):** the lab host + reachability path (LAN / VPN / shared-Kali SSH) must be decided and running before Day 12. Assets use `<LAB_HOST>` placeholders.
+- **Analogy:** the hired health inspector with written permission (kitchen).
+- **Trap:** "just start hacking" — no scope, no test; "the report is the boring bit" — it's the product.
 
 **Day 13 — Recon & scanning**
 - **Core idea:** you can't attack what you haven't mapped. Passive first (no packets to the target), then active (Nmap) — and every active packet is noise a defender can hear.

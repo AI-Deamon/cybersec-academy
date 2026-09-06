@@ -66,7 +66,58 @@ Day 13 you install Wireshark. **Only ever test the lab targets or your own machi
 
 ---
 
-## Day 12 — *(to be added)*
+## Day 12 — The penetration testing lifecycle + the lab
+
+### Recap
+- A **penetration test** = an **authorized, simulated attack** to find and report weaknesses
+  before a real attacker does. *A pentester does what an attacker does — the difference is a
+  signed authorization and a report.*
+  - vs **vuln scan** (broad, shallow, automated) · **red team** (one goal, stealthy, tests
+    detection) · **bug bounty** (published scope, crowd, pay-per-finding).
+- **The 6 phases** (each feeds the next; "done" means):
+  1. **Pre-engagement** — signed ROE + authorization
+  2. **Reconnaissance** — a target profile (passive)
+  3. **Scanning & enumeration** — a service inventory (active)
+  4. **Exploitation** — proof a vuln is real (a shell / data)
+  5. **Post-exploitation** — the impact mapped
+  6. **Reporting** — the report delivered
+- **Phase 1 is a document:** **scope** (in *and* out — the out-of-scope list keeps you legal),
+  **Rules of Engagement** (allowed/forbidden techniques, no DoS, hours, contacts, stop
+  conditions), and a **signed authorization letter** — your "get out of jail" paper.
+- **The report is the product.** Every finding = title + severity/risk + evidence + steps to
+  reproduce + impact + remediation. Two readers: the exec (risk) and the engineer (fix).
+- **Engagement Journal:** one section per phase, filled *as you work*, timestamped — it
+  becomes the report.
+- **Blue team's view:** the **Cyber Kill Chain** and **MITRE ATT&CK** model the same steps —
+  one map, opposite ends. Every phase you run is a detection opportunity.
+
+### Key terms
+`penetration test` · `vulnerability assessment` · `red team` · `bug bounty` · `scope` ·
+`out of scope` · `Rules of Engagement (ROE)` · `authorization letter` · `pre-engagement` ·
+`reconnaissance` · `enumeration` · `exploitation` · `post-exploitation` · `reporting` ·
+`finding` · `remediation` · `Cyber Kill Chain` · `MITRE ATT&CK` · `tactic / technique` ·
+`Engagement Journal`
+
+### In class — the 2 beats
+1. Write a **mock ROE** for "Northwind Traders" (= the class lab) — `assets/roe-template.md`.
+2. **Connect to the lab** (`assets/lab-connect-checklist.md`): reach the targets from Kali,
+   run `scanner.py <LAB_HOST>`, **take a VM snapshot**, record it in your Engagement Journal.
+   *(Can't connect? Use the shared class Kali (Path B) — you're not behind.)*
+
+### Homework (due start of Day 13)
+1. Finish the **mock ROE** — every field — commit as `week3/roe.md`.
+2. Set up `week3/engagement-journal.md` from the template; fill the **Phase 1** section.
+3. Confirm lab access; if blocked, note exactly where it fails.
+4. Add `scope`, `ROE`, `authorization letter`, `kill chain`, `MITRE ATT&CK`, `engagement journal`
+   to your glossary.
+
+### Marking checklist (Day 12 homework, 5 marks)
+- [ ] `roe.md` complete — in-scope, **out-of-scope**, forbidden actions, hours, contacts (2)
+- [ ] Engagement Journal created, Phase 1 filled (target, authorization, goal) (2)
+- [ ] lab access confirmed **or** a precise description of the blocker (1)
+
+---
+
 ## Day 13 — *(to be added)*
 ## Day 14 — *(to be added)*
 ## Day 15 — *(to be added)*
