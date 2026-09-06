@@ -252,3 +252,26 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   tabletop. Review: facts verified (event IDs, NIST 800-61, Pyramid of Pain, ATT&CK IDs);
   §6 Day 19 aligned.
 - **`week4/student-pack.md`** — Day 19 section + marking checklist.
+- **Day 20 built + reviewed — the last lesson; the course is complete.** `day20/day20.md`
+  (deck + speaker notes): the map of the field (Red / Blue / the wings — different
+  temperaments, not a hierarchy); **what each role's day actually looks like** (Red: pentest
+  is ~40% writing, AppSec, bug bounty, exploit dev; Blue: SOC L1 = the biggest India entry
+  door, DFIR, detection engineering, threat intel, security engineering; the wings: GRC is
+  *real* security, cloud security, AI/ML security); the **skills self-assessment** DO;
+  **the Indian fresher market** honestly (the "2 years for a junior role" catch-22 and how the
+  portfolio + a cert + BE/BTech breaks it; internships from month 2); **certs as an HR filter,
+  not a qualification** (Security+ → BTL1 → CySA+; eJPT → PNPT/CPTS → OSCP; CISSP needs ~5
+  years — not a fresher cert); the **"which door + why + 3 next steps"** DO + pitches;
+  finalising the **portfolio repo README**; the **capstone brief**; the course in three lines
+  (untrusted input · least privilege + assume breach · you learn it by doing it).
+  `day20/teacher-notes.md` (framing notes to say aloud, the two DOs, the capstone guide, the
+  course's Definition of Success, a closing script, FAQ). `day20/assets/`:
+  `skills-self-assessment.md`, `roadmap-template.md` (6-month), `portfolio-readme-template.md`,
+  `roles-reference.md` (every role — day-to-day / what to learn / the way in, India-focused).
+- **Week 4 (Days 16–20) complete** — decks + teacher-notes each; `week4/student-pack.md` has
+  all five day sections + the **full 4-part capstone** (cross-domain engagement + incident
+  writeup + career roadmap + final reflection) + 25-mark checklist.
+- **ALL 20 LESSONS BUILT + REVIEWED.** 20 Marp decks (+ `.pptx`/`.html`), 20 `teacher-notes.md`,
+  4 weekly student packs with weekend assignments + rubrics, a design doc, and per-day assets.
+  Open before teaching: the lab host/reachability decision (§7); the instructor's Day 1–2
+  prep-routine trial (§11); governance adoption (§11).

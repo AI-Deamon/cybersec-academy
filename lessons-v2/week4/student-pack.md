@@ -224,11 +224,73 @@ course repo. Same lab, same ROE. **Test only the lab targets or your own machine
 
 ---
 
-## Day 20 — *(to be added)*
+## Day 20 — Careers, specialization, and the capstone
+
+### Recap
+- **You now know enough to choose a direction.** The map: **Red** (pentest, red team, AppSec,
+  bug bounty, exploit dev) · **Blue** (SOC, IR/DFIR, detection engineering, threat intel,
+  security engineering) · **the wings** (GRC, cloud security, AI/ML security, architecture,
+  product security). Not a hierarchy — different temperaments. **Most careers move between them.**
+- **What the days actually look like** — see `assets/roles-reference.md`. Key notes:
+  pentesting is ~40% report writing; **SOC L1 is the biggest entry door in India** (MSSPs and
+  GCCs); **GRC is real, stable, paid security** for organised communicators; detection
+  engineering suits people who liked *both* the Red days and Day 19.
+- **The Indian fresher reality:** many "junior" roles ask for 2 years of experience. What
+  breaks that: **(1) a visible portfolio** (your repo), **(2) one relevant cert**, **(3) being
+  able to talk through a project** in the interview. Apply for internships from month 2.
+- **Certs are an HR filter, not a qualification.** Blue: **Security+** → BTL1 → CySA+. Red:
+  **eJPT** → PNPT/CPTS → **OSCP**. Cloud: the provider's associate security cert. **CISSP
+  needs ~5 years' experience — not a fresher cert.** Don't collect certs — pick one for your
+  door and go deep. Free/cheap: TryHackMe, HTB, PortSwigger Web Academy, OWASP.
+- **Your portfolio repo > this course's certificate.** Finalise it: a README listing every
+  artifact, pinned, share-ready, with a "what I learned" paragraph and your roadmap.
+
+### The whole course, in three lines
+1. **Everything is untrusted input** until it's checked at the boundary.
+2. **Least privilege + assume breach** — the two ideas behind almost every control.
+3. **You learn security by doing it** — and you have a repo full of proof.
+
+### In class
+1. **Skills self-assessment** (`assets/skills-self-assessment.md`) — rate 1–5; your highest
+   cluster is a signal toward a door.
+2. **"Which door + why + 3 next steps"** (`assets/roadmap-template.md`) + a 60-second pitch.
+3. Draft your **portfolio README** (`assets/portfolio-readme-template.md`).
 
 ---
 
-## Weekend Assignment — Week 4 (the capstone)
+## The Capstone (final assignment)
 
-*Briefed at the end of Day 20. A cross-domain find-and-fix (web + infra) + an IR scenario walk-through
-+ your career roadmap ("which door and why" + the next 3 steps). Full spec added on Day 20.*
+*Submit **one PDF + your repo link**. The biggest single piece — start this weekend. Only your
+assigned capstone target. Snapshot first.*
+
+### Part A — Cross-domain engagement
+On the capstone target, run the full lifecycle and deliver **two** proven findings — **one web
+vulnerability** (SQLi / XSS / IDOR / …) **and one infrastructure / service finding** (an
+exploitable service, a misconfiguration, a privilege-escalation path). For each:
+**find → prove (captioned screenshot + numbered steps) → fix.** Use your Week-3 report format.
+~4 pages: scope → service inventory → ranked findings → the two proven findings → remediation.
+
+### Part B — Incident writeup
+From the provided incident logs (`capstone/incident-logs/`): the **timeline** (every event,
+timestamped, with evidence), the **IOCs**, a **5-step IR response** (detect → contain →
+eradicate → recover → learn), and **the one root-cause fix** that would have prevented it.
+
+### Part C — Career roadmap + portfolio
+- **"Which door and why"** — 1 page, tied to what you actually enjoyed in the course.
+- A **6-month plan** — a named cert, a named learning path, **2 projects**, **1 community**.
+- Your **finalised portfolio README** (committed to the repo root).
+
+### Part D — Final reflection
+- The four "so what": **what surprised me · what was hardest · what I'm best at · what's next.**
+- A **self-assessment** against the course objectives (`assets/skills-self-assessment.md`).
+
+### Marking checklist (25 marks)
+- [ ] A — web finding: proven with captioned evidence + numbered reproduction + a correct structural fix (4)
+- [ ] A — infra/service finding: proven + reproduction + fix (4)
+- [ ] A — scope, service inventory, and a ranked findings table, all from real work (3)
+- [ ] B — incident timeline: correct order, evidence cited, benign events not flagged (3)
+- [ ] B — IOCs complete; 5-step response is plausible; root-cause fix is correct (3)
+- [ ] C — "which door" reasoned and tied to the course; 6-month plan is concrete (a named cert/path/projects) (3)
+- [ ] C — portfolio README committed, lists the artifacts, share-ready (2)
+- [ ] D — four "so what" answered honestly + a real self-assessment (2)
+- [ ] submitted as one PDF + a working repo link, on time (1)

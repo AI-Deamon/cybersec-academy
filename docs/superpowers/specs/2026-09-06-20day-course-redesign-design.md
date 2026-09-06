@@ -330,9 +330,13 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 **Day 20 — Careers & the fork + capstone brief**
 - **Core idea:** you now know enough to choose — Red (pentest / red team / AppSec), Blue (SOC / IR / DFIR / detection engineering), or a wing (GRC, cloud security, AI security, security engineering).
 - **Must land:** what each role actually does day to day; the Indian market reality (SOC hiring volume, VAPT consultancies, bug bounty, product security teams); the cert ladder per path (Blue: Security+ → BTL1 → CySA+; Red: eJPT → PNPT/CPTS → OSCP); that the **portfolio (their repo) matters more than any cert at entry**.
-- **Do:** self-assessment against a skills checklist; each student writes "which door and why" + the next 3 concrete steps; short pitches to the room.
-- **Artifact:** the repo finalized as a portfolio README + a personal 6-month roadmap.
-- **Capstone brief:** cross-domain find-and-fix (web + infra) + an IR writeup + the roadmap.
+- **Do (2 beats):** the **skills self-assessment** (`assets/skills-self-assessment.md` — rate 1–5 against the course; highest cluster = a signal toward a door, not a verdict); then **"which door + why + 3 concrete next steps"** (`assets/roadmap-template.md` — a named cert, a named path, a named project) + 3–4 60-second pitches. Then draft the **portfolio README** live (`assets/portfolio-readme-template.md`).
+- **Framing (say these):** the choice isn't permanent (Red↔Blue movement is normal); "still deciding" is fine if the next step is concrete; **GRC is real security**; certs are an HR filter, the portfolio + interview get the job; **CISSP is not a fresher cert** (Security+ is).
+- **Reference handout:** `assets/roles-reference.md` — every role's day-to-day / what to learn / the way in (India-focused).
+- **Artifact:** the repo finalised as a **portfolio README** + a personal **6-month roadmap** (`roadmap.md`).
+- **Capstone brief (the final assignment):** **A** cross-domain engagement — one clean web finding + one infra/service finding, each find→prove→fix (~4pp, Week-3 report format); **B** an incident writeup from provided logs (timeline + IOCs + 5-step response + root-cause fix, Day 19); **C** the career roadmap + finalised portfolio README; **D** final reflection (the four "so what" + self-assessment vs the course objectives). One PDF + the repo link. Marked against the Definition of Success ("can you do the basics, and do you know your direction" — not "are you an expert").
+- **Analogy:** you've worked every station now — which one do you want to run? (kitchen).
+- **Trap:** "I must pick now, forever" (careers move) · "I need OSCP/CISSP to start" (Security+ + a portfolio for a fresher) · "GRC isn't real security" (it is — stable, paid, in demand) · "certs = job" (a filter, not a qualification).
 
 ---
 
@@ -486,10 +490,27 @@ Findings get applied, and the §6 plan is corrected when the lesson diverges fro
 4. **Prep-routine trial** — the instructor runs the §8 routine for Day 1 and Day 2 and reports
    what didn't fit in 90 minutes, before the routine is locked.
 
-### Progress
+### Progress — ALL 20 DAYS BUILT + REVIEWED (see `lessons-v2/CHANGELOG.md` for per-day detail)
 
-- **Day 1** built + reviewed + fixes applied (repo→homework, 3 events not 5, "where this
-  leads" slide, trailer defaults to recording).
-- **Day 2** built + reviewed + fixes applied (one analogy = kitchen; "why a bug becomes
-  control" moved up and given 12 min; memory-layout slide cut; `crash.py` → instructor-only;
-  "files" moved to Day 6 in §5/§6).
+- **Week 1 (1–5):** cyber security/ethics/CIA/history · inside the box (program vs process,
+  bug→control) · Networks I (IP/MAC/port, NAT) · the web-load keystone (DNS→TCP→TLS→HTTP) ·
+  cryptography + Week 1 assignment.
+- **Week 2 (6–10):** Linux I (files/tree/shell) · Linux II (permissions/sudo/priv-esc concept) ·
+  Windows (SIDs/ACLs/registry/PowerShell/AD) · Scripting (5 blocks, build `scanner.py`) ·
+  Security thinking (risk, STRIDE, the untrusted-input lens) + Week 2 assignment.
+- **Week 3 (11–15):** Attacks & malware · the pentest lifecycle + the lab gate · Recon &
+  scanning (OSINT + Nmap + Wireshark) · Vulnerability assessment (CVE→CVSS→KEV→triage) ·
+  Practice day + Week 3 assignment.
+- **Week 4 (16–20):** Web exploitation (SQLi/XSS/IDOR + structural fixes) · Post-exploitation +
+  infra & cloud · AI & cyber security (Gandalf) · Blue team (logs/SIEM/IOC-vs-TTP/IR) ·
+  Careers & specialization + the capstone.
+- Each day: a `dayNN.md` Marp deck (speaker notes) + `.pptx`/`.html`, `teacher-notes.md`,
+  `assets/`. Per week: `weekN/student-pack.md` with day sections + the weekend assignment +
+  checklist rubric. Branch: `course-redesign-v2`.
+- **Still open before teaching:** the lab host + reachability path (§7, §11 item 2); the
+  instructor's Day 1–2 prep-routine trial (§11 item 4); governance adoption (§11 item 3).
+
+#### First two days' review detail (kept for reference)
+- **Day 1:** repo→homework, 3 events not 5, "where this leads" slide, trailer defaults to recording.
+- **Day 2:** one analogy = kitchen; "why a bug becomes control" moved up + given 12 min;
+  memory-layout slide cut; `crash.py` → instructor-only; "files" moved to Day 6.
