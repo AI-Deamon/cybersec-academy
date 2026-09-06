@@ -158,7 +158,57 @@ one process — the machine is unharmed.
 
 ---
 
-## Day 4 — *(to be added)*
+## Day 4 — How a web page actually loads (keystone)
+
+### Recap — the chain
+1. You **type the URL**.
+2. **DNS** turns `example.com` into an IP (your resolver walks root → `.com` → the domain's
+   own servers; answers are cached with a TTL).
+3. **TCP** opens a reliable connection — the **3-way handshake**: `SYN` → `SYN-ACK` → `ACK`.
+   (UDP = no handshake, no re-sends — used for DNS, video, games.)
+4. **TLS** locks the connection. It gives **confidentiality** (nobody can read it),
+   **integrity** (nobody can change it undetected), and **identity** (the server proves its
+   name with a certificate signed by a trusted authority).
+5. **HTTP** — plain text inside the lock:
+   - request: `GET /login HTTP/1.1` + headers (`Host`, `Cookie`, `User-Agent`) + optional body
+   - response: `HTTP/1.1 200 OK` + headers (`Set-Cookie`, `Content-Type`) + the body (HTML)
+   - status codes: **2xx** ok · **3xx** redirect · **4xx** your fault (404, 403) · **5xx** server fault
+6. The browser **renders** the HTML.
+7. It **repeats 2–6** for every image, script, and stylesheet.
+
+### What the padlock does NOT mean
+- **Not** "this site is honest" — phishing sites get a free padlock in minutes.
+- **Not** "this server/app is secure."
+- **Not** "your data is safe once it's stored."
+- It only means: **the pipe to this server is private and unmodified.**
+
+### Security
+- **DNS spoofing** → wrong IP → attacker's server. Fix: DNSSEC, DNS-over-HTTPS.
+- **MITM on plain HTTP** (the Day 1 demo) → read/rewrite everything. Fix: HTTPS + **HSTS**.
+- **Session-cookie theft** → present the `Cookie` value and you *are* the logged-in user, no
+  password. Fix: `Secure` + `HttpOnly` cookies, short sessions.
+
+### Key terms
+`DNS` · `resolver` · `A record` · `TTL` · `TCP` · `3-way handshake` · `SYN/ACK` · `UDP` ·
+`TLS` · `certificate` · `Certificate Authority` · `HTTP` · `GET / POST` · `header` · `status code` ·
+`cookie` · `Set-Cookie` · `session` · `HSTS` · `MITM` · `DNS spoofing`
+
+### In class — the four "do it now" beats
+1. `dig <domain>` / `nslookup` — the A record, run it twice.
+2. `curl -v https://example.com` — find the "Connected" line (handshake done).
+3. `printf 'GET / HTTP/1.1\r\nHost: example.com\r\nConnection: close\r\n\r\n' | ncat example.com 80`
+   (Windows: `assets/http_by_hand.ps1`) — an HTTP request by hand.
+4. **DevTools → Network**, log in to a personal account, inspect the request/response headers
+   (find the `Cookie` and `Set-Cookie`). *Blur credentials in any screenshot.*
+
+### Homework (due start of Day 5)
+1. Write the **7-step story** of loading `example.com`, keypress → rendered page, in your own
+   words. *(This becomes Part A of the weekend assignment.)*
+2. From your DevTools login: screenshot the request line + headers, **credentials blurred**.
+3. One sentence: **what does the padlock guarantee, and what does it not?**
+
+---
+
 ## Day 5 — *(to be added)*
 
 ---

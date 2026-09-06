@@ -42,3 +42,11 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   Review fixes: hands-on **interleaved** as four short "do it now" beats instead of one block
   at the end (≈52 min of addressing theory otherwise loses beginners); added the missing
   client/server must-land; sanctioned the kitchen→postal→phone analogy arc in design doc §9.
+- **Day 4 built + reviewed + fixes applied** — `day04/day04.md` (deck + speaker notes: the
+  DNS→TCP→TLS→HTTP chain, DNS resolution, the 3-way handshake, what TLS does and does NOT
+  give, HTTP request/response/status codes, the session cookie, attack↔defence DNS-spoof /
+  MITM / cookie theft / look-alike), `day04/teacher-notes.md`, `day04/assets/http_by_hand.ps1`
+  (Windows "HTTP by hand"). Keystone day; hands-on interleaved (dig / curl -v / netcat / DevTools).
+  Review fixes: removed hardcoded stale IPs (example.com/github.com moved); chain aligned to
+  **7 steps** to match the assignment; run sheet retimed to ~84 min with an explicit
+  "this day runs hot — pick cuts in advance" warning; softened an unsourced phishing-HTTPS stat.

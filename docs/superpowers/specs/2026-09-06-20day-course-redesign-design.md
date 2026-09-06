@@ -166,10 +166,11 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 - **Analogy:** sanctioned extension of the kitchen → the postal / delivery system (see §9).
 - **Trap:** "my IP is whatever whatsmyip.com says" — that's the NAT/public IP, not the laptop's.
 
-**Day 4 — How the web actually works (keystone)**
-- **Core idea:** a page load is a chain — DNS → TCP → HTTP → TLS. Every web attack lives somewhere on that chain.
-- **Must land:** DNS resolution steps; TCP 3-way handshake; HTTP method/path/headers/body + status codes; what TLS gives (confidentiality + integrity + server identity) and what it does **not** (a trustworthy server or a secure app).
-- **Do:** `dig` a domain; `curl -v https://example.com` and read every line; hand-craft a GET with netcat against plain HTTP; DevTools → Network on a real login.
+**Day 4 — How a web page actually loads (keystone)**
+- **Core idea:** a page load is a chain — **DNS → TCP → TLS → HTTP** (that order). Every web attack lives somewhere on that chain.
+- **Runs hot:** ~2 days of material in one; run sheet fits ~84 min only with disciplined sections; cuts picked in advance (see `teacher-notes.md`).
+- **Must land:** DNS resolution steps; TCP 3-way handshake (+ UDP contrast); HTTP method/path/headers/body + status codes; the session cookie = as good as the password; what TLS gives (confidentiality + integrity + server identity) and what it does **not** (a trustworthy server, a secure app, safety at rest).
+- **Do (interleaved, 4 beats):** `dig`/`nslookup` a domain; `curl -v` and read the connect/handshake/request lines; hand-craft an HTTP GET (netcat / `http_by_hand.ps1`) against plain HTTP; **DevTools → Network on a real login** (the payoff).
 - **Attack ↔ Defense:** MITM on plaintext HTTP, DNS spoofing, session-cookie theft ↔ HTTPS everywhere, HSTS, Secure/HttpOnly cookies, DoH/DNSSEC.
 - **Artifact:** the 7-step "what happens when I load a site" writeup — **Week 1 assignment Part A seed.**
 - **Trap:** "HTTPS means the site is safe" — it means the pipe is private.
