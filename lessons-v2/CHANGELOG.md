@@ -236,3 +236,19 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   Do: **Gandalf** (gandalf.lakera.ai). Ethics: public CTF only; never paste real data into a public LLM.
   Review fix: aligned "improper/insecure output handling" to the 2025 OWASP name; §6 Day 18 aligned.
 - **`week4/student-pack.md`** — Day 18 section + marking checklist.
+- **Day 19 built + reviewed + fixes applied** — `day19/day19.md` (deck + speaker notes): the
+  defensive payoff of the whole course. Prevention fails → detect/respond/learn (MTTD/MTTR);
+  **logs are ground truth** (5 source types); the SIEM concept ("no tuned rules = just
+  storage"; alert fatigue); **IOC vs TTP** + the Pyramid of Pain (detect behaviours); Windows/
+  AD event IDs a SOC watches; the **IR lifecycle** (Prepare is 90%); containment done right
+  ("isolate, don't obliterate" — the pull-the-plug trap); chain of custody. The
+  "attack↔defence — the whole course, one table" payoff slide. `day19/teacher-notes.md`
+  (log-source / SIEM / Pyramid / event-ID / IR-lifecycle / containment background, the full
+  **log-bundle answer key** with timeline + ATT&CK mapping + root cause, tabletop facilitation
+  guide). `day19/assets/`: `logs/` (auth.log + web-access.log + network-notes.txt — one
+  intrusion: SSH brute force → web shell → cron persistence → internal scan → 1.4 GB exfil,
+  using RFC 5737 doc IPs), `timeline-template.md`, `ir-runbook-template.md`.
+  Do: analyse the log bundle → IOCs + timeline + containment step; then a 15-min ransomware
+  tabletop. Review: facts verified (event IDs, NIST 800-61, Pyramid of Pain, ATT&CK IDs);
+  §6 Day 19 aligned.
+- **`week4/student-pack.md`** — Day 19 section + marking checklist.

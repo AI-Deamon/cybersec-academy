@@ -320,11 +320,12 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 
 **Day 19 — Blue team: detection & incident response**
 - **Core idea:** prevention fails; the job is to see it fast and respond calmly. Logs are ground truth; IR is a process (prepare → detect → contain → eradicate → recover → learn).
-- **Must land:** log sources (auth, network, endpoint, app); the SIEM concept; detection rules; IOCs vs TTPs; the IR lifecycle; chain-of-custody basics; tabletop vs real; where AD attacks show up in logs (key event IDs, one slide).
-- **Do:** given a provided log set with an intrusion — find the IOCs, build the timeline, write the containment step; then a 15-minute ransomware tabletop.
-- **Attack ↔ Defense:** this is the defensive payoff for the whole course.
-- **Artifact:** a 5-step IR runbook + the incident timeline the student built.
-- **Trap:** "contain = pull the plug" — that destroys volatile evidence and can tip the attacker.
+- **Must land:** log sources (auth / endpoint-EDR / network-DNS-netflow / application / cloud) and what each reveals — *"if it isn't logged it didn't happen to you"*; the SIEM concept (collect→normalise→store→alert→hunt; a SIEM with no tuned rules is just storage; alert fatigue is the #1 SOC problem); **IOCs vs TTPs** and the Pyramid of Pain (detect behaviours, not just artifacts); Windows/AD event IDs a SOC watches (4625 failed logon, 4688 process creation, 7045 service installed, 4104 PowerShell, 4769 Kerberoasting — *know they exist, look them up*); the **IR lifecycle** (Prepare → Detect & Analyse → Contain → Eradicate → Recover → Lessons — Prepare is 90%); chain-of-custody basics; tabletop vs real.
+- **Do (2 beats):** analyse a provided 3-file log bundle (`assets/logs/` — SSH brute force → login → web shell → cron persistence → internal scan → 1.4 GB exfil) → extract IOCs, build the **timeline** (`timeline-template.md`), decide the **first containment step** and why; then a **15-min ransomware tabletop** read in 4 stages (now what / who do we call / what do we NOT do).
+- **Attack ↔ Defense:** the payoff slide — every attack from Days 11–18 mapped to where a defender catches it. This day *is* the defensive payoff for the whole course.
+- **Artifact:** `day19/timeline.md` (the built incident timeline + IOCs) + `day19/ir-runbook.md` (a 5-step runbook, from `ir-runbook-template.md`).
+- **Analogy:** the security office watching the camera feeds and door logs (kitchen).
+- **Trap:** "contain = pull the plug" — destroys volatile evidence + tips the attacker; **isolate, don't obliterate** (power-off only when data is being destroyed *now*).
 
 **Day 20 — Careers & the fork + capstone brief**
 - **Core idea:** you now know enough to choose — Red (pentest / red team / AppSec), Blue (SOC / IR / DFIR / detection engineering), or a wing (GRC, cloud security, AI security, security engineering).

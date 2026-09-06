@@ -1,0 +1,19 @@
+# Day 19 — auth.log excerpt from northwind-web (10.0.2.15). Fictional. IPs are documentation ranges.
+
+Mar 12 02:14:03 northwind-web sshd[20881]: Failed password for deploy from 203.0.113.66 port 51122 ssh2
+Mar 12 02:14:06 northwind-web sshd[20881]: Failed password for deploy from 203.0.113.66 port 51122 ssh2
+Mar 12 02:14:11 northwind-web sshd[20884]: Failed password for deploy from 203.0.113.66 port 51130 ssh2
+Mar 12 02:14:15 northwind-web sshd[20884]: Failed password for invalid user admin from 203.0.113.66 port 51130 ssh2
+Mar 12 02:15:40 northwind-web sshd[20990]: Failed password for deploy from 203.0.113.66 port 51402 ssh2
+Mar 12 02:16:22 northwind-web sshd[21014]: Failed password for deploy from 203.0.113.66 port 51455 ssh2
+Mar 12 02:17:09 northwind-web sshd[21051]: Failed password for deploy from 203.0.113.66 port 51501 ssh2
+Mar 12 02:18:31 northwind-web sshd[21120]: Failed password for deploy from 203.0.113.66 port 51610 ssh2
+Mar 12 02:19:44 northwind-web sshd[21190]: Accepted password for deploy from 203.0.113.66 port 51690 ssh2
+Mar 12 02:19:44 northwind-web sshd[21190]: pam_unix(sshd:session): session opened for user deploy by (uid=0)
+Mar 12 02:20:02 northwind-web sudo:   deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/usr/bin/apt-get install -y netcat-traditional
+Mar 12 02:20:03 northwind-web sudo: pam_unix(sudo:session): session opened for user root by deploy(uid=1005)
+Mar 12 02:31:55 northwind-web crontab[21540]: (deploy) LIST (deploy)
+Mar 12 02:32:10 northwind-web sudo:   deploy : TTY=pts/1 ; PWD=/home/deploy ; USER=root ; COMMAND=/bin/cp /home/deploy/apache-cache /etc/cron.d/apache-cache
+Mar 12 03:29:07 northwind-web sshd[22701]: Received disconnect from 203.0.113.66 port 51690:11: disconnected by user
+Mar 12 03:29:07 northwind-web sshd[22701]: pam_unix(sshd:session): session closed for user deploy
+Mar 12 06:41:12 northwind-web sshd[27880]: Accepted publickey for deploy from 10.0.2.9 port 40122 ssh2   # <- normal: the real deploy user, next morning

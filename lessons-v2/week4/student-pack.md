@@ -169,7 +169,61 @@ course repo. Same lab, same ROE. **Test only the lab targets or your own machine
 
 ---
 
-## Day 19 — *(to be added)*
+## Day 19 — Blue team: detection & incident response
+
+### Recap
+- **Prevention fails — so the job is detect fast + respond calmly + learn.** Assume breach.
+  Metrics: **MTTD** (mean time to detect), **MTTR** (mean time to respond).
+- **Logs are ground truth.** Sources: **authentication** (logins, failed logins, `sudo`, new
+  accounts) · **endpoint / EDR** (process creation, command lines, file writes) · **network**
+  (firewall, DNS, netflow, proxy) · **application** (web access/error, DB audit) · **cloud**
+  (CloudTrail). *If it isn't logged, it didn't happen — to you.*
+- **SIEM** = collect logs everywhere → normalise → store (searchable) → alert on rules →
+  dashboards. Splunk / Sentinel / Elastic / Wazuh. **A SIEM with no tuned rules is just
+  expensive storage**; alert fatigue is the #1 SOC problem.
+- **IOC vs TTP:** an **IOC** is a specific artifact (IP, hash, domain, filename) — cheap to
+  block, trivial to change. A **TTP** is the behaviour ("creates a scheduled task for
+  persistence") — harder to detect, but the attacker **can't easily change how they operate**.
+  Mature SOCs detect **TTPs** (the Pyramid of Pain).
+- **Windows event IDs a SOC watches:** 4625 (failed logon), 4688 (process creation), 4720
+  (user created), 7045 (service installed), 4104 (PowerShell script), 4769 (Kerberos —
+  Kerberoasting). *Know they exist; look them up.*
+- **IR lifecycle:** **Prepare** (the plan, tools, contacts, logging, backups, practice — 90%
+  of success) → **Detect & Analyse** → **Contain** → **Eradicate** → **Recover** → **Lessons
+  learned**. It's a loop.
+- **Containment ≠ pull the plug.** Yanking power destroys volatile evidence (memory, running
+  processes) and tips the attacker. Better: **network-isolate** the host (keep it running),
+  **disable** the account, **block** the C2, **preserve** evidence (chain of custody).
+  Power-off only when data is being destroyed *right now*.
+
+### Key terms
+`assume breach` · `MTTD / MTTR` · `log sources` · `EDR` · `Sysmon` · `SIEM` · `Sigma` ·
+`SOAR` · `alert fatigue` · `IOC` · `TTP` · `Pyramid of Pain` · `MITRE ATT&CK` · `event 4625` ·
+`event 4688` · `IR lifecycle` · `containment` · `network isolation` · `eradication` ·
+`chain of custody` · `tabletop`
+
+### In class — the 2 beats
+1. **Analyse `assets/logs/`** (auth.log + web-access.log + network-notes.txt): extract the
+   IOCs, build the **timeline** (`timeline-template.md`), decide the **first containment step**
+   and why.
+2. **Ransomware tabletop** — the scenario read in 4 stages; at each: what now, who do we call,
+   what do we NOT do.
+
+### Homework (due start of Day 20)
+1. Finish the **incident timeline** — every event, timestamped, IOCs listed. Commit `day19/timeline.md`.
+2. Write a **5-step IR runbook** for a compromised web server (`ir-runbook-template.md`) —
+   detect → contain → eradicate → recover → learn, 2–3 bullets each. Commit `day19/ir-runbook.md`.
+3. From the tabletop: 3 sentences on what your team would do **differently** with more preparation.
+4. Add the key terms above to your glossary.
+
+### Marking checklist (Day 19 homework, 6 marks)
+- [ ] timeline: events in correct order, timestamped, with evidence cited; the benign entries
+      (the 06:41 publickey login, normal web traffic) **not** flagged as attack (3)
+- [ ] all 7 IOCs identified (attacker IP, exfil host, account, web shell, persistence, tool, data volume) (2)
+- [ ] IR runbook: 5 phases, each with plausible actions; the "do NOT pull the plug" nuance present (1)
+
+---
+
 ## Day 20 — *(to be added)*
 
 ---
