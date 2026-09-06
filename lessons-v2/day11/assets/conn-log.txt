@@ -1,0 +1,28 @@
+# Day 11: network connection log from a possibly-infected workstation (10.0.0.44)
+# Simplified. One row per outbound connection.
+# columns:  time      dst_ip           dst_port  domain (if known)          bytes_out  bytes_in   note
+# ------------------------------------------------------------------------------------------------------
+
+08:00:03   140.82.112.3     443       github.com                    2,100      48,300
+08:00:07   142.250.183.14   443       www.google.com                1,400      31,900
+08:00:12   151.101.1.140    443       cdn.jsdelivr.net                980       22,400
+08:00:41   185.199.108.153  443       fonts.gstatic.com              1,020      64,100
+08:01:00   193.42.61.10     8443      cdn-telemetry-sync.top          620          210
+08:01:33   142.250.183.14   443       www.google.com                1,100      12,700
+08:02:00   193.42.61.10     8443      cdn-telemetry-sync.top          640          210
+08:02:55   140.82.112.3     443       github.com                    1,800      33,600
+08:03:00   193.42.61.10     8443      cdn-telemetry-sync.top          610          210
+08:03:20   193.42.61.10     8443      cdn-telemetry-sync.top       1,240   4,880,000    <-- large inbound
+08:04:00   193.42.61.10     8443      cdn-telemetry-sync.top          650          210
+08:05:00   193.42.61.10     8443      cdn-telemetry-sync.top          630          210
+08:06:00   193.42.61.10     8443      cdn-telemetry-sync.top          640          210
+08:06:14   45.90.58.7       21        (none)                    91,300,000       2,100    <-- large outbound (FTP)
+08:07:00   193.42.61.10     8443      cdn-telemetry-sync.top          620          210
+08:08:00   193.42.61.10     8443      cdn-telemetry-sync.top          650          210
+
+# Questions:
+# 1. Which destination is contacted on a REGULAR INTERVAL, with small, near-identical traffic?
+#    (that rhythm = a command-and-control "beacon")
+# 2. Which single connection DOWNLOADED a lot? What might it be?
+# 3. Which single connection UPLOADED a lot, and to an unusual port/host? What might that be?
+# 4. Which rows look like normal web browsing?

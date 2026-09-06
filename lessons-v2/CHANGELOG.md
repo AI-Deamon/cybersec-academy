@@ -118,3 +118,17 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   precedence bug in the checklist; §6 Day 10 aligned.
 - **Week 2 (Days 6–10) complete** — deck + teacher-notes each; `week2/student-pack.md` has all
   five day sections and the full 4-part Week 2 weekend assignment + 15-mark checklist.
+- **Day 11 built + reviewed + fixes applied** — Week 3 opens. `day11/day11.md` (deck + speaker
+  notes): the "boring five" initial-access routes; social engineering & phishing (psychology +
+  anatomy + SPF/DKIM/DMARC + MFA); credential attacks (brute force / spray / stuffing; reuse;
+  infostealers steal MFA-bypassing cookies); malware **by behaviour not "virus"** (delivery ≠
+  payload); the C2 beacon pattern; MITM/DoS/DDoS/supply chain; the **6-ways-in table**
+  (indicator + control each) as the artifact; dwell time. `day11/teacher-notes.md` (DBIR-shape
+  sourcing caveat, phishing/cred/malware/C2 background, both exercise answer keys, demo
+  runbook). `day11/assets/`: `phish-sample.txt` (defanged, full headers), `conn-log.txt`
+  (beacon + download + exfil to spot).
+  Review fixes: softened the dwell-time claim to "the shape, not a stat"; Wireshark is
+  instructor-projector today (students install Day 13) — students analyse a connection log;
+  §6 Day 11 aligned.
+- **`week3/student-pack.md` started** — Day 11 section + checklist; lab-safety note; Week 3
+  assignment placeholder.

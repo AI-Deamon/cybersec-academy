@@ -241,10 +241,11 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 **Day 11 — Attacks & malware: the catalogue**
 - **Core idea:** almost every real breach starts with one of a short list — phishing, stolen creds, an unpatched service, a misconfig. Know the shortlist and its tells.
 - **Must land:** social engineering / phishing (the #1 initial access) and its psychology; malware families (virus / worm / trojan / ransomware / RAT / rootkit / infostealer); credential attacks (spray, stuffing, cracking, phishing); MITM; DoS / DDoS; supply chain in one line. Each with an **indicator + a control.**
-- **Do:** dissect a real phishing email (headers, links, urgency cues); view a live malware traffic capture in Wireshark; check an email/password against Have I Been Pwned.
-- **Attack ↔ Defense:** paired all day.
-- **Artifact:** "the 6 ways in — one indicator and one control for each."
-- **Trap:** "malware = virus" / "we'd notice if we were breached" (dwell time is measured in months).
+- **Do (interleaved, 3 beats):** dissect a defanged phishing email with full headers (`assets/phish-sample.txt`); check your **email** on Have I Been Pwned; analyse a simplified connection log (`assets/conn-log.txt`) — find the C2 beacon, the payload download, the exfil. (Wireshark is instructor-projector only today; students install it Day 13.)
+- **Attack ↔ Defense:** paired all day; the 6-ways-in table IS the artifact.
+- **Artifact:** `day11/ways-in.md` — "the 6 ways in — one indicator and one control for each", their words.
+- **Analogy:** the ways a thief gets into the restaurant (kitchen).
+- **Trap:** "malware = virus" (delivery ≠ payload) / "we'd notice if we were breached" (attackers go unnoticed for a while; often found by a third party — teach the shape, not a hard stat).
 
 **Day 12 — The pentest lifecycle + stand up the lab**
 - **Core idea:** offensive work is a repeatable process, not improvisation: scope → recon → enumerate → exploit → post-exploit → report. Same shape every engagement.
