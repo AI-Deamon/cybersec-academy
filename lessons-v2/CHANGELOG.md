@@ -81,3 +81,15 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   Review fixes: §9 adds "permissions = the key cabinet" to the kitchen analogy; §6 Day 7 "Do"
   corrected (cron is taught, not a hands-on beat; priv-esc concept-only, hands-on is Day 17);
   added RHEL sudo-log path + the "hook didn't deny → you're root" teachable moment.
+- **Day 8 built + reviewed + fixes applied** — `day08/day08.md` (deck + speaker notes): framed
+  as translation of Day 7 via a Linux→Windows mapping table; accounts/SIDs/SYSTEM; admin vs
+  standard + UAC; NTFS ACLs (`icacls`); the registry as config store + persistence spot (Run
+  keys); Services & Scheduled Tasks; **PowerShell pipes objects, not text** + it's the #1
+  attacker tool; Active Directory in one slide; attack↔defence (persistence, LOLBins, LSASS
+  credential theft, reused local-admin passwords, unlogged PowerShell ↔ no daily admin,
+  AppLocker/WDAC, EDR, LAPS, Script Block Logging). `day08/teacher-notes.md` (SID/token/
+  privilege/ACL/registry/PowerShell/AD background, the non-Windows-student options, demo
+  runbook, FAQ). Hands-on interleaved (4 beats), all read-only.
+  Review fixes: §6 Day 8 "Do"/analogy/environment aligned; SYSTEM > Administrator noted as a
+  second trap.
+- **`week2/student-pack.md`** — Day 7 and Day 8 sections + marking checklists.

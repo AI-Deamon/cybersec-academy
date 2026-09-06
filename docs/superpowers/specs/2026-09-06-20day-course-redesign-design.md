@@ -208,10 +208,12 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 **Day 8 — Windows: same questions, different machine**
 - **Core idea:** Windows asks the same "who can do what" but answers with tokens, SIDs, ACLs, and the registry — and most orgs centralize it with Active Directory.
 - **Must land:** local users/groups, UAC and admin vs standard, NTFS ACLs, services, the registry as a config store **and** a persistence spot, PowerShell as the real admin/attack surface; AD in one line (central identity + policy).
-- **Do:** `whoami /priv`, `Get-LocalUser`, `Get-Service`, `Get-Process`; view an ACL with `icacls`; view a Run key; a 3-line PowerShell script.
-- **Attack ↔ Defense:** Run-key persistence, living-off-the-land binaries (LOLBins), credential theft from memory ↔ least privilege, application allowlisting, EDR, LAPS.
+- **Do (interleaved, 4 beats):** `whoami /priv` + `/groups` + `Get-LocalUser`; `icacls` on the hosts file + `$HOME`; `Get-ItemProperty` on both Run keys; a 3-line `Get-Process | Sort-Object | Select` object pipeline.
+- **Attack ↔ Defense:** Run-key/Scheduled-Task/Service persistence, LOLBins, LSASS credential theft, reused local admin passwords, unlogged PowerShell ↔ no daily admin, application allowlisting (AppLocker/WDAC), EDR, LAPS, PowerShell Script Block Logging + CLM + AMSI.
 - **Artifact:** a "same task, Linux vs Windows command" table for 5 tasks.
-- **Trap:** "PowerShell is CMD with colours" — it's an object pipeline and a primary attack surface.
+- **Analogy:** the key cabinet again, more detailed — ID badges (tokens/SIDs), a full guest-list per door (ACL), the registry = the master settings binder, AD = one HR dept for every building.
+- **Environment:** most students are on Windows (native); mac/Linux students pair / RDP the shared Windows box / follow the projector. All commands read-only.
+- **Trap:** "PowerShell is CMD with colours" — it's an object pipeline and a primary attack surface. "Administrator is the top" — SYSTEM is higher.
 
 **Day 9 — Scripting for security**
 - **Core idea:** if you do it twice, script it — Bash to glue tools together, Python when there's logic or data.

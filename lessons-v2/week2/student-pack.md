@@ -108,7 +108,63 @@ Keep this open in class. Same course repo — an attack, a defence, and an artif
 
 ---
 
-## Day 8 — *(to be added)*
+## Day 8 — Windows: same questions, different machine
+
+### Recap — the mapping (Linux → Windows)
+| Linux | Windows |
+|---|---|
+| user + uid | account + **SID** |
+| `rwx` for u/g/o | an **ACL** — a list of "who can do what" entries (more detailed) |
+| `root` | **Administrators**, and **SYSTEM** (higher still) |
+| `sudo` | **UAC** consent / "Run as administrator" |
+| `/etc/*` config | the **registry** (HKLM = machine, HKCU = you) |
+| `cron` | **Scheduled Tasks** |
+| `systemd` services | **Services** |
+| `ps` / `kill` | `Get-Process` / `Stop-Process` |
+
+- **SID** = the real identity; usernames are labels on top. Permissions bind to SIDs.
+- **SYSTEM > Administrator.** Don't run as admin day-to-day; **UAC** is a consent prompt, not
+  a hard security boundary.
+- **NTFS ACL** = ordered list of ACEs (SID + allow/deny + Read/Write/Modify/Full);
+  child items **inherit** the parent's ACL. Read one with `icacls`.
+- **Registry** = one settings database for the whole system. Windows *and* malware store
+  config there. **Run keys** (`...\CurrentVersion\Run`) auto-start programs at login → a
+  classic **persistence** trick (with Services and Scheduled Tasks).
+- **PowerShell is not "cmd with colours"** — it pipes **objects** (filter/sort on properties,
+  no text parsing). It's also the **#1 attacker tool** on Windows (built in, powerful,
+  historically unlogged).
+- **Active Directory** = central login + policy for a whole organisation; machines join a
+  **domain**; a **Domain Controller** authenticates you. Attacking AD = Week 4.
+
+### Key terms
+`account / SID` · `Administrators` · `SYSTEM` · `access token` · `privilege` (`whoami /priv`) ·
+`UAC` · `standard vs admin` · `NTFS ACL / ACE` · `inheritance` · `icacls` · `registry` ·
+`HKLM / HKCU` · `Run key` · `persistence` · `Service` · `Scheduled Task` · `PowerShell` ·
+`object pipeline` · `LOLBins` · `LSASS` · `LAPS` · `Active Directory / domain / Domain Controller`
+
+### In class — the "do it now" beats
+1. `whoami`, `whoami /priv`, `whoami /groups`, `Get-LocalUser`.
+2. `icacls C:\Windows\System32\drivers\etc\hosts` and `icacls $HOME`.
+3. `Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'` (and the HKLM one).
+4. `Get-Process | Sort-Object WS -Descending | Select-Object -First 5 Name, Id, WS`.
+
+*Not on Windows? Pair with a neighbour, RDP the shared Windows box, or follow the projector —
+and note which you used.*
+
+### Homework (due start of Day 9)
+1. **Artifact:** the **Linux ↔ Windows command table** — ≥ 5 rows, real commands both sides. Commit it.
+2. `whoami /priv` + `/groups` — are you an administrator, and how can you tell? (2 sentences)
+3. List what auto-starts from both Run keys; flag anything you can't identify (**don't delete**).
+4. Add `whoami`, `Get-LocalUser`, `Get-Process`, `Get-Service`, `icacls`, `Get-ItemProperty` to your cheat-sheet.
+
+### Marking checklist (Day 8 homework, 5 marks)
+- [ ] Linux↔Windows table: ≥ 5 rows, correct commands on both sides (2)
+- [ ] admin/standard answer correct with a valid reason (e.g. Administrators group, `whoami /groups`) (1)
+- [ ] Run-key contents listed (1)
+- [ ] cheat-sheet updated (1)
+
+---
+
 ## Day 9 — *(to be added)*
 ## Day 10 — *(to be added)*
 
