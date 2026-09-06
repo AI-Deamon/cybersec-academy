@@ -299,11 +299,13 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 
 **Day 17 — Post-exploitation + infrastructure & cloud**
 - **Core idea:** getting in is the start. Attackers then escalate, persist, move laterally, and reach the data — and the same access-control failures scale to networks and cloud.
-- **Must land:** what a shell is; privilege escalation concept (Linux SUID/sudo, Windows tokens); persistence; lateral movement; pivoting. Then: segmentation, firewalls, IDS/IPS, VPN; cloud shared responsibility, the public-bucket misconfig, over-broad IAM.
-- **Do:** a guided Metasploit session on Metasploitable2 → shell → `linpeas` → find a priv-esc path; then inspect and fix an intentionally open bucket / IAM policy.
-- **Attack ↔ Defense:** paired — map each attacker step to what a SOC would see.
-- **Artifact:** "attack chain: initial access → data, with the detection opportunity at each step."
-- **Trap:** "we're in the cloud so the provider secures it" — shared responsibility.
+- **Runs hot:** two disciplines in one day (post-ex + infra/cloud); cuts picked in advance (see `teacher-notes.md`). Spine = priv-esc + its DO, the attack-chain artifact, shared responsibility, the policy DO.
+- **Must land:** what a shell is (reverse vs bind); **privilege escalation** — the pattern *"something powerful trusts something you control"* (Linux SUID/`sudo`/writable-cron/caps; Windows unquoted-path/service-perms/token-impersonation); persistence; lateral movement (pass-the-hash, reused local-admin passwords); pivoting (SSH tunnels, MSF route). Then: **segmentation** (flat = fatal), firewalls incl. **egress**, IDS/IPS, VPN (a trust grant), bastion hosts; **cloud shared responsibility** (identity + data + config are always the customer's); the two classic failures — public storage bucket (`Principal: *`) and over-broad IAM (`Action: *`) → an **SSRF → IMDS → creds** takeover (Day 16 callback).
+- **Do (2 beats):** guided Metasploit on Metasploitable2 → shell → `linpeas` / manual (`sudo -l`, `-perm -4000`) → one priv-esc path → root (screenshot the chain); then read + rewrite `assets/bad-policy.json` and `assets/bad-bucket-policy.json` least-privilege (paper; LocalStack/MinIO optional).
+- **Attack ↔ Defense:** every post-ex step mapped to a SOC detection — this table + the artifact are the Red→Blue bridge (feeds Day 19).
+- **Artifact:** `day17/attack-chain.md` — initial access → data, with **one detection opportunity per step** (`assets/attack-chain-template.md`).
+- **Analogy:** inside the restaurant after hours — master key / prop a door / kitchen→safe / borrow the van; cloud = a shared supplier who locks the building but not your unit (kitchen).
+- **Trap:** "we're in the cloud so the provider secures it" (shared responsibility) · "we have a firewall so we're segmented" (flat internal = one foothold owns everything) · "a shell = done" (it's the start of Phase 5).
 
 **Day 18 — AI & cyber security**
 - **Core idea:** AI is a new asset class with its own attack surface, a force-multiplier for attackers, and a tool for defenders — treat all three seriously.

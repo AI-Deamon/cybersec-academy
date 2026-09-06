@@ -202,3 +202,20 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   Review fixes: added a 3-min IDOR "try it now" (design §6 calls for it hands-on); noted the
   OWASP 2025 revision in progress; §6 Day 16 aligned + Burp/secure-coding intro folded in.
 - **`week4/student-pack.md` started** — Day 16 section + checklist; capstone placeholder.
+- **Day 17 built + reviewed + fixes applied** — `day17/day17.md` (deck + speaker notes; runs
+  hot — two disciplines). Post-exploitation: what a shell is; **privilege escalation** (the
+  "something powerful trusts something you control" pattern — Linux SUID/sudo/cron/caps,
+  Windows unquoted-path/tokens) with a guided linpeas → root DO on Metasploitable2;
+  persistence / lateral movement (pass-the-hash) / pivoting; **the attack chain with a
+  detection opportunity at every step** (the Red→Blue bridge). Infrastructure: segmentation
+  (flat = fatal), egress filtering, IDS/IPS, VPN as a trust grant, bastion hosts. Cloud:
+  **shared responsibility** (identity + data + config are always the customer's); the two
+  classic failures (public bucket `Principal:*`, over-broad IAM `Action:*` → SSRF→IMDS→creds
+  takeover, Day 16 callback) with a policy-fix DO. `day17/teacher-notes.md` (full Linux +
+  Windows priv-esc / persistence / lateral / pivot / infra / cloud background, both policy
+  answer keys, Metasploitable2 root paths, demo runbook). `day17/assets/`: `bad-policy.json`,
+  `bad-bucket-policy.json` (both with tasks; answer keys in teacher-notes),
+  `attack-chain-template.md` (the artifact).
+  Review fixes: added the "runs hot / pick cuts in advance" note; §6 Day 17 aligned; the
+  chmod-777 ↔ cloud-least-privilege through-line made explicit.
+- **`week4/student-pack.md`** — Day 17 section + marking checklist.

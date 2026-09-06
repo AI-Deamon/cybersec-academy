@@ -1,0 +1,21 @@
+{
+  "_comment": "Day 17: an AWS-style IAM policy attached to a web-app server's instance role.",
+  "_the_app_actually_needs": "to READ files from ONE bucket (app-uploads-prod) and write logs to CloudWatch. Nothing else.",
+
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "LetItDoEverything",
+      "Effect": "Allow",
+      "Action": "*",
+      "Resource": "*"
+    }
+  ],
+
+  "_your_task": [
+    "1. In plain English, what can a process using this role do?",
+    "2. What is the specific over-grant?",
+    "3. Rewrite Statement[] to least privilege: only s3:GetObject on the one bucket's objects, plus the CloudWatch Logs actions a logger needs (CreateLogStream, PutLogEvents) on this app's log group.",
+    "4. Why does this matter more if the server has an SSRF bug (Day 16)?"
+  ]
+}

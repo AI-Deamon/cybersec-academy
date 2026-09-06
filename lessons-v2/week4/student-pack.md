@@ -60,7 +60,62 @@ course repo. Same lab, same ROE. **Test only the lab targets or your own machine
 
 ---
 
-## Day 17 — *(to be added)*
+## Day 17 — After the break-in: post-exploitation + infra & cloud
+
+### Recap
+- **A shell is the start, not the end.** Post-exploitation goals: **escalate** privileges →
+  **persist** → **discover** → move **laterally** → collect creds & data → **exfiltrate** — quietly.
+- **Privilege escalation** — you land limited, you want root/SYSTEM. The pattern: *something
+  powerful trusts something you control.*
+  - Linux: SUID binaries, `sudo` misconfig (any editor/`find`/interpreter = root shell),
+    writable cron/service, kernel exploits, capabilities.
+  - Windows: unquoted service paths, weak service permissions, token impersonation, stored creds.
+  - Tools that hunt the path: `linpeas` / `winPEAS`.
+- **Persistence** = a way back in that survives reboot (cron, a service, an SSH key, a Run key).
+- **Lateral movement** = reuse creds/hashes/keys to hop to the next box (pass-the-hash, reused
+  local-admin passwords → LAPS).
+- **Pivoting** = route your traffic *through* the compromised host to reach networks you can't
+  touch directly (SSH tunnel, MSF route). **One foothold → the whole internal network.**
+- **Every attacker step is a detection opportunity** (new process, service created, unusual
+  `sudo`, SMB auth from a workstation, large outbound). That's the Red→Blue bridge (Day 19).
+- **Infrastructure:** **segmentation** (the workstation LAN must not reach the database — a
+  flat network = one foothold owns everything) · default-deny firewalls incl. **egress** ·
+  IDS/IPS · VPN (encrypts + authenticates, but a stolen VPN cred = inside) · bastion hosts.
+- **Cloud — shared responsibility:** the provider secures *the cloud* (hardware, hypervisor,
+  backbone); **you** secure *what's in it* — your **data**, your **access config (IAM)**, your
+  patching, your firewall rules. **Always yours: identity, data, configuration.**
+- **Two classic cloud failures:** a **public storage bucket** (`Principal: "*"`), and
+  **over-broad IAM** (`Action: "*"`) — which an **SSRF → metadata endpoint** (Day 16) turns
+  into full account takeover. Fix both with **least privilege** — same lesson as `chmod 777`.
+
+### Key terms
+`shell (reverse / bind)` · `meterpreter` · `privilege escalation` · `linpeas / winPEAS` ·
+`persistence` · `lateral movement` · `pass-the-hash` · `pivoting` · `SSH tunnel` ·
+`segmentation` · `zero trust` · `egress filtering` · `bastion / jump host` ·
+`shared responsibility` · `IAM` · `least-privilege policy` · `S3 Block Public Access` ·
+`IMDS / instance metadata` · `IMDSv2`
+
+### In class — the 2 beats
+1. Guided Metasploit on `<LAB_HOST>` (Metasploitable2): shell → `linpeas` / `sudo -l` /
+   `find / -perm -4000` → one escalation path → **root** → screenshot the chain.
+2. Read `assets/bad-policy.json` + `assets/bad-bucket-policy.json` — say what each allows,
+   spot the `"*"`, rewrite least-privilege.
+
+### Homework (due start of Day 18)
+1. `day17/attack-chain.md` — the full chain (foothold → priv-esc → persistence → lateral →
+   data → exfil) with **one detection opportunity per step** (`assets/attack-chain-template.md`).
+2. Engagement Journal Phase 5: your priv-esc chain on Metasploitable2 (start user → flaw →
+   command → root) + screenshot.
+3. Commit your least-privilege rewrites of both policy files.
+4. Add the key terms above to your glossary.
+
+### Marking checklist (Day 17 homework, 6 marks)
+- [ ] attack-chain diagram: all steps, ≥ 5 detection opportunities that are actually plausible (3)
+- [ ] priv-esc chain in the Journal with a screenshot proving `uid=0` (2)
+- [ ] both policies rewritten to least privilege (correct removal of the `"*"` over-grant) (1)
+
+---
+
 ## Day 18 — *(to be added)*
 ## Day 19 — *(to be added)*
 ## Day 20 — *(to be added)*
