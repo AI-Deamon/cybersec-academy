@@ -173,3 +173,17 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   Review fixes: stopped asserting KEV membership in the exercise for CVEs I can't verify live
   (students check KEV themselves); §6 Day 14 aligned.
 - **`week3/student-pack.md`** — Day 14 section + marking checklist.
+- **Day 15 built + reviewed** — `day15/day15.md` (deck + speaker notes): the **practice day**
+  — instructor talks ~20 min, circulates for the rest. The one-page playbook → a worked
+  mini-example (nmap → vsftpd 2.3.4 → Metasploit → `id` = proof) → a **coached team run**
+  (assigned mixed targets, goal = one proven finding: shell / extracted data / bypass —
+  checkpoints at 15/30/40 min) → each student writes a **2-page mini report** → the **Week 3
+  assignment brief**. `day15/teacher-notes.md` (session shape, **easy-win module list per
+  target** for stuck teams — Metasploitable2 / DVWA / Juice Shop, coaching notes for common
+  blockers, write-up bar, assignment guide). `day15/assets/`: `one-page-playbook.md`,
+  `mini-report-template.md`.
+  Safety: exploitation is coached and limited to one proof; assigned target only; snapshot
+  first; deep exploitation is Days 16–17.
+- **Week 3 (Days 11–15) complete** — decks + teacher-notes each; `week3/student-pack.md` has
+  all five day sections + the full 4-part Week 3 weekend assignment (solo mini-engagement +
+  deep CVE explainer) + 15-mark checklist.

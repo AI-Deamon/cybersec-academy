@@ -220,11 +220,71 @@ Day 13 you install Wireshark. **Only ever test the lab targets or your own machi
 
 ---
 
-## Day 15 — *(to be added)*
+## Day 15 — Practice day: run the lifecycle
+
+### Recap
+- **You ran the whole lifecycle as one flow:** scope → recon → scan → triage → **proof** →
+  report, in a team, on the clock.
+- **The one-page playbook** (`assets/one-page-playbook.md`) is the whole process on a page.
+- **Proof** = any one of: a **shell** · **extracted data** (a DB dump, `/etc/passwd`, a file) ·
+  a **bypass** (log in without creds, read another user's data). A data-extraction proof is
+  worth just as much as a root shell.
+- **One clean, reproducible finding beats five half-finished ones.**
+- **The report is the product** — a captioned screenshot + numbered steps to reproduce + a
+  specific fix, every time.
+- **Stuck ladder:** re-read the scan → `searchsploit` → Metasploit (read the error — it names
+  the missing option) → try a different finding → ask ("target / what I tried / the error").
+
+### Key terms
+`the lifecycle as one flow` · `proof` (shell / data / bypass) · `Metasploit` (`use` / `show
+options` / `set RHOSTS` / `set LHOST` / `run`) · `searchsploit -m` · `steps to reproduce` ·
+`captioned evidence` · `engagement report`
+
+### In class
+Team run: recon → scan → pick a vuln → get one proof → screenshot it with the command and the
+time. Then each student writes a 2-page mini report (`assets/mini-report-template.md`).
 
 ---
 
 ## Weekend Assignment — Week 3
 
-*Briefed at the end of Day 15. Theme: run the full lifecycle on a fresh lab target —
-recon → scan → triage → a short findings report; R&D one CVE deep enough to explain the exploit.*
+*Briefed at the end of Day 15. **One PDF before Monday. Only your assigned target. Snapshot first.***
+
+### Part A — Integrate (a solo mini-engagement)
+A full mini-engagement on a **fresh** target (assigned — different from your team's Day 15
+one). Deliver a **3–4 page engagement report**:
+1. **Scope** — a one-paragraph scope statement (target, authorization = the class ROE, goal).
+2. **Recon & scan** — your `nmap -sV -sC` summary → the **service inventory** table.
+3. **Ranked findings table** — the Day 14 pipeline for every notable finding
+   (CVE → CVSS → public exploit? → KEV? → context → priority → fix).
+4. **One finding taken to proof** — a captioned screenshot of a shell / extracted data / a
+   bypass, plus **numbered steps to reproduce**.
+5. **Remediation** — the specific fix for that finding.
+
+### Part B — R&D stretch (understand one CVE deeply)
+Pick **one CVE** from your scan. In ~half a page:
+- the **root cause** — what class of flaw is it? (injection / buffer overflow / auth bypass /
+  path traversal / deserialization / ...)
+- how the **public exploit works, step by step**
+- what **CVSS** and **CISA KEV** say about it
+- the **fix**
+
+Cite the **NVD** page and the exploit source (Exploit-DB ID / Metasploit module / GitHub).
+
+### Part C — Hands-on evidence
+- the `nmap -oA` output files;
+- the proof screenshot(s), **each with a one-line caption**;
+- the **exact commands** you ran (so it's reproducible).
+
+### Part D — Reflection
+3–4 sentences: what clicked, what was hard, what you'd do differently.
+
+### Marking checklist (15 marks)
+- [ ] Part A1 — scope statement: target, authorization, goal (1)
+- [ ] Part A2 — service inventory table, complete, from a real scan (2)
+- [ ] Part A3 — ranked findings table, ≥ 4 findings, priorities justified (not just CVSS order) (3)
+- [ ] Part A4 — one finding proven: captioned screenshot **and** numbered reproduction steps (3)
+- [ ] Part A5 — a specific, correct remediation for that finding (1)
+- [ ] Part B — CVE explained: root cause + exploit mechanism + CVSS/KEV + fix, with citations (3)
+- [ ] Part C — nmap output + captioned evidence + exact commands (1)
+- [ ] Part D — genuine reflection (1)

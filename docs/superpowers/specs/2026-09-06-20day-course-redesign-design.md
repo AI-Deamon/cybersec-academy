@@ -276,11 +276,13 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 - **Analogy:** junior inspector flags everything, senior inspector ranks it by what could kill you tonight (kitchen).
 - **Trap:** "more findings = a better report" (noise buries signal) · "CVSS = risk" (no context) · "no CVE = safe" (misconfigs, 0-days, chained lows).
 
-**Day 15 — Practice day**
-- **Core idea:** put phases 1–4 together under time pressure, with coaching.
-- **Do:** teams take one target (DVWA or Metasploitable2), do recon → scan → identify a vuln → get proof (a shell or extracted data), coached; then each writes it up.
-- **Artifact:** a 2-page mini engagement report — the template for the Week 3 weekend assignment.
-- **Friday brief:** full lifecycle report on a fresh target + R&D one CVE deep enough to explain the exploit.
+**Day 15 — Practice day** *(+ Week 3 assignment brief, last ~12 min)*
+- **Core idea:** put phases 1–4 together under time pressure, in teams, with the instructor coaching (not lecturing) — ~20 min talk, ~42 min team run, ~12 min individual write-up.
+- **Do:** one-page playbook → one worked mini-example on the projector → **team run** (assigned target: DVWA / Juice Shop / Metasploitable2 — mixed so teams can't copy), goal = **one proven finding** (a shell **or** extracted data **or** an auth bypass — all count) with a captioned screenshot + the command + the time; checkpoints at 15/30/40 min. Then each student writes a **2-page mini report** (`assets/mini-report-template.md`).
+- **Safety:** exploitation is **coached and limited to one proof**; snapshot first; assigned target only (same ROE). Deep exploitation is Days 16–17. Easy-win module list per target is in `teacher-notes.md`.
+- **Artifact:** the 2-page mini report — the template for the Week 3 weekend assignment.
+- **Week 3 assignment brief:** **A** — solo mini-engagement on a *fresh* assigned target → 3–4 page engagement report (scope → inventory → ranked findings table → one finding to proof → remediation); **B** — one CVE explained deeply (root cause + how the public exploit works step by step + CVSS/KEV + fix); **C** — `nmap -oA` + captioned proof + exact commands; **D** — reflection. One PDF, assigned target only.
+- **Analogy:** the real inspection — full walkthrough, on the clock, file the report (kitchen).
 
 ### Week 4
 
