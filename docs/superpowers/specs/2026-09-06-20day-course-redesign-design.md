@@ -269,11 +269,12 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 
 **Day 14 — Vulnerability assessment**
 - **Core idea:** scanners find candidates; humans decide what matters. Pipeline: service + version → known CVEs → CVSS + exploitability → business context → ranked fix list.
-- **Must land:** CVE / NVD, CVSS vector basics (AV/AC/PR/UI + impact), "is there a public exploit" (Exploit-DB, Metasploit, GitHub), false positives, why "critical" on an internal box ≠ "critical" on the internet.
-- **Do:** run a scanner (Nuclei / OpenVAS / `nmap --script vuln`) on Metasploitable2; take 3 findings from banner → CVE → CVSS → exploit-available → priority.
-- **Attack ↔ Defense:** pick the exploit ↔ vulnerability management, patch cadence, compensating controls.
-- **Artifact:** a real findings table (finding / severity / evidence / fix) — **Week 3 assignment Part A seed.**
-- **Trap:** "more findings = a better report" — a wall of noise is a failed report.
+- **Must land:** CVE / NVD / CPE + the vendor advisory (and distro backports — check the *package* version); CVSS vector basics (AV/AC/PR/UI + C/I/A); the exploitability question — **CISA KEV** (exploited now) > Exploit-DB / `searchsploit` / a Metasploit module > EPSS > a bare high score; false positives (a banner-only finding is a *candidate*); why "critical" internal ≠ "critical" internet-facing.
+- **Do (2 beats):** decode two CVSS vectors to plain English; then `nmap --script vuln` (built in) + `searchsploit` on `<LAB_HOST>` (Metasploitable2) — take 3+ findings from banner → CVE → CVSS → public exploit? → KEV? → context → priority, and flag false positives. (Nuclei for the web side if installed.)
+- **Attack ↔ Defense:** pick the exploit / target KEV items ↔ the vulnerability-management *program* (inventory → scan → prioritise → patch/mitigate → verify), patch SLAs by severity, **compensating controls** when you can't patch now.
+- **Artifact:** a **ranked findings table** (`assets/findings-table-template.md`: finding / CVE / CVSS / exploit? / KEV? / exposure / priority / fix) + a P1-only exec summary — **Week 3 assignment Part A**.
+- **Analogy:** junior inspector flags everything, senior inspector ranks it by what could kill you tonight (kitchen).
+- **Trap:** "more findings = a better report" (noise buries signal) · "CVSS = risk" (no context) · "no CVE = safe" (misconfigs, 0-days, chained lows).
 
 **Day 15 — Practice day**
 - **Core idea:** put phases 1–4 together under time pressure, with coaching.

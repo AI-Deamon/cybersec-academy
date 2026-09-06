@@ -167,7 +167,59 @@ Day 13 you install Wireshark. **Only ever test the lab targets or your own machi
 
 ---
 
-## Day 14 — *(to be added)*
+## Day 14 — Vulnerability assessment
+
+### Recap
+- **Scanners find candidates; you decide what matters.** The skill is **triage**, not scanning.
+- **The pipeline:** service + version (Day 13) → known **CVEs** → **CVSS** + *is it exploitable?*
+  → **business context** (exposed? sensitive? mitigations?) → a **ranked fix list** (P1/P2/P3).
+  The scanner does the first two steps; you do the last three.
+- **CVE** = a unique ID for one specific vuln (`CVE-2021-44228`). **NVD** = NIST's database
+  (affected versions, CVSS, references). Check the **vendor advisory** too — and the **distro
+  package version**, not just the upstream version (distros backport fixes).
+- **CVSS vector** — read it, don't just quote the number:
+  - **AV** (Network / Adjacent / Local / Physical) — how close must the attacker be?
+  - **AC** (Low/High) · **PR** (None/Low/High — do they need an account?) · **UI** (None/Required)
+  - **C/I/A** impact (None/Low/High)
+  - `AV:N/AC:L/PR:N/UI:N` + high impact = unauthenticated remote code execution = worst case.
+  - Bands: Low 0.1–3.9 · Medium 4–6.9 · High 7–8.9 · Critical 9–10.
+- **CVSS is a triage aid, not risk** — it doesn't know where the box is or if it's being
+  exploited.
+- **Is there a public exploit?** — **CISA KEV** (being exploited *right now*) > `searchsploit`
+  / Exploit-DB / a Metasploit module > EPSS probability > a bare high score. A CVSS 7.5 on KEV
+  outranks a CVSS 9.8 with no known exploit.
+- **False positives:** a finding based only on a version banner is a *candidate* — verify it.
+- **More findings ≠ a better report.** Lead with the 3 things to fix this week.
+
+### Key terms
+`CVE` · `NVD` · `CPE` · `CWE` · `vendor advisory` · `backported fix` · `CVSS vector` ·
+`AV:N / AC:L / PR:N / UI:N` · `severity band` · `CISA KEV` · `EPSS` · `Exploit-DB` ·
+`searchsploit` · `Metasploit module` · `false positive` · `compensating control` ·
+`patch SLA` · `vulnerability management`
+
+### In class — the 2 beats
+1. Decode two CVSS vectors to plain English; which is worse for an internet-facing box?
+2. `nmap --script vuln -sV <LAB_HOST>` + `searchsploit <service> <version>` — read the output,
+   walk 3 findings through the full pipeline, flag false positives.
+
+### Homework (due start of Day 15)
+1. Build the **ranked findings table** for `<LAB_HOST>` — **≥ 5 findings**, each walked
+   through CVE → CVSS → exploit? → KEV? → context → priority → fix
+   (`assets/findings-table-template.md`). Commit it. **This becomes Week 3 assignment Part A.**
+2. Top finding: look it up on nvd.nist.gov + check CISA KEV. 4 sentences — what it is, how
+   it's exploited, KEV status, the fix.
+3. Mark false positives from your scan; say how you'd verify each.
+4. Add `CVE`, `NVD`, `CVSS vector`, `KEV`, `EPSS`, `searchsploit`, `false positive`,
+   `compensating control` to your glossary.
+
+### Marking checklist (Day 14 homework, 6 marks)
+- [ ] findings table: ≥ 5 findings, each with CVE/CVSS/exploit?/KEV?/context/priority/fix (3)
+- [ ] priorities are justified (not just CVSS order) — e.g. a KEV item ranked above a higher CVSS (1)
+- [ ] top finding write-up correct incl. KEV status (1)
+- [ ] false positives marked with a verification method (1)
+
+---
+
 ## Day 15 — *(to be added)*
 
 ---

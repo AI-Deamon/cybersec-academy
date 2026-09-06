@@ -1,0 +1,45 @@
+Day 14 practice: turn this scanner output into a RANKED findings table.
+(Fictional host 10.10.14.6 = "northwind-srv". Do not scan any real address.)
+
+$ nmap --script vuln -sV -p 21,22,80,139,445,3306,8080 10.10.14.6
+
+PORT     STATE SERVICE     VERSION
+21/tcp   open  ftp         vsftpd 2.3.4
+|_ftp-vsftpd-backdoor: This installation is vulnerable to a backdoor (CVE-2011-2523)
+22/tcp   open  ssh         OpenSSH 7.2p2
+80/tcp   open  http        Apache httpd 2.4.49
+| http-enum:
+|   /server-status/: Potentially interesting - Apache status page
+|_  /uploads/: Potentially interesting folder
+| http-vuln-cve2021-41773:
+|   VULNERABLE: Apache 2.4.49 path traversal & RCE (CVE-2021-41773)
+|_  State: LIKELY VULNERABLE  (mod_cgi enabled?)
+| http-slowloris-check:
+|_  VULNERABLE: Slowloris DoS (CVE-2007-6750)   <-- (denial of service)
+139/tcp  open  netbios-ssn Samba smbd 3.x
+445/tcp  open  netbios-ssn Samba smbd 3.0.20
+|_smb-vuln-cve-2007-2447: VULNERABLE: Samba "username map script" RCE (CVE-2007-2447)
+3306/tcp open  mysql       MySQL 5.5.62
+|_mysql-empty-password: anonymous account has NO password
+8080/tcp open  http        Apache Tomcat 9.0.30
+|_http-default-accounts: no default accounts found
+
+$ searchsploit vsftpd 2.3.4
+ vsftpd 2.3.4 - Backdoor Command Execution (Metasploit)     | unix/remote/17491.rb
+
+$ searchsploit apache 2.4.49
+ Apache 2.4.49 - Path Traversal & RCE (CVE-2021-41773)      | multiple/webapps/50383.py
+ Apache 2.4.49/2.4.50 - Path Traversal & RCE (CVE-2021-42013)| multiple/webapps/50406.sh
+
+--- context you're given ---
+- The host is internet-facing (ports 80 and 21 are reachable from outside).
+- Ports 139/445/3306 are also reachable from outside (they shouldn't be).
+- CVE-2021-41773 is on CISA KEV. Check the others yourself at
+  cisa.gov/known-exploited-vulnerabilities-catalog.
+
+--- your task ---
+1. Build: finding | CVE | CVSS (look up on nvd.nist.gov) | public exploit? | on KEV? |
+   exposed? | priority (P1/P2/P3) | fix
+2. Which finding is a false-positive risk, and how would you confirm it?
+3. Which findings are misconfigurations, not software CVEs?
+4. Write the one-paragraph executive summary (your P1s only).

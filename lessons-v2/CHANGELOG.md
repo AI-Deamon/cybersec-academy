@@ -159,3 +159,17 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   Review fixes: `dig ANY` → per-record-type queries (ANY is refused by most resolvers now);
   §6 Day 13 aligned.
 - **`week3/student-pack.md`** — Day 13 section + marking checklist.
+- **Day 14 built + reviewed + fixes applied** — `day14/day14.md` (deck + speaker notes):
+  vulnerability assessment — *triage is the skill, not scanning*. The pipeline (version → CVE
+  → CVSS + exploitable? → business context → ranked list); CVE/NVD/CPE + vendor advisories +
+  distro backports; **reading a CVSS vector** (AV/AC/PR/UI/C/I/A) and why the number isn't
+  risk; **the exploitability question** (CISA KEV > searchsploit/Exploit-DB/Metasploit >
+  EPSS > a bare score) with the priority-inversion example; running `nmap --script vuln` +
+  `searchsploit` and spotting false positives; **scan → ranked findings table**; the report
+  trap ("more findings ≠ better report"); vuln-management program + compensating controls.
+  `day14/teacher-notes.md` (CVE/NVD/CVSS/KEV/EPSS/scanner background, both answer keys, demo
+  runbook). `day14/assets/`: `sample-vulnscan.txt` (Metasploitable-style output, answer key
+  in teacher-notes), `findings-table-template.md` (= Week 3 assignment Part A).
+  Review fixes: stopped asserting KEV membership in the exercise for CVEs I can't verify live
+  (students check KEV themselves); §6 Day 14 aligned.
+- **`week3/student-pack.md`** — Day 14 section + marking checklist.
