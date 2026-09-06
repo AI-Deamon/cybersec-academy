@@ -260,10 +260,12 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 **Day 13 — Recon & scanning**
 - **Core idea:** you can't attack what you haven't mapped. Passive first (no packets to the target), then active (Nmap) — and every active packet is noise a defender can hear.
 - **Must land:** OSINT sources (DNS, certificate transparency, search dorks, LinkedIn, breach data); Nmap deeply — host discovery, `-sV`, `-sC`, top-ports vs full, timing; turning output into an asset list.
-- **Do:** passive recon on a permitted domain; `nmap -sV -sC` the lab targets **while running Wireshark** to see what the scan looks like on the wire (the Blue-team bridge).
-- **Attack ↔ Defense:** enumeration ↔ attack-surface reduction, IDS scan signatures, honeypots.
-- **Artifact:** Engagement Journal recon section — a full service inventory of the target.
-- **Trap:** "a port scan is harmless / undetectable."
+- **Do (2 beats):** passive recon on an instructor-permitted domain (`assets/passive-recon-worksheet.md` — `dig` per-record-type, crt.sh, headers, `robots.txt`, one dork; **no active tools**); then **install Wireshark**, `nmap -sV -sC -oA` `<LAB_HOST>` **while capturing** — spot the SYN burst, SYN-ACK vs RST, the `-sV` probe payloads (the Blue-team bridge). No lab? `scanme.nmap.org` is explicitly OK; `assets/sample-nmap.txt` for the asset-list skill.
+- **Attack ↔ Defense:** enumeration, slow scans to evade ↔ attack-surface reduction (close ports — Day 3), IDS scan signatures, connection-rate anomaly detection, honeypots/deception — and "a scan is the defender's early warning."
+- **Artifact:** the **service inventory** table in the Engagement Journal (Phases 2–3) + the saved `nmap -oA` files.
+- **Analogy:** the inspector walks the outside first, then rattles every door (kitchen).
+- **Ethics:** passive only on the permitted domain; active only on `<LAB_HOST>` (ROE) or `scanme.nmap.org`.
+- **Trap:** "a port scan is harmless" (unauthorized scanning has been prosecuted; stay in scope) / "undetectable" (it's one of the loudest things you can do).
 
 **Day 14 — Vulnerability assessment**
 - **Core idea:** scanners find candidates; humans decide what matters. Pipeline: service + version → known CVEs → CVSS + exploitability → business context → ranked fix list.

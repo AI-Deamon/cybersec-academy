@@ -118,7 +118,55 @@ Day 13 you install Wireshark. **Only ever test the lab targets or your own machi
 
 ---
 
-## Day 13 — *(to be added)*
+## Day 13 — Recon & scanning (phases 2–3)
+
+### Recap
+- **You can't attack what you haven't mapped.** **Passive first** (no packets they'd notice —
+  and generally legal to gather), then **active** (you touch it → detectable → needs scope).
+- **Passive / OSINT sources:** DNS (`dig` per record type) · **Certificate Transparency**
+  (crt.sh — subdomains & internal hostnames from every issued cert) · search dorks
+  (`site:` `filetype:` `inurl:`) · the org's site + **job ads** (tech stack) · LinkedIn/staff
+  pages (email format → phishing/spray targets) · **Shodan/Censys** (exposed devices) ·
+  GitHub (leaked secrets in commit history) · HIBP (leaked staff creds) · Wayback Machine.
+- **Active sequence:** host discovery → port scan → **service/version detection** →
+  enumeration. Each step narrows the next.
+- **Nmap — the one to learn well:**
+  - `nmap -sn <range>` host discovery · `nmap <host>` top-1000 · `-p-` all ports · `--top-ports N`
+  - `-sV` version detection · `-sC` default NSE scripts (safe checks) · `-oA base` save all formats
+  - `-Pn` skip host discovery · `-T4` fast · `-T1` slow/quiet
+  - **states:** `open` (listening) · `closed` (reachable, nothing there) · `filtered` (a firewall dropped the probe)
+- **The skill is turning output into an asset list:** host / port / service / **version** /
+  notes — old versions and "why is *that* exposed?" services float to the top (Day 14's input).
+- **A scan is loud.** Hundreds of connection attempts from one IP in seconds — an IDS/SOC sees
+  it instantly. It's legal only in scope, and it's the defender's **early warning**.
+
+### Key terms
+`passive vs active recon` · `OSINT` · `certificate transparency` · `crt.sh` · `Google dork` ·
+`Shodan` · `WHOIS` · `zone transfer` · `host discovery` · `port scan` · `enumeration` ·
+`nmap` · `-sV` · `-sC` · `-p-` · `-Pn` · `-oA` · `open / closed / filtered` · `NSE` ·
+`service inventory` · `IDS` · `honeypot` · `attack-surface reduction`
+
+### In class — the 2 beats
+1. **Passive recon** on the instructor's permitted domain — `assets/passive-recon-worksheet.md`
+   (dig, crt.sh, headers, robots.txt, one dork). **No active tools.**
+2. **Install Wireshark**, then `nmap -sV -sC -oA week3/scan-lab <LAB_HOST>` **while capturing**
+   — find the SYN burst, SYN-ACK (open) vs RST (closed), the `-sV` probe payloads.
+
+### Homework (due start of Day 14)
+1. Complete the **service inventory** for `<LAB_HOST>` in your Engagement Journal (every open
+   port / service / version). Commit the `nmap -oA` files.
+2. Pick your **two most interesting** findings; one sentence each on why.
+3. `assets/sample-nmap.txt` — turn it into an asset-list table; pick 3 to investigate first.
+4. Add `OSINT`, `certificate transparency`, `Shodan`, `-sV`, `-sC`, `filtered`, `NSE` to your glossary.
+
+### Marking checklist (Day 13 homework, 6 marks)
+- [ ] service inventory: every open port with service **and** version, in the Journal (3)
+- [ ] `nmap -oA` output files committed (1)
+- [ ] two interesting findings identified with a valid reason (1)
+- [ ] `sample-nmap.txt` converted to a table with a sensible top-3 (1)
+
+---
+
 ## Day 14 — *(to be added)*
 ## Day 15 — *(to be added)*
 

@@ -145,3 +145,17 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   Review fixes: §6 Day 12 flags the lab host as a blocking pre-req (design §11 open item) and
   notes the "Northwind Traders" naming reuse; Wireshark stays Day 13.
 - **`week3/student-pack.md`** — Day 12 section + marking checklist.
+- **Day 13 built + reviewed + fixes applied** — `day13/day13.md` (deck + speaker notes):
+  recon & scanning (lifecycle phases 2–3). Passive-before-active + why; OSINT sources (DNS,
+  Certificate Transparency / crt.sh, dorks, job ads, LinkedIn, Shodan, GitHub, HIBP, Wayback);
+  the active sequence; **Nmap in depth** (`-sn`, states open/closed/filtered, `-sV`, `-sC`,
+  `-p-`/`--top-ports`, `-Pn`, `-T`, `-oA`); turning scan output into a **service inventory**;
+  **watch the scan in Wireshark** (SYN burst / SYN-ACK vs RST / `-sV` probes — the Blue-team
+  bridge); attack↔defence (enumeration ↔ IDS signatures, anomaly detection, honeypots,
+  attack-surface reduction). `day13/teacher-notes.md` (full OSINT + Nmap reference, the
+  on-the-wire packet breakdown, both answer keys, demo runbook). `day13/assets/`:
+  `passive-recon-worksheet.md`, `sample-nmap.txt` (with answer key in teacher-notes).
+  Ethics: passive only on the permitted domain; active only on `<LAB_HOST>` or `scanme.nmap.org`.
+  Review fixes: `dig ANY` → per-record-type queries (ANY is refused by most resolvers now);
+  §6 Day 13 aligned.
+- **`week3/student-pack.md`** — Day 13 section + marking checklist.
