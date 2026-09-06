@@ -309,11 +309,14 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 
 **Day 18 — AI & cyber security**
 - **Core idea:** AI is a new asset class with its own attack surface, a force-multiplier for attackers, and a tool for defenders — treat all three seriously.
-- **Must land:** AI as **target** — prompt injection (direct + indirect), jailbreaks, training-data poisoning, model/data exfiltration, the OWASP LLM Top 10 shape; AI as **weapon** — phishing at scale, deepfake voice/video, malware assistance, faster recon; AI as **defense** — SOC copilots, anomaly detection, code review; plus governance (shadow AI, data leaking into prompts).
-- **Do:** hands-on prompt injection against a deliberately vulnerable LLM app (e.g. Gandalf or a local demo) — exfiltrate the secret; then design the mitigations (input/output filtering, least-privilege tools, human in the loop).
-- **Attack ↔ Defense:** paired.
-- **Artifact:** "3 AI attacks I ran / understood + the mitigation for each."
-- **Trap:** "prompt injection is just jailbreaking" — indirect injection via retrieved content is the dangerous one; "AI will take security jobs" — it changes them.
+- **The core idea:** an LLM has **no boundary between instructions and data** — system prompt, user turn, and any retrieved document share one text channel. That's why prompt injection is *hard, not a bug to patch* (Day 10's untrusted-input question, all-in-one-channel).
+- **Must land:** AI as **target** — prompt injection (**direct** vs **indirect** — indirect + tools is the real threat), jailbreaks, model/data poisoning, **improper output handling** (LLM output = untrusted input → XSS/SQLi/RCE downstream, Day 16 callback), excessive agency, system-prompt leakage, supply chain — the OWASP LLM Top 10 *shape*; AI as **weapon** — phishing at scale (kills "spot the typos"), deepfake voice/video (the $25M Arup case), malware assistance, faster recon; AI as **defense** — SOC copilots, NL→detection-query, anomaly detection, code review; **governance** — **shadow AI** (staff pasting code/PII/secrets into public tools — the Samsung case), human-in-the-loop for consequential actions, logging, OWASP LLM Top 10 / NIST AI RMF / MITRE ATLAS.
+- **Do:** **Gandalf** (gandalf.lakera.ai — free, browser, built for this) — extract the password across levels, **logging which technique beat which level**; then design mitigations (paper: `assets/indirect-injection-demo.md` — rewrite an email-assistant so an indirect-injection exfil fails at two layers). No Gandalf? the paper demo alone.
+- **Attack ↔ Defense:** the mitigation-layers table — *there is no perfect fix*: all model input untrusted · separate instructions/data · filter output & never run it as code · least-privilege tools · human confirmation · guardrail models.
+- **Artifact:** `day18/ai-attacks.md` — "3 AI attacks I ran or understood + one mitigation each" + the Gandalf technique log.
+- **Analogy:** the fast, literal new hire who follows any instruction on any piece of paper handed to them (kitchen).
+- **Ethics:** Gandalf is a public CTF; don't inject production systems or others' AI without authorization; **never paste real secrets/data into a public LLM** (that's the shadow-AI lesson, live).
+- **Trap:** "prompt injection = jailbreaking" (indirect injection + tools exfiltrates data / takes actions — that's the threat) · "AI will take security jobs" (it changes them — the analyst who uses it wins, and someone must secure the AI).
 
 **Day 19 — Blue team: detection & incident response**
 - **Core idea:** prevention fails; the job is to see it fast and respond calmly. Logs are ground truth; IR is a process (prepare → detect → contain → eradicate → recover → learn).

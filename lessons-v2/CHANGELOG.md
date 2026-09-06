@@ -219,3 +219,20 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   Review fixes: added the "runs hot / pick cuts in advance" note; §6 Day 17 aligned; the
   chmod-777 ↔ cloud-least-privilege through-line made explicit.
 - **`week4/student-pack.md`** — Day 17 section + marking checklist.
+- **Day 18 built + reviewed + fixes applied** — `day18/day18.md` (deck + speaker notes;
+  highest-engagement day). **The core idea:** an LLM has no boundary between instructions and
+  data — one text channel — so prompt injection is *hard, not a bug to patch* (Day 10, all in
+  one channel). AI as **target** (direct vs **indirect** prompt injection — indirect + tools
+  is the real threat; jailbreaks; model poisoning; **improper output handling** = Day 16 new
+  source; excessive agency; the OWASP LLM Top 10 shape); AI as **weapon** (phishing at scale,
+  deepfakes — the $25M case, malware assistance); AI as **defender's tool** (SOC copilots,
+  anomaly detection, code review); **governance** (shadow AI — the Samsung case,
+  human-in-the-loop, logging). The mitigation-layers table ("no perfect fix"). Both traps
+  (prompt injection ≠ jailbreaking; AI changes jobs, doesn't remove them). `day18/teacher-
+  notes.md` (why injection is architecturally hard, direct/indirect/jailbreak background, the
+  OWASP LLM Top 10 2025 list, the **Gandalf level-by-level guide**, demo runbook). `day18/
+  assets/`: `ai-attacks-template.md` (the artifact + technique log), `indirect-injection-demo.md`
+  (a paper email-assistant exfil scenario + "fix it at two layers" task — the no-tooling fallback).
+  Do: **Gandalf** (gandalf.lakera.ai). Ethics: public CTF only; never paste real data into a public LLM.
+  Review fix: aligned "improper/insecure output handling" to the 2025 OWASP name; §6 Day 18 aligned.
+- **`week4/student-pack.md`** — Day 18 section + marking checklist.

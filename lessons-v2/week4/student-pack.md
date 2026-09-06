@@ -116,7 +116,59 @@ course repo. Same lab, same ROE. **Test only the lab targets or your own machine
 
 ---
 
-## Day 18 — *(to be added)*
+## Day 18 — AI & cyber security
+
+### Recap
+- **The core problem:** an LLM has **no boundary between instructions and data** — the system
+  prompt, your message, and any document/email/web-page it processes are one text channel it
+  continues. So **untrusted text anywhere in the context can redirect the model.** (Day 10's
+  question, with everything in the same channel — which is why it's *hard, not a bug to patch*.)
+- **AI as a target:**
+  - **Prompt injection — direct** (you type the malicious instruction) vs **indirect** (an
+    attacker plants it in content the model reads: a web page, email, PDF, résumé, code
+    comment, a doc in a knowledge base). **Indirect + tools is the real threat** — the model
+    can be told to send email, run code, exfil data.
+  - **Jailbreaks** (bypass safety), **model/data poisoning**, **improper output handling**
+    (the model's output used unsanitised → XSS/SQLi/RCE — Day 16, new source), **excessive
+    agency**, **system-prompt leakage**, **supply chain** (a backdoored model/dataset).
+- **AI as a weapon:** phishing at scale (perfect grammar, personalised, any language — kills
+  "spot the typos"), **deepfake voice/video** (the $25M video-call fraud), malware assistance,
+  faster recon. *Lowers the skill floor, raises the speed and volume.*
+- **AI as a defender's tool:** SOC copilots (triage, summarise, write detection queries),
+  anomaly detection, code review, log analysis. "AI security engineer" is a real, growing role.
+- **Governance:** **shadow AI** — staff pasting code / customer data / secrets into public
+  chatbots is the #1 real AI risk today. Fixes: an approved tool + a clear policy + DLP +
+  **human-in-the-loop** for consequential actions + logging.
+- **Mitigating prompt injection — no perfect fix**, defend in depth: all model input is
+  untrusted · separate instructions from data · filter output & never run it as code ·
+  **least-privilege tools** · human confirmation · guardrail models.
+
+### Key terms
+`context window` · `prompt injection (direct / indirect)` · `jailbreak` · `system prompt` ·
+`RAG` · `improper output handling` · `excessive agency` · `model poisoning` ·
+`system-prompt leakage` · `OWASP LLM Top 10` · `deepfake` · `shadow AI` · `human in the loop` ·
+`guardrail model` · `NIST AI RMF` · `MITRE ATLAS`
+
+### In class
+1. **Gandalf** (gandalf.lakera.ai) — get the password from as many levels as you can, **log
+   which technique beat which level**.
+2. Design the mitigations — `assets/indirect-injection-demo.md`: rewrite an email-assistant so
+   an indirect-injection exfil fails at **two** layers.
+
+### Homework (due start of Day 19)
+1. `day18/ai-attacks.md` — **3 AI attacks** (from Gandalf + the LLM Top 10), each with what it
+   is, an example, and one mitigation. Plus your Gandalf technique log. Commit it.
+2. Write a **4-sentence AI-use policy** for a small company (what staff may / may not paste
+   into public AI tools, and why).
+3. Add the key terms above to your glossary.
+
+### Marking checklist (Day 18 homework, 5 marks)
+- [ ] 3 AI attacks, each with a valid example **and** a real mitigation (3)
+- [ ] Gandalf technique log — at least 3 levels with the technique named (1)
+- [ ] AI-use policy — concrete about what not to paste, with a reason (1)
+
+---
+
 ## Day 19 — *(to be added)*
 ## Day 20 — *(to be added)*
 
