@@ -217,11 +217,14 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 
 **Day 9 — Scripting for security**
 - **Core idea:** if you do it twice, script it — Bash to glue tools together, Python when there's logic or data.
-- **Must land:** Bash — variables, loops over a list, command substitution, exit codes; Python — variables, lists/dicts, `for`/`if`, functions, reading a file, `subprocess`/`requests`/`socket` at a glance.
-- **Do:** Bash — a loop that pings a `/24` and prints live hosts. Python — read a host file, print whether port 80 is open (socket). They now own a ~20-line scanner (pays off Day 13).
-- **Attack ↔ Defense:** attackers automate everything (spray, scan, exfil loops) ↔ defenders automate detection/response the same way.
-- **Artifact:** `scanner.py` + `sweep.sh`, committed with a usage comment.
-- **Trap:** "I'll just have an LLM write it" — fine, but you must be able to read and fix it; we practice reading.
+- **Frame:** the **5 building blocks** every language has — variables, `if`, `for`, run/IO, functions — taught once, shown in Bash *and* Python. Not a "learn Bash / learn Python" tutorial.
+- **Must land:** Bash — `var=` (no spaces), `$(...)`, `for x in list`, `if [ ... ]`, exit codes / `&&`, `$1`; Python — indentation blocks, list/dict, `for`/`if`, `def`, f-strings, `open()`, `import socket`/`subprocess` (stdlib; `requests` needs `pip`).
+- **Do (build day):** run + adapt `sweep.sh` (Bash ping sweep, `$1` subnet, add a count); **build `scanner.py` live** (socket connect → open/closed over a port list); then read `ai_snippet.py` and find its bugs. Host-from-a-file is the homework extension.
+- **Ethics:** `sweep.sh` / `scanner.py` target **only** localhost / own machine / the class lab — the Day 1 "no scope, no test" line, restated.
+- **Attack ↔ Defense:** attackers automate (spray, scan, exfil, C2) ↔ defenders automate (log parsers, scheduled scans, auto-contain / SOAR) — same 5 blocks, opposite direction.
+- **Artifact:** `scanner.py` + `sweep.sh`, committed, each with a `# usage:` comment.
+- **Analogy:** the recipe card (kitchen) — Bash = notes to the line cooks, Python = a written recipe with logic.
+- **Trap:** "I'll have an LLM write it" — fine, but you own what you run; the `ai_snippet.py` exercise practises reading. Also: Python indentation; forgetting `chmod +x`; `ping` flags differ on macOS.
 
 **Day 10 — Security thinking**
 - **Core idea:** risk = a threat exploiting a vulnerability to cause impact. Reduce risk by removing vulns, blocking threats, or limiting impact — defense in depth.

@@ -1,0 +1,4 @@
+# Targets for scanner.py — one per line. Lines starting with # are ignored.
+# ONLY put hosts here that you own or that are part of the class lab.
+127.0.0.1
+localhost

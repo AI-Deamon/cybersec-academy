@@ -165,7 +165,58 @@ and note which you used.*
 
 ---
 
-## Day 9 — *(to be added)*
+## Day 9 — Scripting for security
+
+### Recap
+- **If you do it twice, script it.** Attackers automate everything; defenders automate the
+  response. Same skill, opposite direction.
+- **Every language has the same 5 building blocks:** variables · conditionals (`if`) · loops
+  (`for`) · run commands / read-write data · functions.
+- **Bash:** `#!/bin/bash` shebang + `chmod +x` + `./script.sh`; `var="x"` (no spaces), read
+  with `$var`; `$(command)` captures output; `for x in a b c; do ... done`; `if [ -f "$f" ];
+  then ... fi`; exit code in `$?` (**0 = success**); `A && B` = run B only if A succeeded;
+  `$1` = first argument.
+- **Python:** **indentation** defines blocks (4 spaces, no braces); lists `[...]`, dicts
+  `{k: v}`; `for x in items:` / `if cond:`; `def name(args): return ...`; `f"{x}"` strings;
+  `open("file")` to read lines. `socket` and `subprocess` are built in; `requests` needs
+  `pip install requests`.
+- **Bash to *call* tools; Python to *build* one.** (Bash ≈ a saved pipe; Python once it has
+  real logic or you'll reuse it.)
+- **You own what you run.** Generate code with an LLM if you like — then read *every line*.
+  "It works" ≠ correct, safe, or scoped.
+
+### Ethics
+`sweep.sh` and `scanner.py` are pointed at **`127.0.0.1`, your own machine, or the class lab —
+nothing else.** Scanning networks you don't own is illegal (Day 1: "no scope, no test").
+
+### Key terms
+`script` · `shebang` · `variable` · `$(...)` · `for` / `if` · `exit code` · `$?` · `&&` ·
+`$1` · `chmod +x` · `indentation` · `list` / `dict` · `def` · `f-string` · `import` ·
+`socket` · `subprocess` · `settimeout` · `try / except / finally`
+
+### In class — the builds
+1. `check.sh` — a Bash loop that reports which files in a list exist.
+2. `sweep.sh <subnet>` — ping `.1`–`.254`, print live hosts + a count. Run it, then adapt it.
+3. **`scanner.py`** — build it live: `is_open(host, port)` with a socket + timeout, looped over
+   a port list. Run against `127.0.0.1`, then the class lab host.
+4. Read `assets/ai_snippet.py` — what does it do, what's wrong with it?
+
+### Homework (due start of Day 10)
+1. Commit **`scanner.py`** and **`sweep.sh`**, each with a `# usage:` comment at the top.
+2. Extend `scanner.py`: read target host(s) from `hosts.txt` instead of hardcoding
+   `127.0.0.1`.
+3. Read `assets/ai_snippet.py`; 2–3 sentences on what it does and what's wrong (there's more
+   than one problem).
+4. Add `for`, `if`, `def`, `import`, `socket`, `$(...)`, `chmod +x` to your cheat-sheet.
+
+### Marking checklist (Day 9 homework, 6 marks)
+- [ ] `sweep.sh` + `scanner.py` committed, each with a `# usage:` line (2)
+- [ ] `scanner.py` reads hosts from `hosts.txt` and runs without error (2)
+- [ ] `ai_snippet.py` critique names the hardcoded external target **and** at least one of
+      (no timeout / sockets not closed / bare except) (2)
+
+---
+
 ## Day 10 — *(to be added)*
 
 ---

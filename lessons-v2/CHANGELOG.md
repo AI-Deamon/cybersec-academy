@@ -93,3 +93,15 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   Review fixes: §6 Day 8 "Do"/analogy/environment aligned; SYSTEM > Administrator noted as a
   second trap.
 - **`week2/student-pack.md`** — Day 7 and Day 8 sections + marking checklists.
+- **Day 9 built + reviewed + fixes applied** — `day09/day09.md` (deck + speaker notes): a
+  BUILD day. Frame = the **5 building blocks** every language shares, shown in Bash and
+  Python (not a language tutorial). Bash first script → the `sweep.sh` ping sweep line by
+  line → **`scanner.py` built live** (socket connect → open/closed) → Bash-vs-Python → the
+  **"read the code you didn't write"** exercise (`ai_snippet.py`) → attack↔defence (automation
+  is symmetric: spray/scan/exfil vs parse/detect/contain). `day09/teacher-notes.md` (Bash +
+  Python essentials, the `ai_snippet.py` answer key, ping-flag portability, demo runbook for
+  the live build, FAQ). `day09/assets/`: `sweep.sh`, `scanner.py`, `ai_snippet.py` (buggy —
+  hardcoded external target + no timeout + leaked sockets + bare except), `hosts.txt`.
+  Ethics stated: scan **only** localhost / own machine / class lab.
+  Review fixes: `requests` flagged as non-stdlib (needs pip); §6 Day 9 reworked around the
+  5-blocks frame; host-from-file moved to homework to protect the live build.
