@@ -105,3 +105,16 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   Ethics stated: scan **only** localhost / own machine / class lab.
   Review fixes: `requests` flagged as non-stdlib (needs pip); §6 Day 9 reworked around the
   5-blocks frame; host-from-file moved to homework to protect the live build.
+- **Day 10 built + reviewed + fixes applied** — `day10/day10.md` (deck + speaker notes): the
+  security-thinking lens. Precise vocabulary (asset/vuln/threat/actor/exploit/risk); **risk =
+  likelihood × impact, not vuln count** (the trap); threat actors & motivation; attack surface
+  & trust boundaries + **the untrusted-input question**; defender's principles; threat
+  modelling (4 questions + STRIDE + control types); an 18-min class threat-model exercise —
+  then the **Week 2 assignment brief**. `day10/teacher-notes.md` (control taxonomies, risk
+  treatment, STRIDE↔CIA, the "rank these" + worked threat-model answer keys, assignment guide).
+  `day10/assets/`: `threat-model-template.md`, `weak-settings-checklist.md`.
+  Review fixes: run sheet acknowledges this is a concepts day (mitigation = don't lecture,
+  the exercise is the centre); added control-type taxonomy to the deck; fixed a `find`
+  precedence bug in the checklist; §6 Day 10 aligned.
+- **Week 2 (Days 6–10) complete** — deck + teacher-notes each; `week2/student-pack.md` has all
+  five day sections and the full 4-part Week 2 weekend assignment + 15-mark checklist.

@@ -226,12 +226,14 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 - **Analogy:** the recipe card (kitchen) — Bash = notes to the line cooks, Python = a written recipe with logic.
 - **Trap:** "I'll have an LLM write it" — fine, but you own what you run; the `ai_snippet.py` exercise practises reading. Also: Python indentation; forgetting `chmod +x`; `ping` flags differ on macOS.
 
-**Day 10 — Security thinking**
+**Day 10 — Security thinking** *(+ Week 2 assignment brief, last ~17 min)*
 - **Core idea:** risk = a threat exploiting a vulnerability to cause impact. Reduce risk by removing vulns, blocking threats, or limiting impact — defense in depth.
-- **Must land:** precise definitions (asset, threat, threat actor, vulnerability, exploit, risk, control); control types (preventive/detective/corrective; technical/admin/physical); least privilege, defense in depth, assume breach, trust boundaries; the untrusted-input question.
-- **Do:** lightweight STRIDE threat-model of a familiar app (campus wifi portal, a food-delivery app) — assets, entry points, what could go wrong, one control each.
+- **A concepts day** — theory kept to bullets; the 18-min threat-model exercise + the "rank these" DO are the interactive core (the "cap theory ~20 min" rule bends here, mitigated by not lecturing).
+- **Must land:** precise definitions (asset / vulnerability / threat / threat actor / exploit / risk); **risk = likelihood × impact**, not vuln count; control types (preventive/detective/corrective); least privilege, defense in depth, assume breach, minimise attack surface, fail secure; trust boundaries; **the untrusted-input question** ("where does data from outside cross into somewhere powerful?").
+- **Do:** rank 4 findings on a likelihood×impact grid; then a **class threat-model** of a real app (result portal / delivery / UPI) — draw it + trust boundaries, 3 STRIDE threats, 3 controls (template in `assets/`).
 - **Attack ↔ Defense:** this day is the lens for everything after it.
-- **Artifact:** a one-page threat model of an app they use — **Week 2 assignment Part A seed.**
+- **Artifact:** `day10/threat-model.md` — a one-page model of an app they use.
+- **Analogy:** the kitchen health-and-safety walkthrough (assets → actors → entry points → controls).
 - **Trap:** "risk = vulnerability" — a vuln with no threat or no impact is low risk; a small vuln on a critical asset is high.
 
 ### Week 3

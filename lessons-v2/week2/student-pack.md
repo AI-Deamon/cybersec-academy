@@ -217,11 +217,77 @@ nothing else.** Scanning networks you don't own is illegal (Day 1: "no scope, no
 
 ---
 
-## Day 10 — *(to be added)*
+## Day 10 — Security thinking
+
+### Recap
+- **Vocabulary, precisely:** **asset** (worth protecting) · **vulnerability** (a weakness) ·
+  **threat** (a bad event that could exploit it) · **threat actor** (who, and why) ·
+  **exploit** (the technique) · **risk** (chance it lands × damage if it does).
+- **Risk = likelihood × impact** — *not* the vulnerability count. You can't fix everything;
+  rank on the grid and act on high/high first.
+- **Threat actors:** script kiddie · cybercrime (money) · hacktivist (message) · nation-state
+  (espionage/sabotage) · insider (already inside). Match your defences to the *realistic* ones.
+- **Attack surface** = every point an attacker can poke (inputs, ports, APIs, people). Smaller
+  is safer. **Trust boundary** = where data crosses from less-trusted to more-trusted.
+- **The question, every time:** *where does data from outside cross into somewhere powerful?*
+  Validate / check permissions **there**. (Overflow Day 2, SQLi/XSS Day 16, SSRF Day 17,
+  prompt injection Day 18 — all the same idea.)
+- **Defender's principles:** defence in depth · least privilege · assume breach · minimise
+  attack surface · fail secure.
+- **Controls** are preventive / detective / corrective — have all three, because prevention fails.
+- **Threat modelling — 4 questions:** What are we building? What can go wrong (**STRIDE**:
+  Spoofing / Tampering / Repudiation / Info disclosure / DoS / Elevation of privilege)? What
+  do we do about it? Did we do a good job?
+
+### Key terms
+`asset` · `vulnerability` · `threat` · `threat actor` · `exploit` · `risk` ·
+`likelihood × impact` · `attack surface` · `trust boundary` · `untrusted input` ·
+`defence in depth` · `least privilege` · `assume breach` · `fail secure` ·
+`preventive / detective / corrective` · `STRIDE` · `threat model`
+
+### In class
+1. Rank 4 findings on the likelihood × impact grid.
+2. **Class threat-model** of a real app (result portal / delivery / UPI): draw it + trust
+   boundaries → 3 STRIDE threats → 3 controls. Commit yours as `day10/threat-model.md`
+   (template shared).
 
 ---
 
 ## Weekend Assignment — Week 2
 
-*Briefed at the end of Day 10. Full spec added then. Theme: harden a machine — users,
-permissions, and a script that flags weak settings; R&D one privilege-escalation technique.*
+*Briefed at the end of Day 10. Submit **one PDF before Monday**. Test **only your own VM**.*
+
+### Part A — Integrate (harden your machine)
+On your Linux VM:
+1. **Threat-model it in half a page** — what's valuable on it, who'd realistically attack it,
+   the entry points.
+2. **Create a non-root user** and add it to a group; show `id`.
+3. **Find and fix 3 weak settings** — e.g. a world-writable file, a `chmod 777`, a readable
+   private key / `.env`. Show `ls -l` **before and after** each.
+4. **Write a script** (Bash or Python — Day 9) that **reports** weak settings. Use
+   `assets/weak-settings-checklist.md` (from Day 10) — at minimum, checks **1, 3, and 5**
+   (world-writable files, unexpected SUID, readable secrets). It only needs to *report*.
+
+### Part B — R&D stretch (pick one)
+- **Linux:** research **one privilege-escalation technique we did *not* cover** (Linux
+  capabilities, `LD_PRELOAD`, a specific GTFOBin, PwnKit / CVE-2021-4034, dirtypipe, ...).
+  In ~5 sentences: how it works and how a defender stops it.
+- **Windows:** pick **3 LOLBins** (`certutil`, `regsvr32`, `mshta`, `bitsadmin`, `rundll32`,
+  ...). What does each legitimately do, and why can't defenders simply block them?
+
+### Part C — Hands-on evidence
+- your weak-settings script and its output;
+- `ls -l` before/after for the 3 settings you fixed;
+- `id` for the new non-root user.
+
+### Part D — Reflection
+3–4 sentences: what clicked this week, what's still fuzzy.
+
+### Marking checklist (15 marks)
+- [ ] Part A1 — half-page threat model of the VM: asset, actor, entry points (2)
+- [ ] Part A2 — non-root user created, `id` shown (1)
+- [ ] Part A3 — 3 weak settings fixed, `ls -l` before/after for each (3)
+- [ ] Part A4 — script runs, reports checks 1/3/5 correctly, in the student's own code (4)
+- [ ] Part B — real research beyond class, correct mechanism **and** defence (2)
+- [ ] Part C — all three pieces of evidence present and legible (2)
+- [ ] Part D — a genuine reflection (1)
