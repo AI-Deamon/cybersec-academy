@@ -288,11 +288,14 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 
 **Day 16 — Web exploitation**
 - **Core idea:** every web vuln is "untrusted input reached something powerful" — a query, the DOM, the filesystem, an auth check.
-- **Must land:** the OWASP Top 10 shape, then drill: injection (SQLi), XSS (stored / reflected / DOM), broken access control / IDOR, broken auth / session, SSRF in one line. For each: how to find it, how to prove it, how to fix it (parameterized queries, output encoding + CSP, server-side authorization, secure session flags).
-- **Do:** Juice Shop / DVWA — SQLi login bypass and UNION extract; stored XSS; IDOR by changing an ID; then apply/inspect the fix.
-- **Attack ↔ Defense:** paired all day — show the WAF log line **and** the code fix.
-- **Artifact:** "5 web vulns: find / prove / fix" with the student's own screenshots.
-- **Trap:** "input validation (a blocklist) fixes injection" — no; parameterization / encoding does.
+- **Tools intro (start of class):** the web-app model (each request→sink hop is a boundary); **DevTools** (edit/replay), **Burp Suite** (intercept + Repeater — the 2-min version), `curl`.
+- **Must land:** the OWASP Top 10 2021 shape (2025 revision in progress); then drill: injection (SQLi — the concat mechanism, login bypass, UNION, blind), XSS (stored/reflected/DOM — steals the **session cookie**), broken access control / IDOR (**authn ≠ authz**), broken auth/session, SSRF (→ cloud metadata, feeds Day 17). For each: find / prove / **structural fix** (parameterized queries · context-aware output encoding + CSP + HttpOnly · server-side authorization per request · destination allowlist).
+- **Do (3 beats):** SQLi in DVWA (login bypass + `UNION SELECT user,password FROM users`; bump to Medium to show filtering ≠ fix) → stored XSS (`<script>alert(document.cookie)</script>` in a saved field, reload) → IDOR in Juice Shop (change `/rest/basket/<id>`). Screenshot each.
+- **Secure-coding intro:** `assets/vuln-code.md` — read two vulnerable snippets, rewrite each safely (parameterize / encode).
+- **Attack ↔ Defense:** paired all day — the WAF log line next to the one-line code fix; **"a WAF is defence in depth, the code is the fix."**
+- **Artifact:** `day16/web-vulns.md` — "5 web vulns: find / prove / fix" with the student's own proof screenshots.
+- **Analogy:** the order ticket — a parameterized query is a form with fixed fields, the customer fills values not instructions (kitchen).
+- **Trap:** "we blocklist `'` `<` `script`" does **not** fix injection/XSS — encodings, alt syntax, `<img onerror>` bypass filters. Parameterize / encode = *impossible*, not *filtered*.
 
 **Day 17 — Post-exploitation + infrastructure & cloud**
 - **Core idea:** getting in is the start. Attackers then escalate, persist, move laterally, and reach the data — and the same access-control failures scale to networks and cloud.

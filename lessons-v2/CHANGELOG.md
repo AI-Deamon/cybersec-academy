@@ -187,3 +187,18 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
 - **Week 3 (Days 11–15) complete** — decks + teacher-notes each; `week3/student-pack.md` has
   all five day sections + the full 4-part Week 3 weekend assignment (solo mini-engagement +
   deep CVE explainer) + 15-mark checklist.
+- **Day 16 built + reviewed + fixes applied** — Week 4 opens. `day16/day16.md` (deck + speaker
+  notes): the most hands-on day. The web-app model + tools (DevTools / Burp 2-min version);
+  the OWASP Top 10 2021 shape; **injection/SQLi** (concat mechanism → data becomes code;
+  login bypass, UNION, blind; **fix = parameterized queries, not filtering**); **XSS**
+  (reflected/stored/DOM; steals the session cookie; fix = output encoding + CSP + HttpOnly);
+  **broken access control / IDOR** (authn ≠ authz; fix = server-side authorization per
+  request); broken auth/session + SSRF (→ cloud metadata, feeds Day 17); the one pattern
+  (untrusted input → powerful sink, no boundary check) + "a WAF is a layer, the code is the
+  fix"; the **"blocklist doesn't fix injection"** trap. `day16/teacher-notes.md` (SQLi/XSS/
+  IDOR/auth/SSRF background, the `vuln-code.md` answer key, per-target demo runbook for
+  DVWA/Juice Shop, FAQ). `day16/assets/`: `vuln-code.md` (secure-coding intro — 2 snippets to
+  fix), `web-vulns-template.md` (the find/prove/fix artifact).
+  Review fixes: added a 3-min IDOR "try it now" (design §6 calls for it hands-on); noted the
+  OWASP 2025 revision in progress; §6 Day 16 aligned + Burp/secure-coding intro folded in.
+- **`week4/student-pack.md` started** — Day 16 section + checklist; capstone placeholder.
