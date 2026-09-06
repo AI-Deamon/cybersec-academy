@@ -61,3 +61,13 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   the class Kali); "no Python yet?" fallback to projector/Kali noted.
 - **Week 1 (Days 1–5) complete** — deck + teacher-notes for each, `week1/student-pack.md` with
   all five day sections and the 4-part weekend assignment + checklist rubric.
+- **Day 6 built + reviewed + fixes applied** — Week 2 opens. `day06/day06.md` (deck + speaker
+  notes: what a file is, the filesystem tree + paths, the shell demystified, reading files
+  (`cat`/`less`/`head`/`tail`/`wc`), `find` vs `grep`, pipes & redirection, attack↔defence =
+  "post-shell an intruder maps the box with exactly these commands"). `day06/teacher-notes.md`
+  with the **Linux-shell prerequisite** (WSL / VM / class box, set up as Day 5 homework),
+  `day06/assets/linux-cheatsheet-template.md`. Hands-on interleaved (4 beats).
+  Review fixes: design doc §7 now states Days 6–10 need a plain Linux shell *before* the Day 12
+  target lab; §6 Day 6 aligned; kitchen analogy reaffirmed for the OS week.
+- **`week2/student-pack.md` started** — Day 6 section + Day 6 marking checklist + the Week 2
+  prerequisite; Week 2 assignment placeholder.

@@ -186,13 +186,15 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 
 ### Week 2
 
-**Day 6 — Linux I: moving and reading**
+**Day 6 — Linux I: files, the tree, moving and reading**
+- **Prereq:** every student at a Linux shell (WSL / provided VM / class box) — see §7.
 - **Core idea:** on Linux everything is a file, and the shell composes small tools into big results.
-- **Must land:** FS hierarchy (`/`, `/etc`, `/home`, `/var/log`, `/tmp`); absolute vs relative paths; `ls -la`, `cd`, `cat`, `less`, `find`, `grep`; pipes and redirection; `man` / `--help`.
-- **Do:** a filesystem scavenger hunt done entirely with piped commands (find a config value, count matching log lines, find the biggest file under a directory).
-- **Attack ↔ Defense:** reading world-readable secrets, log tampering ↔ least privilege on files, centralized/immutable logs.
-- **Artifact:** a personal `linux-cheatsheet.md` — 15 commands, one line each.
-- **Trap:** "the GUI and the terminal are different systems"; fear of `rm`.
+- **Must land:** what a file is (named bytes, no extension needed); FS hierarchy (`/`, `/etc`, `/home`, `/var/log`, `/tmp`); absolute vs relative paths (`.` `..` `~`); `ls -la`, `cd`, `cat`, `less`, `find`, `grep`; the pipe `|`; `man` / `--help`.
+- **Do (interleaved, 4 beats):** orient (`pwd`/`ls`/`cd`); read real files (`cat`/`less`/`wc` on `/etc/*`); `find` + `grep` (locate the ssh config, grep a setting); build a one-liner with `|` and `cut`.
+- **Attack ↔ Defense:** post-shell an intruder maps the box with exactly these commands; `grep -r` for secrets, shell history for typed passwords ↔ least privilege on files (Day 7), no secrets in files/history, logs shipped off-box.
+- **Artifact:** a personal `linux-cheatsheet.md` — 15 commands, one line each (template in `assets/`).
+- **Analogy:** back to the kitchen — filesystem = the building's storage as one tree from `/`; shell = the order pad.
+- **Trap:** "the GUI and the terminal are different systems"; "a file needs an extension"; fear of `rm`.
 
 **Day 7 — Linux II: who can do what**
 - **Core idea:** Linux security is the permission triple (user/group/other × r/w/x) plus "become another user" (`sudo`/`su`). Privilege escalation is finding a crack in that.
@@ -322,8 +324,12 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
   `.ova` image — no student builds it from scratch.
 - **Weak-laptop fallback:** a shared class Kali on the target server, one account per student,
   reached over SSH + browser. A Chromebook / 4 GB laptop can still complete every lab.
-- **Day 12 is the gate:** every student must reach the lab and snapshot before Week 3
-  continues. Students who can't are moved to the fallback that day, not left behind.
+- **Day 12 is the gate** for the *target* lab: every student must reach the vulnerable targets
+  and snapshot before Week 3 continues. Students who can't are moved to the fallback that day.
+- **Earlier — a plain Linux shell for Days 6–10.** Days 6–10 (Linux, scripting) need only a
+  Linux shell, not the target lab. Options, easiest first: **WSL2** (Windows), the provided
+  Ubuntu/Kali `.ova`, or an SSH account on the class Linux box (weak-laptop fallback). Set up
+  as Day 5 homework; fix stragglers in the first 5 minutes of Day 6. Not Git Bash.
 
 ---
 
