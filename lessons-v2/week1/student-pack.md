@@ -44,10 +44,22 @@ Your pair gets one breach card. Fill in:
 | Attacker: authorized, or committing a crime? | |
 
 ### Homework (due start of Day 2)
-1. Create your GitHub/GitLab account and the course repo.
-2. `README.md` — two short paragraphs: **why** you're taking this course, and the sentence
-   *"I will only test systems I am authorized to test."*
-3. Read and **sign** the Authorization Pledge (below). Bring the signed copy.
+
+**1. Set up your course repo** (step by step):
+   1. Create a free account at github.com **or** gitlab.com (turn on 2-factor auth).
+   2. Create a **private** repository named `cybersec-course`.
+   3. On your laptop, install Git: Windows → https://git-scm.com/download/win ·
+      Linux → `sudo apt install git` · macOS → `xcode-select --install`.
+   4. `git clone <your repo URL>` then `cd cybersec-course`.
+   5. Create `README.md` (see item 2), then:
+      `git add . && git commit -m "day 1" && git push`
+   6. Structure to build over the course: `README.md`, `day01/`, `day02/`, … one folder per day.
+   *Stuck? Bring your laptop to the start of Day 2 — we'll fix it in the first 5 minutes.*
+
+**2. Write `README.md`** — two short paragraphs: **why** you're taking this course, and the
+   sentence *"I will only test systems I am authorized to test."* Start a "Today I learned" list.
+
+**3. Read and sign the Authorization Pledge** (below). Bring the signed copy to Day 2.
 
 ### Authorization Pledge
 > I understand that accessing or testing computer systems without authorization is unlawful
@@ -91,7 +103,9 @@ Using `htop` (Linux) or Task Manager → Details (Windows):
 1. Sort by memory; find your browser; note its **PID** and RAM.
 2. Open ~10 tabs; watch the memory number climb.
 3. In a terminal, start a process (`sleep 300` / `timeout /t 300`), find it, **kill it by PID**.
-4. *(optional)* run `crash.py` and watch the OS kill just that one misbehaving process.
+
+Then watch the projector: the instructor runs a misbehaving program and the OS kills only that
+one process — the machine is unharmed.
 
 ### Homework (due start of Day 3)
 1. Draw the **source code → executable → running process** pipeline yourself; label where CPU,

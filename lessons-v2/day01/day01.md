@@ -14,17 +14,22 @@ footer: "Practical Cyber Security (v2) · Week 1 · Day 1"
 **Week 1 · Building the foundation**
 
 <!--
-RUN SHEET (90 min):
-00:00 Cold open / trailer demo
-00:05 What security actually is
-00:12 A short history of hackers & crackers
-00:20 The CIA triad
-00:38 Ethics & the law
-00:58 Pair activity
-01:10 How this course works
-01:22 Wrap + homework
-CUT FIRST IF SHORT: slide "Phreaking" detail, and drop the drill from 3 headlines to 2.
-Never cut: the authorization line, §43 vs §66, the repo setup.
+RUN SHEET (~85 min planned, ~5 min slack):
+00:00 Trailer (play the recording) + journey framing   5
+00:05 What security actually is                          5
+00:10 What "hacking" is                                  3
+00:13 Where this leads (the field, the jobs)             3
+00:16 History: origins, phreaking, the word split        8
+00:24 Hat colours                                        4
+00:28 Three events, as stories                           7
+00:35 The CIA triad + drill                             13
+00:48 Ethics & the law                                  15
+01:03 Pair activity                                     12
+01:15 How this course works (structure only)             6
+01:21 Wrap + homework                                    4
+CUT FIRST IF SHORT: phreaking detail; drill 3 -> 2 headlines; the "rhythm" slide.
+NEVER CUT: the authorization line, IT Act §43 vs §66, the 3-line recap.
+NOTE: the course repo is set up as HOMEWORK, not in class. In class we only show the structure.
 -->
 
 ---
@@ -36,14 +41,14 @@ Never cut: the authorization line, §43 vs §66, the repo setup.
 *(no notes — just watch)*
 
 <!--
-TRAILER DEMO. Do it live if the pre-flight passed; otherwise play assets/trailer-demo.mp4.
-Setup: instructor laptop on class network. Terminal 1: sudo tcpdump -i <iface> -A 'tcp port 80'
-Terminal 2 / browser: log into http://<target-server>/login with a fake user "student / hunter2".
-Switch to Terminal 1, scroll to the POST, point at the cleartext username + password.
-SAY: "I never touched their computer. I watched the wire. That is the whole field in one move.
-In 20 days you will do this yourself — and you'll know exactly why HTTPS makes it stop working."
-Do NOT explain how yet. That's Day 4.
-FALLBACK: assets/trailer-demo.mp4 (60s). Narrate over it the same way.
+TRAILER. On Day 1, DEFAULT TO THE RECORDING (assets/trailer-demo.mp4, 60s) — first impression,
+don't gamble on a live capture. Only run it live if you've done the pre-flight and you're
+confident (runbook in teacher-notes.md).
+Narrate over it: instructor logs into a plain-HTTP page; a second terminal (tcpdump) shows the
+username + password in cleartext.
+SAY: "I never touched their computer. I watched the wire. That's the whole field in one move.
+In 20 days you do this yourself — and you'll know exactly why HTTPS makes it stop working."
+Do NOT explain how. That's Day 4.
 -->
 
 ---
@@ -77,7 +82,27 @@ The method is what this course teaches. The law and ethics is the boundary aroun
 <!--
 Reassure the room: you do not need to be a prodigy. You need to be the person who reads the manual,
 takes the thing apart, and asks "what happens if I do the unexpected thing?"
-The word "hacking" in this room = the skill. Whether it's a crime depends on AUTHORIZATION — next 40 min.
+The word "hacking" in this room = the skill. Whether it's a crime depends on AUTHORIZATION — later today.
+-->
+
+---
+
+## Where this leads
+
+This is a **career**, not a hobby. Two broad directions — you choose on Day 20:
+
+- **Red team** — you're paid to break in (with permission) and write up how: pentester,
+  bug-bounty hunter, application security.
+- **Blue team** — you defend and respond: SOC analyst, incident response, digital forensics.
+- Plus wings: governance & risk, cloud security, and now **AI security**.
+
+Entry-level demand is real — especially SOC roles. **Your course repo becomes your portfolio.**
+
+<!--
+60 seconds. Purpose: the room is full of students who signed up to "hack" — tell them there's
+a job at the end and the course is built to get them to a real next step.
+Don't sell hard. Just plant: "by Day 20 you'll know which of these lights you up."
+Full careers treatment is Day 20.
 -->
 
 ---
@@ -150,21 +175,26 @@ White hat = pentester with a contract, bug-bounty participant within program rul
 
 ---
 
-## Five events that shaped the profession
+## Three events, three lessons
 
-| Year | Event | Why it matters |
-|------|-------|----------------|
-| **1988** | Morris Worm | First big internet worm; first felony conviction for computer crime (US CFAA) |
-| **1990s** | Kevin Mitnick | Social engineering; FBI most-wanted → **later a paid security consultant** |
-| **1998** | L0pht testifies to US Senate | "We could take down the internet in 30 minutes." Hackers as experts |
-| **2010** | Stuxnet | A nation-state cyber-weapon damaged Iranian centrifuges. The APT era |
-| **2017** | WannaCry / NotPetya | Ransomware goes global; billions in damage; the criminal economy matures |
+**1988 — the Morris Worm.** A student's experiment jumped between ~6,000 machines — about a
+tenth of the internet then — and jammed them. First felony conviction for computer crime.
+*Lesson: code that spreads on its own is a weapon, intended or not.*
+
+**1990s — Kevin Mitnick.** Broke into companies mostly by **talking people into things**, not
+exotic exploits. FBI most-wanted → prison → then ran a security consultancy until 2023.
+*Lesson: the same skills are a crime or a career. The only difference is permission.*
+
+**2017 — WannaCry.** Ransomware hit ~200,000 machines in 150 countries in two days using a
+leaked government exploit; hospitals turned patients away.
+*Lesson: unpatched systems + no backups = the threat you'll hear about most.*
 
 <!--
-The Mitnick arc is the one to dwell on: the exact same skills, on the wrong side of authorization = prison;
-on the right side = a career. That is the entire point of today.
-Stuxnet: you don't need details, just "governments do this now, at physical-damage scale."
-WannaCry: exploited a stolen NSA tool (EternalBlue); hit the UK NHS hard. Ties to Day 11 (ransomware).
+Tell these as three short stories, ~2 min each. Mitnick is the one to land — it IS the point
+of today's ethics section.
+If a student asks about nation-state / Stuxnet, one line: "governments now do this at
+physical-damage scale — 2010, Iran's centrifuges." Don't put it on a slide.
+WannaCry ties forward to Day 11 (ransomware) and Day 2 (patching / the same bug = crash or RCE).
 -->
 
 ---
@@ -347,8 +377,8 @@ Walk the room. Nudge pairs who conflate "data was accessed" with "confidentialit
 
 <!--
 Show them the whole arc so nobody feels lost in the "boring plumbing" of weeks 1-2.
-Tell them explicitly: "the first two weeks feel less like "hacking" — that's on purpose.
-You cannot attack or defend a thing you don't understand."
+Tell them explicitly: "the first two weeks feel less like 'hacking' — that's on purpose.
+You cannot attack or defend a thing you don't understand." Callback to the "where this leads" slide.
 -->
 
 ---
@@ -364,7 +394,8 @@ You leave with three things, written into your **Git repo**:
 By Day 20 that repo **is** your portfolio — and it tells *you* which side you enjoyed.
 
 <!--
-Set up the repo live now (lab-guide steps in student pack). GitHub or GitLab account, one repo, a README.
+Show the target repo structure on screen for ~90 seconds (README.md, day01/, day02/, ...).
+Do NOT do account creation in class — it's tonight's homework (step-by-step in the student pack).
 This repo is graded lightly all course and heavily at the capstone. It's also what they show employers.
 -->
 

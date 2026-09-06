@@ -14,17 +14,20 @@ footer: "Practical Cyber Security (v2) · Week 1 · Day 2"
 **Week 1 · Building the foundation**
 
 <!--
-RUN SHEET (90 min):
-00:00 Journey check + hook
-00:05 The hardware that matters: CPU / RAM / disk
-00:20 Program vs process
-00:35 Source code -> running process
-00:50 The OS as referee (isolation, user vs kernel)
-00:58 Why a bug can become control (the seed)
-01:05 Hands-on: your own machine
-01:20 Wrap + homework
-CUT FIRST IF SHORT: the "interpreted languages" sub-point; the segfault demo (keep the htop part).
-NEVER CUT: program vs process, OS isolation, the "bug becomes control" seed, the hands-on.
+RUN SHEET (~86 min planned):
+00:00 Journey check + hook (htop on the projector)        5
+00:05 The hardware that matters: CPU / RAM / disk        13
+00:18 Program vs process                                 10
+00:28 Source code -> running process                      7
+00:35 WHY A BUG BECOMES CONTROL (the peak — teach fresh) 12
+00:47 The OS as referee + user/kernel + isolation        14
+01:01 Hands-on: your own machine                         18
+01:19 Wrap + homework                                     5
+CUT FIRST IF SHORT: the "interpreted languages" sub-point; the "referee is a defence" slide
+(fold into recap). Instructor-only crash demo can be dropped for the recording.
+NEVER CUT: program vs process, the "bug becomes control" seed, the hands-on steps 1-3.
+ONE ANALOGY all lesson: kitchen — chef=CPU, counter=RAM, pantry=disk, head chef on the pass=OS,
+walk-in freezer=kernel mode. Do not introduce a second analogy.
 -->
 
 ---
@@ -152,100 +155,99 @@ CUT the interpreted-languages point first if short.
 
 ---
 
-## What a process's memory looks like
+<!-- _class: lead -->
 
-A process gets its own private region of RAM, laid out in parts:
+## Why a bug can become control
 
-- **Code** — the instructions (usually read-only)
-- **Data** — fixed values the program knows about
-- **Heap** — memory it asks for while running (grows as needed)
-- **Stack** — scratch space for the function running right now, incl. **"where to go back to"**
+The one idea that makes every exploit later make sense.
 
 <!--
-Keep this light — no diagrams of stack frames yet. The one part that matters for the security
-seed: the stack holds RETURN ADDRESSES — "when this function finishes, jump back to here."
-That's data. Sitting in the same RAM as everything else. Remember that for two slides' time.
+This is the intellectual peak of the lesson — teach it now, while the room is fresh, not at
+the end. Budget ~12 minutes. Slow right down.
+-->
+
+---
+
+## Instructions and data live in the same RAM
+
+When a function runs, the CPU saves **"where to go back to when I'm done"** onto the stack —
+an address, sitting in RAM right next to that function's other scratch data.
+
+Now: a program copies your input into a box sized for 20 characters. You send **5,000**.
+
+The overflow spills past the box and **overwrites "where to go back to."** When the function
+ends, the CPU jumps to whatever address is now there — one the **attacker** chose.
+
+<!--
+Draw it: a row of boxes on the board. [ input box (20) ][ ...other stuff... ][ where-to-go-back ].
+Scribble the input box overflowing rightward into "where-to-go-back".
+We are NOT exploiting anything today. The takeaway is one sentence, say it twice:
+"a crash bug and 'the attacker runs their code' are usually the SAME bug — that's why
+memory-safety bugs are treated as critical."
+This is a "buffer overflow". They'll hear the term; they don't need more than this today.
+-->
+
+---
+
+## Built-in defences (named, not deep)
+
+| Defence | One line |
+|---|---|
+| **Stack canary** | a known value guards "where to go back to" — if it changed, abort |
+| **DEP / NX** | data areas are marked "not executable" — your input can't run as code |
+| **ASLR** | shuffle where things sit in memory each run, so addresses can't be predicted |
+
+Compilers and the OS add these automatically. We come back to them in Week 4.
+
+<!--
+One line each. The point isn't the mechanism — it's that defence is layered and already built
+in. Don't let a keen student pull you into ROP/bypasses; "Week 4".
 -->
 
 ---
 
 ## The OS — the referee
 
-One CPU (a few cores). Hundreds of processes. Someone has to manage it:
+One CPU (a few cores). Hundreds of processes. Something has to manage it:
 
 - **Scheduling** — who gets the CPU, for how long (milliseconds each — it *feels* simultaneous)
 - **Memory** — hands each process its own slice; **stops process A reading process B's memory**
-- **Access** — decides what each process is allowed to touch (files, devices, network)
+- **Access** — decides what each process may touch (files, devices, network)
 
 <!--
-Isolation is a security property: a bug or malware in one process shouldn't be able to read
-your password manager's memory. (Shouldn't. Attacks on this exist — later.)
-This referee role is why the OS is the layer attackers most want to control and defenders
-most want to harden — Week 2 is all about it.
+Extend the kitchen: the OS is the head chef running the pass — deciding who cooks what, when,
+and keeping each cook at their own station.
+This referee role is why the OS is the layer attackers most want to control and defenders most
+want to harden — Week 2 is all about it.
 -->
 
 ---
 
 ## Two floors: user mode and kernel mode
 
-- **Kernel mode (upstairs):** the OS core. Full, direct access to hardware.
-- **User mode (downstairs):** your programs. Limited. Can't touch hardware directly.
+- **Kernel mode:** the OS core. Full, direct access to hardware.
+- **User mode:** your programs. Limited. Can't touch hardware directly.
 - A process asks the kernel for things — open a file, send a packet — via a **system call**.
 
 <!--
-Analogy: a bank. Customers (user mode) fill in a slip and hand it to a teller. Only staff
-(kernel mode) go into the vault. A system call is the slip.
-Why it matters: if attacker code is stuck in user mode it's limited. "Privilege escalation"
-(Day 7, Day 17) is the attacker trying to get from downstairs to upstairs.
+Stay in the kitchen: line cooks (user mode) can't walk into the walk-in freezer / dry store
+(kernel mode) — they call out an order to the person who can (a system call). One analogy all
+lesson: chef=CPU, counter=RAM, pantry=disk, head chef on the pass=OS, freezer=kernel.
+Why it matters: attacker code stuck in user mode is limited to what that user can do.
 -->
 
 ---
 
-## Why a bug can become control
+## The referee is a defence, too
 
-<!-- _class: lead -->
+- **Process isolation** — the OS keeps each process's memory private from the others.
+- **User mode** — attacker code lands with an ordinary user's limits, not full hardware access.
 
-The seed for the whole course.
-
-<!--
-Slow down here. This is the "aha" that makes exploitation make sense later.
--->
-
----
-
-## Instructions and data share the same RAM
-
-The CPU blindly runs "the next instruction." The stack holds **return addresses** — data that
-says *which instruction comes next* when a function ends.
-
-**If attacker-controlled input can overflow into that return address...**
-
-...the attacker chooses what the CPU runs next. That's **memory corruption → code execution.**
+Getting from user mode to kernel/admin is **privilege escalation** — a topic of its own (Day 7, Day 17).
 
 <!--
-Concrete-but-gentle: a program reads your name into a box sized for 20 characters. You send
-5,000 characters. The extra spills past the box and overwrites the "where to go back to"
-value on the stack. When the function returns, the CPU jumps to an address the attacker put
-there.
-We are NOT exploiting anything today. The point is: a "crash bug" and "attacker runs their
-code" are the same underlying flaw. That's why memory-safety bugs are treated as critical.
--->
-
----
-
-## The defences (named, not deep)
-
-| Defence | One line |
-|---|---|
-| **Process isolation** | the OS keeps each process's memory private |
-| **DEP / NX** | mark data areas "not executable" — data can't be run as code |
-| **ASLR** | randomise where things sit in memory so the attacker can't predict addresses |
-| **Stack canaries** | put a known value before the return address; if it changed, abort |
-| **User mode** | attacker code lands with limited privileges, not full hardware access |
-
-<!--
-One line each. Students don't need depth now — they need to know defence is layered and
-built into the OS and compiler. We come back to these when we actually do exploitation (W4).
+Ties the OS section back to the "defences" idea. Isolation + least privilege are the two
+biggest structural defences and both come from the OS. Forward-ref privilege escalation.
 -->
 
 ---
@@ -257,13 +259,16 @@ On your machine — `htop` (Linux) or Task Manager → Details (Windows):
 1. Sort by memory. Find your browser. Note its **PID** and **RAM used**.
 2. Open 10 new tabs. Watch the number change. (Heap growing.)
 3. In a terminal: start a process (`sleep 300` / `timeout 300`), find it, **kill it by PID**.
-4. *(Optional)* run `assets/crash.py` — watch the OS immediately kill a misbehaving process.
+
+Then watch the projector: the instructor runs a program that misbehaves — and the OS kills
+**just that one process**, machine unharmed. The referee, doing its job.
 
 <!--
-Everyone should get through steps 1-3. Step 4 is the segfault demo — cut it if time is tight.
-crash.py does `ctypes.string_at(0)` — a read from address 0, which the OS forbids -> instant kill.
-Point: the OS caught it and contained it. That containment is the referee doing its job.
-Walk the room. Windows users: Task Manager -> Details tab shows PID; right-click -> End task.
+Students do steps 1-3 (all three, everyone). Step 4 is INSTRUCTOR-ONLY on the Linux projector
+machine — `python3 assets/crash.py` reads address 0 and segfaults cleanly on Linux; on Windows
+it often surfaces as a catchable OSError, so don't have students run it.
+Pre-flight the night before and record assets/crash-demo.mp4 as the fallback.
+Windows students: Task Manager -> Details tab shows PID; right-click -> End task.
 -->
 
 ---

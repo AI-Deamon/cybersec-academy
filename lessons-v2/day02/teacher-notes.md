@@ -8,19 +8,28 @@ exit check, FAQ.
 
 ## Must-teach vs. cut-if-short
 
+**One analogy all lesson — the kitchen.** chef = CPU · counter = RAM · pantry = disk · head
+chef on the pass = OS · walk-in freezer / dry store = kernel mode · calling out an order = a
+system call. Do **not** introduce a second analogy (an earlier draft used a bank for
+user/kernel mode — it's gone; keep it gone).
+
+**Structure note:** "why a bug becomes control" is now taught **right after source→process**,
+while the room is fresh — not at the end. Give it ~12 min. The old process-memory-layout slide
+(code/data/heap/stack) was cut; the return-address idea is explained inline on the overflow
+slide.
+
 **Never cut:**
 - Program vs process (the core distinction — say it three ways).
+- The "why a bug becomes control" seed (~12 min, taught fresh).
 - The OS as referee: scheduling, memory isolation, hardware guard.
-- The "why a bug becomes control" seed.
 - The hands-on steps 1–3.
 - The three-line recap.
 
 **Cut in this order if behind:**
-1. `assets/crash.py` segfault demo (keep the htop/Task Manager part of the hands-on).
-2. The "interpreted languages" sub-point on the source→process slide.
-3. The process-memory-layout slide → compress to one sentence: "a process's RAM has code, and
-   scratch space called the stack that holds 'where to go back to'."
-4. The defences table → name just DEP/NX and ASLR out loud.
+1. The "interpreted languages" sub-point on the source→process slide.
+2. The "referee is a defence, too" slide → fold its two bullets into the recap.
+3. The built-in-defences table → name just DEP/NX and ASLR out loud.
+4. Instructor crash demo → play `assets/crash-demo.mp4` instead (or skip).
 
 ---
 
@@ -99,14 +108,15 @@ You are **not** teaching exploitation today. The single takeaway: *a "just a cra
 - "You created a process, the OS gave it a PID, you ended it. The program (`sleep`) is still
   on disk, untouched."
 
-### Demo 4 — the OS contains a crash (optional, 2 min)
-- `python3 assets/crash.py`
-- Linux/mac output ends with `Segmentation fault` (shell may print it) and the process is
-  gone. Windows: a crash dialog / silent exit.
-- "It tried to touch memory it wasn't allowed to. The OS killed **just that process**. Your
+### Demo 4 — the OS contains a crash (INSTRUCTOR ONLY, projector, 2 min)
+- Run on the **Linux projector machine**, not by students: `python3 assets/crash.py`
+- Output ends with `Segmentation fault` and the process is gone.
+- On Windows, `ctypes.string_at(0)` often raises a catchable `OSError` instead of a hard
+  segfault — that's why students don't run this; it's an instructor demo on Linux.
+- "It tried to touch memory it wasn't allowed to. The OS killed **just that process**. The
   machine is fine. That containment is the referee doing its job."
-- **Pre-flight:** run it once the night before on the class machine and screen-record the
-  output → `assets/crash-demo.mp4` (fallback).
+- **Pre-flight:** run it the night before on the projector machine and screen-record → 
+  `assets/crash-demo.mp4` (fallback, or use instead of running live).
 
 ### Failure modes
 | Symptom | Fix |

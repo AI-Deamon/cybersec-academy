@@ -92,7 +92,7 @@ concepts → attack process → defense → career fork.**
 | Day | Topic |
 |-----|-------|
 | 1 | Cyber security, ethics & law (IT Act §43/66), the CIA triad, how this course works |
-| 2 | Inside a computer — hardware, OS, files, how a program runs (data → instructions) |
+| 2 | Inside a computer — hardware (CPU/RAM/disk), program vs process, the OS as referee, how a program runs (data → instructions), why a bug becomes control |
 | 3 | Networks I — devices, IP & MAC, LAN/WAN, routers, packets, ports (4-layer model) |
 | 4 | Networks II — TCP/UDP, DNS, HTTP/HTTPS, TLS, the full page-load chain *(keystone day)* |
 | 5 | Cryptography — encryption vs hashing, symmetric vs asymmetric, TLS, certificates · **+ Week 1 brief** |
@@ -102,7 +102,7 @@ concepts → attack process → defense → career fork.**
 
 | Day | Topic |
 |-----|-------|
-| 6 | Linux I — the shell, filesystem tree, navigating, reading, pipes & `grep` |
+| 6 | Linux I — what a file is, the filesystem tree, the shell, navigating, reading, pipes & `grep` (Day 2 defers "files" here) |
 | 7 | Linux II — users, groups, permissions, `sudo`, processes, services, cron |
 | 8 | Windows — accounts, tokens, NTFS ACLs, services, registry, PowerShell, what AD is (1 slide) |
 | 9 | Scripting for security — one Bash script + Python essentials (they build a ~20-line scanner) |
@@ -141,19 +141,20 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 
 **Day 1 — What security is + a short history + ethics + the trailer**
 - **Core idea:** an attacker needs one way in; a defender must cover all of them (asymmetry).
-- **Must land:** where "hacker" came from (MIT, 1960s — a "hack" = an ingenious, playful fix) and why the community coined "cracker" (~1985) for the malicious kind; white / black / grey hats as the bridge to the law; five events that shaped the profession and its laws (1988 Morris Worm → first CFAA felony; 1990s Mitnick → social engineering, later a consultant — skills are neutral; 1998 L0pht tells the US Senate they could take down the internet in 30 min; 2010 Stuxnet → the nation-state era; 2017 WannaCry/NotPetya → ransomware goes global). Then: CIA triad with a real example per letter; the authorization line (IT Act §43 civil / §66 criminal, written scope); "hacking = understanding a system better than the person who built it."
-- **Do:** sign the scope/ethics agreement; in pairs, take a recent breach headline and classify which of C/I/A failed and whether the actor was authorized or committing a crime.
-- **Trailer demo (instructor):** sniff a cleartext HTTP login on the class network, on the projector. "By Day 15 you do this yourself — and you'll know why HTTPS stops it."
+- **Must land:** where "hacker" came from (MIT, 1960s — a "hack" = an ingenious, playful fix) and why the community coined "cracker" (~1985) for the malicious kind; white / black / grey hats as the bridge to the law; a 60-second "where this leads" (Red / Blue / wings, real entry-level demand); three events told as stories (1988 Morris Worm → first CFAA felony; 1990s Mitnick → social engineering, prison → consultant — skills are neutral; 2017 WannaCry → ransomware goes global). Then: CIA triad with a real example per letter; the authorization line (IT Act §43 civil / §66 criminal, written scope); "hacking = understanding a system better than the person who built it."
+- **Do:** sign the scope/ethics agreement; in pairs, take a real breach and classify which of C/I/A failed and whether the actor was authorized or committing a crime. **Repo setup is homework, not a class activity** (account creation with 30 beginners blows the lesson).
+- **Trailer demo:** cleartext HTTP login captured on the projector. **Day 1: play the recording** — first impression, don't gamble on a live capture. "By Day 15 you do this yourself — and you'll know why HTTPS stops it."
 - **Attack ↔ Defense:** n/a — the trailer frames the whole course.
-- **Artifact:** repo created; README with "why I'm here" + the one-sentence authorization pledge.
+- **Artifact:** repo + README ("why I'm here" + the authorization pledge) — produced as homework, checked Day 2.
 - **Trap:** "hackers are geniuses / it's illegal to even learn this." No — it's method + authorization.
 
-**Day 2 — How a program runs**
+**Day 2 — Inside the box: how a program runs**
 - **Core idea:** a program is instructions the CPU runs in order; an exploit makes it run attacker-chosen instructions or skip a check.
-- **Must land:** CPU / RAM / process / kernel-vs-user boundary; a process is a running program with its own memory.
-- **Do:** `htop` / Task Manager — find a process, PID, memory; watch memory grow; safely kill one; view a segfault.
-- **Attack ↔ Defense:** memory corruption → control-flow hijack (conceptual only) ↔ ASLR, DEP/NX, stack canaries (one line each).
-- **Artifact:** a diagram: source → compiled → loaded → running in RAM.
+- **Must land:** CPU / RAM / disk; **program vs process** (+ PID); source → executable → process; the OS as referee (scheduling, memory isolation, hardware guard); user vs kernel mode + system calls; **why a bug becomes control** — instructions and data share RAM, overflow the "where to go back" value and the attacker picks the next instruction (a crash bug and RCE are usually the same bug). Taught *right after* program-vs-process, while the room is fresh — ~12 min.
+- **Do:** `htop` / Task Manager — find a process, PID, memory; watch memory grow; kill by PID. Instructor-only on the Linux projector: `crash.py` (address-0 read) → the OS contains one misbehaving process.
+- **Attack ↔ Defense:** memory corruption → control-flow hijack (conceptual only) ↔ stack canary, DEP/NX, ASLR; plus OS process isolation and user-mode limits.
+- **Artifact:** a diagram: source → compiled → loaded → running process (label CPU/RAM/disk).
+- **One analogy:** the kitchen — chef=CPU, counter=RAM, pantry=disk, head chef on the pass=OS, walk-in freezer=kernel mode. No second analogy.
 - **Trap:** "RAM and disk are the same thing" / "closing the window closes the program."
 
 **Day 3 — Networking that matters**
@@ -400,15 +401,41 @@ Every Friday's class closes with a ~15-minute briefing. The weekend handout has 
 
 ---
 
-## 11. Open items / next steps
+## 11. Production process
+
+**Per-day file set** (lean — replaces the v1 7-file standard for this course line):
+`dayNN/dayNN.md` (Marp deck, `theme: dark-monospace`, **speaker notes on every slide**) +
+`dayNN/dayNN.pptx` / `.html` (rendered) + `dayNN/teacher-notes.md` (cut-list, background for
+shaky topics, demo runbook + fallback, activity answer keys, exit check, FAQ) +
+`dayNN/assets/`. Per week: `weekN/student-pack.md` (daily recaps + key terms + worksheets +
+the 4-part weekend assignment + checklist rubric). Topic-specific PDF handout only when a topic
+deserves a keeper reference. `lessons-v2/CHANGELOG.md` replaces per-day version-history files.
+
+**Every day gets a review pass before it's "done"** (expert + teacher lens):
+1. **Timing realism** — segments sum to ≤ 90 with slack; the ~50-min real budget for new
+   content after journey check / demo setup / Q&A is respected.
+2. **Factual accuracy** — dates, names, law, mechanisms.
+3. **The one-analogy rule** — the kitchen (or the day's designated extension of it); never a
+   parallel analogy.
+4. **Attack ↔ defense pairing** — no attack taught without its defense.
+5. **What's missing** — scope vs. the §6 plan; misconceptions preempted; the daily
+   attack/defense/artifact ritual present.
+Findings get applied, and the §6 plan is corrected when the lesson diverges from it for good reason.
+
+### Open items
 
 1. **Owner review of this document.**
 2. **Lab infrastructure decision** — which host runs the central targets (campus VM / cloud VM /
    WSL box), and who maintains it.
-3. **Per-day production** — once the map is approved, build each day one at a time: detailed
-   topic breakdown + real-course sources + the 7-file lesson package, deciding day by day.
-4. **Governance** — decide whether this adopts as `Course-Design-Document-v2` and how it
-   relates to the ADD's freeze rule (this is a new course line, so nothing frozen is being
-   edited; the ADD's 7-file standard still applies to production).
-5. **Prep-routine trial** — the instructor runs the §8 routine for Day 1 and Day 2 and reports
+3. **Governance** — decide whether this adopts as `Course-Design-Document-v2` and how it
+   relates to the ADD's freeze rule (new course line, nothing frozen is edited).
+4. **Prep-routine trial** — the instructor runs the §8 routine for Day 1 and Day 2 and reports
    what didn't fit in 90 minutes, before the routine is locked.
+
+### Progress
+
+- **Day 1** built + reviewed + fixes applied (repo→homework, 3 events not 5, "where this
+  leads" slide, trailer defaults to recording).
+- **Day 2** built + reviewed + fixes applied (one analogy = kitchen; "why a bug becomes
+  control" moved up and given 12 min; memory-layout slide cut; `crash.py` → instructor-only;
+  "files" moved to Day 6 in §5/§6).

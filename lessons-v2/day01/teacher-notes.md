@@ -11,14 +11,23 @@ runbook, answer keys, and the cut-list. Read this the night before as step 3 of 
 **Never cut:**
 - The authorization line ("no damage + good intent is still illegal").
 - §43 vs §66 (civil vs criminal).
-- The repo setup — students must leave with a repo.
+- The "where this leads" slide (60s) — it's the motivation the room needs.
 - The three-line recap.
 
 **Cut in this order if you're behind:**
 1. The phreaking slide's Woz/Jobs detail (keep one sentence: "the mindset predates computers").
 2. Drill goes from 3 headlines to 2 (keep #1 Confidentiality and #3 Availability).
 3. "The rhythm" slide — fold into the recap.
-4. One of the five historical events (drop Stuxnet before Mitnick — Mitnick is the point).
+4. The Morris story (keep Mitnick + WannaCry — Mitnick is the point of the ethics section).
+
+**The course repo is homework, not a class activity.** In class: show the target structure on
+screen for ~90 seconds. Account creation, `git` install, and the first commit are in the
+student pack as step-by-step homework, due start of Day 2. Doing it live with 30 beginners
+blows the lesson by 20+ minutes.
+
+**On Day 1 specifically, play the recorded trailer** (`assets/trailer-demo.mp4`). It's the
+first impression — don't gamble on a live capture. Run it live only from Day 2 onward once
+you've built confidence with the pre-flight.
 
 ---
 
@@ -51,7 +60,8 @@ runbook, answer keys, and the cut-list. Read this the night before as step 3 of 
   a §66 risk if any "dishonest/fraudulent" element is argued. Tell students plainly: grey hat
   is a legal category that gets people arrested.
 
-### The five events — dates and one anchoring fact each
+### The events — dates and one anchoring fact each
+*(Morris, Mitnick, WannaCry are on slides; L0pht and Stuxnet are here for Q&A only.)*
 | Event | Anchor fact |
 |-------|-------------|
 | Morris Worm, Nov 1988 | ~6,000 machines (~10% of the then-internet); Robert Morris = first person convicted under the US Computer Fraud and Abuse Act. |
