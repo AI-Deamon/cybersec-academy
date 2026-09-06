@@ -20,3 +20,7 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
 - Structure decision: lean per-day set (deck + teacher-notes + assets), weekly student pack,
   no per-day quiz/rubric/version-history files (exit check lives in teacher-notes; grading is
   weekly; this changelog replaces per-day version history).
+- **Day 2 built** — `day02/day02.md` (deck + speaker notes: CPU/RAM/disk, program vs process,
+  source→process pipeline, the OS as referee, user/kernel mode, the "bug becomes control"
+  seed, hands-on with htop/Task Manager), `day02/teacher-notes.md`, `day02/assets/crash.py`
+  (segfault-containment demo). Week 1 student pack: Day 2 section added.

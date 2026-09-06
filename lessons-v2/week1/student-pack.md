@@ -60,7 +60,47 @@ Name: __________________  Roll no: __________  Signature: __________  Date: ____
 
 ---
 
-## Day 2 — *(to be added)*
+## Day 2 — Inside the box: how a program actually runs
+
+### Recap
+- **Three parts that matter:** **CPU** (runs machine instructions one at a time, billions/sec,
+  obediently), **RAM** (fast, small, wiped on power-off — holds what's running now), **disk**
+  (slow, large, permanent — holds files when they're not running).
+- **Program vs process:** a *program* is a file on disk; a *process* is that program loaded
+  into RAM and running. One program → many processes. A process has a **PID**.
+- **Source → running:** you write source code → a compiler turns it into machine code (an
+  executable on disk) → the OS loads it into RAM and points the CPU at it → it's a process.
+  (Interpreted languages: the interpreter is the running process reading your script.)
+- **The OS is the referee:** it schedules the CPU between processes, gives each its own private
+  RAM (and stops one process reading another's), and guards access to hardware.
+- **User mode vs kernel mode:** your code runs with limits (user mode) and asks the OS kernel
+  for privileged things (files, network) via **system calls**.
+- **Why a bug can become control:** instructions and data share the same RAM. If attacker input
+  can overwrite the stored value that tells the CPU *what to run next*, the attacker picks the
+  next instruction. A "crash bug" and "attacker runs their code" are often the same flaw.
+- **Defences (named):** process isolation, DEP/NX, ASLR, stack canaries, running as a limited user.
+
+### Key terms
+`CPU` · `RAM` · `disk / storage` · `volatile` · `machine code` · `compiler` · `executable` ·
+`program` · `process` · `PID` · `heap` · `stack` · `return address` · `operating system` ·
+`scheduling` · `memory isolation` · `user mode` · `kernel mode` · `system call` ·
+`memory corruption` · `DEP/NX` · `ASLR` · `stack canary`
+
+### Hands-on (in class)
+Using `htop` (Linux) or Task Manager → Details (Windows):
+1. Sort by memory; find your browser; note its **PID** and RAM.
+2. Open ~10 tabs; watch the memory number climb.
+3. In a terminal, start a process (`sleep 300` / `timeout /t 300`), find it, **kill it by PID**.
+4. *(optional)* run `crash.py` and watch the OS kill just that one misbehaving process.
+
+### Homework (due start of Day 3)
+1. Draw the **source code → executable → running process** pipeline yourself; label where CPU,
+   RAM and disk each come in.
+2. One paragraph: **what is the difference between a program and a process?**
+3. Commit both to your repo; update your README's "today I learned" list.
+
+---
+
 ## Day 3 — *(to be added)*
 ## Day 4 — *(to be added)*
 ## Day 5 — *(to be added)*
