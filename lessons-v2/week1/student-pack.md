@@ -115,7 +115,49 @@ one process — the machine is unharmed.
 
 ---
 
-## Day 3 — *(to be added)*
+## Day 3 — Networks I: how machines find each other
+
+### Recap
+- **Three addresses do the work:**
+  - **IP** (e.g. `192.168.1.7`) — *where you are* on the network; used for routing; unchanged
+    the whole journey. IPv4 = four numbers 0–255; IPv6 is the long one.
+  - **MAC** (e.g. `a4:83:e7:2c:19:0f`) — the label for **one local hop only**; rewritten at
+    every hop; never reaches the website.
+  - **Port** (0–65535) — *which program* on that machine. Client picks a random source port;
+    server listens on a known one (80 HTTP, 443 HTTPS, 22 SSH, 53 DNS).
+- **Private vs public IP:** your laptop has a **private** IP (`10.x` / `172.16–31.x` /
+  `192.168.x`) that only means something on your local network. Your house has **one public
+  IP** on the router.
+- **NAT:** the router swaps your private IP for the one public IP on the way out and matches
+  replies back on the way in. *That's why `whatsmyip.com` ≠ `ipconfig`.*
+- **A packet is envelopes inside envelopes:** MAC wraps IP wraps port wraps your data. The
+  **4-layer model**: Link · Internet · Transport · Application. (OSI-7 is the same idea with
+  more boxes.)
+- **Routing:** each router reads the destination IP and forwards one hop closer; none knows
+  the whole path.
+- **Security:** anyone *on* your network can see your traffic (Day 1 demo). ARP spoofing lets
+  an attacker get in the middle even on a switch. The real defence isn't a perfect LAN — it's
+  **encrypt end to end** so being on the path is useless.
+
+### Key terms
+`IP address` · `IPv4 / IPv6` · `private / public IP` · `NAT` · `default gateway` · `DHCP` ·
+`MAC address` · `ARP` · `port` · `client / server` · `packet` · `router` · `switch` ·
+`4-layer model` · `ARP spoofing` · `port scanning` · `sniffing`
+
+### In class — the four "do it now" beats
+1. `ip a` / `ipconfig /all` → your IPv4 + default gateway.
+2. same window → your MAC (physical / hardware address).
+3. `sudo ss -tlnp` / `netstat -ano | findstr LISTENING` → a program listening on your machine.
+4. `ping <gateway>` vs `ping 1.1.1.1`, then `traceroute 1.1.1.1` → local vs. far, count the hops.
+
+### Homework (due start of Day 4)
+1. Draw your home network: each device → wifi/switch → router → ISP. Label every private IP,
+   the gateway, and the router's public IP.
+2. Two sentences: **why does `whatsmyip.com` show a different address than `ipconfig` / `ip a`?**
+3. Commit both; update your "today I learned" list.
+
+---
+
 ## Day 4 — *(to be added)*
 ## Day 5 — *(to be added)*
 

@@ -160,9 +160,10 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 **Day 3 — Networking that matters**
 - **Core idea:** machines find each other by IP, deliver on the local wire by MAC, and multiplex services by port. The rest is detail.
 - **Must land:** private vs public IP + NAT; MAC is local-only; port = which service; client/server request–response; the 4-layer model.
-- **Do:** `ip a` / `ipconfig` — find your IP, MAC, gateway; `ping`, `traceroute`; `ss -tlnp` to see what's listening on your own box.
-- **Attack ↔ Defense:** ARP spoofing, port scanning ↔ segmentation, switch port security, close unused ports.
+- **Do (interleaved as four "do it now" beats, ~15 min):** `ip a` / `ipconfig` — find your IP + gateway, then your MAC; `ss -tlnp` / `netstat` — what's listening on your own box; `ping` gateway vs `1.1.1.1` + `traceroute`.
+- **Attack ↔ Defense:** ARP spoofing, port scanning, sniffing (Day 1 callback) ↔ segmentation, switch port security, close unused ports, and "assume the network is hostile → encrypt end to end" (the bridge to Day 4).
 - **Artifact:** a diagram of their own home network (device → router → ISP) with real addresses.
+- **Analogy:** sanctioned extension of the kitchen → the postal / delivery system (see §9).
 - **Trap:** "my IP is whatever whatsmyip.com says" — that's the NAT/public IP, not the laptop's.
 
 **Day 4 — How the web actually works (keystone)**
@@ -364,11 +365,24 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 - Binary exploitation / reverse engineering / assembly — name it as a path, don't teach it
 - Memorizing tool flags — teach `--help` and the man page
 
+**The one sanctioned analogy — a single connected world, extended, never a parallel metaphor:**
+- **Compute (Day 2):** the **kitchen** — chef=CPU, counter=RAM, pantry=disk, head chef on the
+  pass=OS, walk-in freezer=kernel mode.
+- **Networking (Day 3):** the **postal / delivery system** — the kitchen now orders supplies
+  and ships orders. parcel=packet, street address=IP, next-leg label=MAC, department name=port,
+  sorting office=router, building front desk=NAT.
+- **Protocols / TCP (Day 4):** the **phone call** — dialling and "hello?… hello.… go ahead"
+  (the handshake), the operator/directory (DNS).
+- Later days extend these, never add a fifth. When a day needs a new lens, it's a documented
+  extension in that day's `teacher-notes.md`, reviewed against this list.
+
 **Class template additions:**
 - **Day 1 trailer demo** is baked into the template — every cohort gets it.
 - **Every class ends with the ritual:** "Today's attack. Today's defense. Today's artifact" →
   three lines into the student's repo.
-- **Pure theory capped at ~20 minutes**, always bolted to a demo or a hands-on task.
+- **Pure theory capped at ~20 minutes**, always bolted to a demo or a hands-on task. On
+  addressing-heavy days (e.g. Day 3) **interleave** the hands-on as short "do it now" beats
+  rather than one block at the end.
 - The board carries one question every day: *"If I were attacking this, where would I look?
   If I were defending it, what would I watch?"*
 

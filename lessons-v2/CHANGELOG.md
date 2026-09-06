@@ -36,3 +36,9 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
     surfaces it as a catchable OSError).
   - Design doc: "files" moved from Day 2 to Day 6 (§5/§6); §11 rewritten as the production
     process incl. the per-day review pass.
+- **Day 3 built + reviewed + fixes applied** — `day03/day03.md` (deck + speaker notes:
+  IP/MAC/port, private vs public IP + NAT, the packet as nested envelopes, the 4-layer model,
+  routing, attack↔defence ARP-spoof/scanning/sniffing), `day03/teacher-notes.md`.
+  Review fixes: hands-on **interleaved** as four short "do it now" beats instead of one block
+  at the end (≈52 min of addressing theory otherwise loses beginners); added the missing
+  client/server must-land; sanctioned the kitchen→postal→phone analogy arc in design doc §9.
