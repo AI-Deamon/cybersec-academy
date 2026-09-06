@@ -58,7 +58,56 @@ Keep this open in class. Same course repo — an attack, a defence, and an artif
 
 ---
 
-## Day 7 — *(to be added)*
+## Day 7 — Linux II: who can do what
+
+### Recap
+- **The permission triple:** `-rwxr-xr--` = type, then **r w x** for **u**ser (owner),
+  **g**roup, **o**ther. `r` = read / list · `w` = change / add-remove · `x` = execute a file /
+  enter a directory.
+- **Numeric:** `r=4 w=2 x=1`, add per audience → `644` = `rw-r--r--`, `755` = `rwxr-xr-x`,
+  `600` = `rw-------`.
+- **`chmod`** changes the bits on files **you own** (symbolic `u+x` / `go-w`, or numeric).
+  **`chown`** changes the owner — root only.
+- Every file has one **owner user** + one **owner group**. `id` = who you are. `/etc/passwd` =
+  accounts, `/etc/group` = groups, `/etc/shadow` = password hashes (root-only, `$6$`/`$y$` =
+  salted + slow, cf. Day 5).
+- **root** = uid 0 = master key, permission checks skipped. **Don't log in as root.**
+- **`sudo <cmd>`** = run one command as root — password-gated and **logged**. `sudo -l` = what
+  you're allowed.
+- Processes and services each **run as a user**; that user's power = the blast radius if the
+  program is compromised. `ps aux`, `kill`, `systemctl`.
+- **`cron`** = scheduled jobs (`crontab -e`; five time fields). System cron often runs as root.
+- **Privilege escalation** = a low-priv user finding where root *gave something away*: a
+  needless **SUID** binary, a **writable script** root trusts, a loose **`sudo`** rule, a
+  hijackable **PATH**. Each fixed by least privilege.
+
+### Key terms
+`rwx` · `owner / group / other` · `chmod` · `chown` · `umask` · `644 / 755 / 600` ·
+`/etc/passwd` · `/etc/shadow` · `/etc/group` · `uid / gid` · `root (uid 0)` · `sudo` ·
+`sudo -l` · `su` · `SUID` · `sticky bit` · `ps` · `kill` · `systemctl` · `cron` ·
+`privilege escalation` · `least privilege`
+
+### In class — the "do it now" beats
+1. `ls -l /etc/passwd /etc/shadow`, `ls -ld /tmp`, `id` — read the labels.
+2. `chmod 000 mine.txt` (locked out even as owner) → `chmod 600` (back); `chmod +x run.sh`.
+3. `cat /etc/shadow` (denied) vs `sudo cat /etc/shadow`; `sudo -l`.
+4. `find / -perm -4000 -type f 2>/dev/null` — the SUID programs.
+
+### Homework (due start of Day 8)
+1. **Artifact:** "3 ways a low-privilege Linux user could become root, and the fix for each" —
+   your own words. Commit it.
+2. Create `secret.txt` readable by **only you**. Show the `ls -l` line and the `chmod` used.
+3. Run the SUID `find`. Pick one result; one sentence on why it legitimately needs SUID.
+4. Add `chmod`, `chown`, `sudo`, `id`, `ps`, `kill`, `systemctl`, `crontab` to your cheat-sheet.
+
+### Marking checklist (Day 7 homework, 6 marks)
+- [ ] artifact: 3 distinct priv-esc paths, each with a correct fix, in the student's words (3)
+- [ ] `secret.txt` set to owner-only, with the correct `chmod` shown (`600` or `400`) (1)
+- [ ] a SUID program named with a correct reason it needs SUID (1)
+- [ ] cheat-sheet updated with the new commands (1)
+
+---
+
 ## Day 8 — *(to be added)*
 ## Day 9 — *(to be added)*
 ## Day 10 — *(to be added)*

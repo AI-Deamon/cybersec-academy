@@ -71,3 +71,13 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   target lab; §6 Day 6 aligned; kitchen analogy reaffirmed for the OS week.
 - **`week2/student-pack.md` started** — Day 6 section + Day 6 marking checklist + the Week 2
   prerequisite; Week 2 assignment placeholder.
+- **Day 7 built + reviewed + fixes applied** — `day07/day07.md` (deck + speaker notes: the
+  permission triple + reading `rwx`; owner/group/other; `chmod` symbolic & numeric + `chown`;
+  `/etc/passwd`/`/etc/shadow`/`/etc/group`; root vs `sudo`; processes/services run *as a
+  user*; `cron`; **privilege escalation as a concept** — SUID / writable trusted script /
+  sudo misconfig / PATH hijack, each with its fix; attack↔defence incl. the `chmod 777` trap).
+  `day07/teacher-notes.md` (key-cabinet analogy, permission-bit + priv-esc background, demo
+  runbook incl. "student is root" recovery, checkpoint, FAQ). Hands-on interleaved (4 beats).
+  Review fixes: §9 adds "permissions = the key cabinet" to the kitchen analogy; §6 Day 7 "Do"
+  corrected (cron is taught, not a hands-on beat; priv-esc concept-only, hands-on is Day 17);
+  added RHEL sudo-log path + the "hook didn't deny → you're root" teachable moment.

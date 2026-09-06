@@ -198,11 +198,12 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 
 **Day 7 — Linux II: who can do what**
 - **Core idea:** Linux security is the permission triple (user/group/other × r/w/x) plus "become another user" (`sudo`/`su`). Privilege escalation is finding a crack in that.
-- **Must land:** read `rwxr-xr--`; `chmod` / `chown`; `/etc/passwd`, groups, root; `sudo` and why not to live as root; processes (`ps`, `kill`), services (`systemctl`), `cron`.
-- **Do:** create a file, break its perms, fix them; `find / -perm -4000` (SUID); read `sudo -l`; write a one-line cron job.
-- **Attack ↔ Defense:** SUID abuse, writable cron/script, sudo misconfig, PATH hijack ↔ minimal SUID, audited sudoers, file-integrity monitoring.
+- **Must land:** read `rwxr-xr--`; `chmod` (symbolic + numeric) / `chown`; `/etc/passwd` + `/etc/shadow` + groups + root (uid 0); `sudo` (borrow root for one logged command) vs living as root; processes/services each run *as a user*; `cron` = scheduled jobs. Privilege escalation is **concept only** today (hands-on is Day 17).
+- **Do (interleaved, 4 beats):** read real permission lines (`ls -l /etc/passwd /etc/shadow`, `id`); break perms (`chmod 000`) then fix, and `chmod +x` a script; `sudo -l` + `sudo cat /etc/shadow` vs denied; `find / -perm -4000` for SUID. (`cron` is taught, not a hands-on beat — `crontab -e` opens an editor and eats time.)
+- **Attack ↔ Defense:** `chmod 777`, SUID abuse, writable cron/trusted script, sudo misconfig, PATH hijack ↔ least-privilege modes, minimal SUID, root-owned non-writable scripts, tight sudoers, services as dedicated users.
 - **Artifact:** "3 ways a low-privilege Linux user could become root, and the fix for each."
-- **Trap:** "`chmod 777` fixes permission errors" — it's a vulnerability, never a fix.
+- **Analogy:** the key cabinet (kitchen extension — see §9).
+- **Trap:** "`chmod 777` fixes permission errors" — it's a vulnerability, never a fix; "`+x` runs it" (no — it *permits* running).
 
 **Day 8 — Windows: same questions, different machine**
 - **Core idea:** Windows asks the same "who can do what" but answers with tokens, SIDs, ACLs, and the registry — and most orgs centralize it with Active Directory.
@@ -376,6 +377,9 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 **The one sanctioned analogy — a single connected world, extended, never a parallel metaphor:**
 - **Compute (Day 2):** the **kitchen** — chef=CPU, counter=RAM, pantry=disk, head chef on the
   pass=OS, walk-in freezer=kernel mode.
+- **Linux permissions (Day 7):** extends the kitchen — permissions = the **key cabinet**
+  (labels on every door: who may look / change / enter), root = the master key, `sudo` = sign
+  the logbook and borrow it for one job.
 - **Networking (Day 3):** the **postal / delivery system** — the kitchen now orders supplies
   and ships orders. parcel=packet, street address=IP, next-leg label=MAC, department name=port,
   sorting office=router, building front desk=NAT.
