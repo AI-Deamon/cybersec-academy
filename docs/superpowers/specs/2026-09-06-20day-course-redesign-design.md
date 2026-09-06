@@ -139,10 +139,10 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 
 ### Week 1
 
-**Day 1 — What security is + ethics + the trailer**
+**Day 1 — What security is + a short history + ethics + the trailer**
 - **Core idea:** an attacker needs one way in; a defender must cover all of them (asymmetry).
-- **Must land:** CIA triad with a real example per letter; the authorization line (IT Act §43/66, written scope); "hacking = understanding a system better than the person who built it."
-- **Do:** sign the scope/ethics agreement; in pairs, take a recent breach headline and classify which of C/I/A failed and why.
+- **Must land:** where "hacker" came from (MIT, 1960s — a "hack" = an ingenious, playful fix) and why the community coined "cracker" (~1985) for the malicious kind; white / black / grey hats as the bridge to the law; five events that shaped the profession and its laws (1988 Morris Worm → first CFAA felony; 1990s Mitnick → social engineering, later a consultant — skills are neutral; 1998 L0pht tells the US Senate they could take down the internet in 30 min; 2010 Stuxnet → the nation-state era; 2017 WannaCry/NotPetya → ransomware goes global). Then: CIA triad with a real example per letter; the authorization line (IT Act §43 civil / §66 criminal, written scope); "hacking = understanding a system better than the person who built it."
+- **Do:** sign the scope/ethics agreement; in pairs, take a recent breach headline and classify which of C/I/A failed and whether the actor was authorized or committing a crime.
 - **Trailer demo (instructor):** sniff a cleartext HTTP login on the class network, on the projector. "By Day 15 you do this yourself — and you'll know why HTTPS stops it."
 - **Attack ↔ Defense:** n/a — the trailer frames the whole course.
 - **Artifact:** repo created; README with "why I'm here" + the one-sentence authorization pledge.
