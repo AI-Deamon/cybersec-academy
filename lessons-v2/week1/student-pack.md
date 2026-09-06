@@ -209,7 +209,47 @@ one process — the machine is unharmed.
 
 ---
 
-## Day 5 — *(to be added)*
+## Day 5 — Cryptography: locks, seals, and signatures
+
+### Recap — three jobs
+| Job | Question | Tool |
+|---|---|---|
+| **Secrecy** | can anyone else read this? | **encryption** |
+| **Tamper-evidence** | has this been changed? | **hashing** |
+| **Identity** | who really sent / owns this? | **signatures & certificates** |
+
+- **Symmetric encryption** — one shared key, fast, used for the data. Problem: getting the key
+  to both sides safely.
+- **Asymmetric (public-key)** — public key locks *to* you, private key unlocks. Solves key
+  exchange. Slow, so it's used only to agree a symmetric key, then switch.
+- **Hashing** — any input → fixed-size fingerprint. **One-way, no key — not encryption.**
+  Change one bit → the whole hash changes (avalanche). MD5 and SHA-1 are broken; use SHA-256+.
+- **Passwords:** never plaintext, never "encrypted". Store `slow_hash(password + unique salt)`
+  — bcrypt / scrypt / Argon2. *If a site can email you your password, it's doing it wrong.*
+- **Signature** — sign with your private key, anyone verifies with your public key. Proves
+  origin + integrity.
+- **Certificate** — a Certificate Authority's signature on "this public key belongs to
+  `example.com`". Your browser trusts ~150 root CAs; every cert chains to one.
+- **TLS handshake, 4 steps:** hello → server sends its certificate → both sides agree a
+  symmetric key (asymmetric maths) → switch to fast symmetric encryption.
+- **Don't roll your own crypto.** Compose vetted library primitives.
+
+### Key terms
+`plaintext / ciphertext` · `key` · `symmetric` · `asymmetric / public-key` · `AES` · `RSA` ·
+`hash` · `SHA-256` · `MD5 (broken)` · `avalanche` · `salt` · `slow hash / KDF` ·
+`bcrypt / Argon2` · `rainbow table` · `digital signature` · `certificate` · `Certificate Authority` ·
+`chain of trust`
+
+### In class — the "do it now" beats
+1. Browser padlock → certificate details: issuer, validity, the chain to a root CA.
+2. `sha256sum msg.txt` (Windows: `Get-FileHash`), change one letter, hash again — totally different.
+3. `python3 crack.py <hash> wordlist.txt` — 3 MD5s fall in milliseconds; one misses; the
+   salted+slow one grinds the whole list and finds nothing.
+
+### Homework
+Finish the **Week 1 weekend assignment** (below). Also add the **5-primitives table** to your
+repo: symmetric encryption · asymmetric encryption · hash · salted-slow-hash (passwords) ·
+signature/certificate — with one real use of each.
 
 ---
 

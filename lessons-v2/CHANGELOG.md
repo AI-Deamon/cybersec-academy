@@ -50,3 +50,14 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   Review fixes: removed hardcoded stale IPs (example.com/github.com moved); chain aligned to
   **7 steps** to match the assignment; run sheet retimed to ~84 min with an explicit
   "this day runs hot — pick cuts in advance" warning; softened an unsourced phishing-HTTPS stat.
+- **Day 5 built + reviewed + fixes applied** — `day05/day05.md` (deck + speaker notes: the 3
+  jobs of crypto, symmetric vs asymmetric + key exchange, hashing ≠ encryption + avalanche,
+  password storage done right, signatures + the 4-step TLS handshake, attack↔defence + "don't
+  roll your own") + the **Week 1 assignment brief** as the final block. `day05/teacher-notes.md`.
+  `day05/assets/`: `crack.py` (stdlib dictionary attack — MD5 falls instantly, salted+slow
+  pbkdf2 grinds the whole list and misses), `make_targets.py`, `wordlist.txt`, `hashes.txt`.
+  Review fixes: crypto analogy sanctioned in §9 (postal extension — locks/seals); crack
+  exercise uses stdlib pbkdf2 as the "slow hash" so there's no install (real hashcat/john on
+  the class Kali); "no Python yet?" fallback to projector/Kali noted.
+- **Week 1 (Days 1–5) complete** — deck + teacher-notes for each, `week1/student-pack.md` with
+  all five day sections and the 4-part weekend assignment + checklist rubric.

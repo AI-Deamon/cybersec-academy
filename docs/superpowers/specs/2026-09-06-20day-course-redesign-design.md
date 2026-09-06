@@ -175,13 +175,14 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 - **Artifact:** the 7-step "what happens when I load a site" writeup — **Week 1 assignment Part A seed.**
 - **Trap:** "HTTPS means the site is safe" — it means the pipe is private.
 
-**Day 5 — Cryptography for practitioners**
+**Day 5 — Cryptography for practitioners** *(+ Week 1 assignment brief, last ~16 min)*
 - **Core idea:** crypto gives three things — secrecy (encryption), tamper-evidence (hashing/MAC), identity (signatures/certs). You compose them; you never invent them.
-- **Must land:** symmetric vs asymmetric (and why asymmetric solves key exchange); hash ≠ encryption (one-way, no key); salting; a certificate = a signed "this key belongs to this name"; TLS handshake in 4 steps.
-- **Do:** `sha256sum` a file, flip one byte, hash again; crack an MD5/NTLM hash from `rockyou` with `hashcat`/`john` (~2 min, visceral); inspect a real cert chain.
+- **Must land:** symmetric vs asymmetric (and why asymmetric solves key exchange); hash ≠ encryption (one-way, no key); salting; a certificate = a CA's signature binding a public key to a name; TLS handshake in 4 steps.
+- **Do (interleaved):** inspect a real certificate chain in the browser; `sha256sum` a file + flip one byte; **crack hashes with `crack.py`** — stdlib dictionary attack; 3 unsalted MD5s fall instantly, one misses, a salted+slow (pbkdf2) hash grinds the whole list and finds nothing. Real `hashcat`/`john` + `rockyou` live on the class Kali for the keen.
 - **Attack ↔ Defense:** offline hash cracking, rainbow tables, weak ciphers, cert spoofing ↔ bcrypt/argon2 + salt, strong TLS config, cert pinning, "don't roll your own."
-- **Artifact:** a table — the 5 primitives, what each is for, one real use.
-- **Trap:** "we encrypt passwords in the database" — you *hash* them, slowly and salted.
+- **Artifact:** a table — the 5 primitives (symmetric enc / asymmetric enc / hash / salted-slow-hash / signature-cert), what each is for, one real use.
+- **Analogy:** postal extension — locks and seals on the mail (see §9).
+- **Trap:** "we encrypt passwords in the database" — you *hash* them, salted and slow.
 
 ### Week 2
 
@@ -374,8 +375,12 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
   sorting office=router, building front desk=NAT.
 - **Protocols / TCP (Day 4):** the **phone call** — dialling and "hello?… hello.… go ahead"
   (the handshake), the operator/directory (DNS).
-- Later days extend these, never add a fifth. When a day needs a new lens, it's a documented
-  extension in that day's `teacher-notes.md`, reviewed against this list.
+- **Cryptography (Day 5):** **locks and seals on the mail** (a postal extension) — symmetric =
+  a shared-key lockbox · asymmetric = open padlocks anyone can snap shut, only your key opens ·
+  hash = a tamper-evident wax seal · signature = a signet-ring stamp · certificate = a notary's
+  stamped statement binding a seal to a name. The Day 4 "phone scrambler" = symmetric encryption.
+- Later days extend these, never add a fifth family. When a day needs a new lens, it's a
+  documented extension in that day's `teacher-notes.md`, reviewed against this list.
 
 **Class template additions:**
 - **Day 1 trailer demo** is baked into the template — every cohort gets it.
