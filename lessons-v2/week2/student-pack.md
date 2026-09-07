@@ -2,6 +2,8 @@
 
 *Practical Cyber Security (v2) · Week 2: Understanding the operating system*
 
+> **Formative quiz:** `week2/quiz.md` — 10 questions, self-check. Do it before the weekend assignment.
+
 The lens all week: **"who can do what"** — the access-control question at the centre of security.
 Keep this open in class. Same course repo — an attack, a defence, and an artifact every day.
 

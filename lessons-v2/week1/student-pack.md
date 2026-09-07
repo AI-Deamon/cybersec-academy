@@ -2,6 +2,8 @@
 
 *Practical Cyber Security (v2) · Week 1: Building the foundation*
 
+> **Formative quiz:** `week1/quiz.md` — 10 questions, self-check. Do it before the weekend assignment.
+
 This one document covers all of Week 1: a recap per day, key terms, the in-class worksheets,
 your daily homework, and the weekend assignment. Keep it open during class.
 

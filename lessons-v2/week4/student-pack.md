@@ -2,6 +2,8 @@
 
 *Practical Cyber Security (v2) · Week 4: Applying it, and choosing a direction*
 
+> **Formative quiz:** `week4/quiz.md` — 10 questions, self-check. Do it before the weekend assignment.
+
 The week you take what you can do and turn it into a direction — Red, Blue, or a wing. Same
 course repo. Same lab, same ROE. **Test only the lab targets or your own machines.**
 

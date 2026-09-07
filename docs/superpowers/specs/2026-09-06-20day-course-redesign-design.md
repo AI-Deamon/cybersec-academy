@@ -342,7 +342,14 @@ The artifact is committed to each student's Git repo; by Day 20 the repo **is** 
 
 ## 7. Lab architecture
 
-**Principle:** students never host vulnerable targets. Centralize the fragile part.
+**Full build guide: `lessons-v2/LAB-SETUP.md`** — the isolated lab, both models (instructor-
+hosted central for this course; student-built isolated for the SecureCorp capstone), the
+offline bundle, verification checklists, and the top-issue troubleshooting table. This section
+is the summary; the guide is the operational document.
+
+**Principle:** students never host vulnerable targets. Centralize the fragile part. **Vulnerable
+VMs never touch a network with devices the student doesn't own** — Internal Network / Host-Only
+only, never Bridged.
 
 - **Central target server** (instructor-run): DVWA (`:8080`), OWASP Juice Shop (`:3000`),
   Metasploitable2, plus the Day 18 vulnerable LLM app. Options: a campus VM, a cheap cloud VM,
@@ -483,12 +490,20 @@ Findings get applied, and the §6 plan is corrected when the lesson diverges fro
 ### Open items
 
 1. **Owner review of this document.**
-2. **Lab infrastructure decision** — which host runs the central targets (campus VM / cloud VM /
-   WSL box), and who maintains it.
+2. ~~Lab infrastructure decision~~ — **resolved:** `lessons-v2/LAB-SETUP.md` (isolated lab,
+   both models, offline bundle, troubleshooting). The instructor still picks the *host* (spare
+   desktop / mini-PC / cloud VM) and the *connection method* (LAN switch / WireGuard / shared
+   Kali) — the guide covers all three.
 3. **Governance** — decide whether this adopts as `Course-Design-Document-v2` and how it
    relates to the ADD's freeze rule (new course line, nothing frozen is edited).
 4. **Prep-routine trial** — the instructor runs the §8 routine for Day 1 and Day 2 and reports
    what didn't fit in 90 minutes, before the routine is locked.
+5. **Weekly formative quizzes** — `weekN/quiz.md` (~10 auto-gradable questions each) — built,
+   see CHANGELOG.
+6. **Day 4 & Day 17 overload** — both explicitly restructured as two-part days with a hard
+   "Part 1 must finish by minute X" gate; see those days' `teacher-notes.md`.
+7. **Capstone offline fallback** — a provided vulnerable-VM image + a pcap/log bundle so a lab
+   outage doesn't sink the final assessment; see `week4/student-pack.md`.
 
 ### Progress — ALL 20 DAYS BUILT + REVIEWED (see `lessons-v2/CHANGELOG.md` for per-day detail)
 

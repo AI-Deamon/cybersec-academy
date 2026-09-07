@@ -273,5 +273,19 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   writeup + career roadmap + final reflection) + 25-mark checklist.
 - **ALL 20 LESSONS BUILT + REVIEWED.** 20 Marp decks (+ `.pptx`/`.html`), 20 `teacher-notes.md`,
   4 weekly student packs with weekend assignments + rubrics, a design doc, and per-day assets.
-  Open before teaching: the lab host/reachability decision (§7); the instructor's Day 1–2
-  prep-routine trial (§11); governance adoption (§11).
+  Open before teaching: the instructor's Day 1–2 prep-routine trial (§11); governance adoption (§11).
+
+## Post-review fixes (expert-panel review of the whole course)
+
+- **`lessons-v2/LAB-SETUP.md`** — the isolated-lab build guide, resolving design §11 item 2
+  (the biggest blocker). Two models: **A** instructor-hosted central targets (20-day course,
+  Days 12–20 — Docker compose for DVWA/Juice Shop, Metasploitable2 as a firewalled VM, a
+  vuln-LLM container, three connection methods, the per-student Kali `.ova`); **B**
+  student-built **fully isolated** lab (SecureCorp capstone — VirtualBox Internal Network,
+  never bridged, static IPs, the seeded-incident mechanic, manual-log-analysis-first with
+  Wazuh tiered by RAM). Plus the offline bundle manifest, both verification checklists, and a
+  top-issues troubleshooting table (VT-x/Hyper-V, adapter/subnet, Wazuh OOM, WSL2 = not
+  supported). Referenced from design §7/§11.
+- **Weekly formative quizzes** — `week1..4/quiz.md`, 10 auto-gradable questions each with an
+  answer key + rationale for the tricky ones. Referenced from each `student-pack.md`. Self-
+  check before the weekend assignment; cuts grading load by front-loading retention.

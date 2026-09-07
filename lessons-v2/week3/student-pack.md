@@ -2,6 +2,8 @@
 
 *Practical Cyber Security (v2) · Week 3: The penetration testing lifecycle*
 
+> **Formative quiz:** `week3/quiz.md` — 10 questions, self-check. Do it before the weekend assignment.
+
 This week you learn the attacker's **process**, end to end, and run it (safely, in the lab)
 against authorised targets. The lens: **scope → recon → enumerate → exploit → post-exploit →
 report** — the same shape every engagement.
