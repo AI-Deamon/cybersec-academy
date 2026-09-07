@@ -14,22 +14,28 @@ footer: "Practical Cyber Security (v2) · Week 1 · Day 4"
 **Week 1 · Building the foundation · the keystone day**
 
 <!--
-RUN SHEET (~84 min planned — but THIS DAY RUNS HOT: it's the keystone and carries close to
-two days of material. In the prep routine, decide your cuts IN ADVANCE, on paper.)
-Hands-on INTERLEAVED — four "do it now" beats.
-00:00 Journey check + hook (curl -v on the projector)          4
-00:04 The chain — the 7 steps (the day's map)                  3
-00:07 Step 1: DNS — names to numbers                           7
-00:14 DO: dig / nslookup                                       4
-00:18 Step 2: TCP — the reliable phone call                    8
-00:26 DO: watch the handshake in curl -v                       3
-00:29 Step 3: TLS — locking the line + what it does NOT give   9
-00:38 Step 4: HTTP — request slide + response slide           11
-00:49 DO: hand-craft an HTTP request (netcat / ps1)            6
-00:55 Steps 5-6 render (1 line) + the chain diagram            3
-00:58 Attack <-> defence                                       9
-01:07 DO: DevTools -> Network on a real login                  6
-01:13 Wrap + homework                                          5
+RUN SHEET (~84 min). THIS IS A TWO-PART DAY — it carries ~2 days of material. Treat it as such:
+
+  PART 1 — the chain (DNS -> TCP -> TLS).           target: DONE by minute 40.
+  PART 2 — HTTP + the attacks + DevTools.
+  >>> MID-POINT GATE at minute 40: if TLS isn't finished, you are behind.
+      Recovery: skip the netcat "do it now" and the render slide, compress HTTP request+response
+      to ONE slide, go straight to the chain diagram -> attack<->defence (table only) -> DevTools.
+      HTTP-by-hand and the full attack detail become homework/reading. DO NOT cut DevTools.
+
+00:00 Journey check + hook (curl -v on the projector)          4   ┐
+00:04 The chain — the 7 steps (the day's map)                  3   │
+00:07 Step 1: DNS — names to numbers                           7   │ PART 1
+00:14 DO: dig / nslookup                                       4   │ (DNS+TCP+TLS,
+00:18 Step 2: TCP — the reliable phone call                    8   │  done by :40)
+00:26 DO: watch the handshake in curl -v                       3   │
+00:29 Step 3: TLS — locking the line + what it does NOT give   9   ┘
+00:38 Step 4: HTTP — request slide + response slide           11   ┐
+00:49 DO: hand-craft an HTTP request (netcat / ps1)            6   │ PART 2
+00:55 Steps 5-6 render (1 line) + the chain diagram            3   │ (HTTP + attacks
+00:58 Attack <-> defence                                       9   │  + DevTools)
+01:07 DO: DevTools -> Network on a real login                  6   │
+01:13 Wrap + homework                                          5   ┘
 CUT FIRST IF SHORT: the render/repeat slide (say one sentence); the UDP line; the netcat "do
 it now" (do a full read of curl -v instead); the "look-alike site" attack row.
 NEVER CUT: the DNS->TCP->TLS->HTTP order, what TLS does NOT give, the chain diagram, DevTools.

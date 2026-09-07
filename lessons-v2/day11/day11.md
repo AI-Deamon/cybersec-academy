@@ -125,8 +125,31 @@ Defences: **MFA** (a stolen password isn't enough), email filtering, **SPF/DKIM/
 a one-click **report button**, and training that isn't shaming.
 
 <!--
-MFA is the single highest-value control here — it breaks step 4. SPF/DKIM/DMARC are the email
-authentication stack that makes sender spoofing harder (name them; Day 19 goes deeper).
+MFA is the single highest-value control here — it breaks step 4.
+-->
+
+---
+
+## Email authentication — SPF · DKIM · DMARC
+
+The stack that makes **sender-domain spoofing** hard:
+
+| | What it does |
+|---|---|
+| **SPF** | a DNS record listing which mail servers may send *for this domain*. Receiver checks the sending IP against it. |
+| **DKIM** | the sending server **signs** the message; the receiver verifies the signature using a public key in DNS → proves it wasn't altered and came from the domain. |
+| **DMARC** | ties SPF+DKIM to the visible `From:` domain, tells receivers what to do on failure (**none / quarantine / reject**), and **sends reports** back to the domain owner. |
+
+**What it stops:** someone sending as `you@yourbank.com`.
+**What it does NOT stop:** a **lookalike** domain (`yourbank-secure.com`) or a genuinely
+**compromised** mailbox — both pass all three.
+
+<!--
+Reading a header: `Received:` chain shows the real path; `Authentication-Results:` shows
+spf=pass/fail, dkim=pass/fail, dmarc=pass/fail. The Day-11 phish dissection asset asks about
+exactly these fields. Most SOC L1 work is triaging reported phish — this is the check they run.
+CUT to the one-line summary if behind: "SPF/DKIM/DMARC stop domain spoofing, not lookalikes or
+a hacked account."
 -->
 
 ---

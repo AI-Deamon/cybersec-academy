@@ -14,19 +14,25 @@ footer: "Practical Cyber Security (v2) · Week 4 · Day 17"
 **Week 4 · Applying it, and choosing a direction**
 
 <!--
-RUN SHEET (~85 min). RUNS HOT — two disciplines (post-ex + infra/cloud) in one day. Pick your
-cuts in the prep routine, on paper. Must-teach spine: priv-esc + its DO, the attack-chain
-artifact, shared responsibility, the policy DO. Everything else flexes.
-00:00 Journey check + hook (low-priv -> root in 20s)           4
-00:04 What a shell is + the post-ex goals                      5
-00:09 Privilege escalation                                    10
-00:19 DO: shell -> linpeas -> priv-esc on Metasploitable2     16
-00:35 Persistence / lateral movement / pivoting                8
-00:43 The attack chain + detection opportunities               7
-00:50 Infrastructure security                                  8
-00:58 Cloud security — shared responsibility                   8
-01:06 DO: fix an open bucket / IAM policy                     10
-01:16 Attack <-> defence + wrap + homework                     4
+RUN SHEET (~85 min). TWO-PART DAY — two disciplines. Treat it as such:
+
+  PART 1 — post-exploitation (through the attack-chain artifact).  target: DONE by minute 48.
+  PART 2 — infrastructure + cloud.
+  >>> MID-POINT GATE at minute 48: if the priv-esc DO ran long and you're not at "the attack
+      chain" slide, drop persistence/lateral/pivot to a 90-second name-check, do the attack
+      chain, then Part 2 becomes: infra = a 4-min bullet run, shared responsibility (full),
+      the bucket/IAM DO is homework. NEVER cut shared responsibility or the attack-chain artifact.
+
+00:00 Journey check + hook (low-priv -> root in 20s)           4   ┐
+00:04 What a shell is + the post-ex goals                      5   │
+00:09 Privilege escalation                                    10   │ PART 1
+00:19 DO: shell -> linpeas -> priv-esc on Metasploitable2     16   │ (post-ex,
+00:35 Persistence / lateral movement / pivoting                8   │  done by :48)
+00:43 The attack chain + detection opportunities               7   ┘
+00:50 Infrastructure security                                  8   ┐
+00:58 Cloud security — shared responsibility                   8   │ PART 2
+01:06 DO: fix an open bucket / IAM policy                     10   │ (infra + cloud)
+01:16 Attack <-> defence + wrap + homework                     4   ┘
 CUT FIRST IF SHORT: persistence/lateral/pivot slide to 4 min; infra slide to a 4-min bullet run.
 NEVER CUT: privilege escalation + the priv-esc DO, the attack-chain-with-detection artifact,
 shared responsibility, the bucket/IAM DO.
@@ -221,6 +227,29 @@ with a VM (IaaS) you do. The CONSTANT is: identity, access config, and data are 
 SSRF callback: `http://169.254.169.254/latest/meta-data/iam/security-credentials/` returns
 temporary creds for whatever role the instance has. If that role is over-privileged, the SSRF
 becomes account takeover. IMDSv2 mitigates; least-privilege roles are the real fix.
+-->
+
+---
+
+## Containers — a lighter box, not a VM  *(if time — else it's reading)*
+
+A container shares the **host's kernel** (a VM doesn't). So the isolation is thinner:
+
+- **The Docker socket = root on the host.** A web app with access to `/var/run/docker.sock`
+  can start a privileged container and own the machine.
+- **`--privileged` / mounting the host filesystem** = a container escape by design.
+- **Running as root inside the container** — if they break out, they're root outside too.
+
+**Defence:** run as a non-root user in the container; never expose the Docker socket; no
+`--privileged`; scan images (`trivy`, `grype`); drop capabilities; and remember containers are
+a *packaging* boundary, not a *security* boundary like a VM.
+
+<!--
+This whole lab runs on containers (DVWA, Juice Shop) — point that out. The one idea to land:
+"a container is not a VM; the kernel is shared; treat it like a process with extra packaging."
+Kubernetes adds RBAC, network policies, admission control — name it as "the same questions at
+cluster scale", Day 20 careers has a cloud/container path.
+CUT ENTIRELY if behind — it's marked as reading; the homework points at it.
 -->
 
 ---

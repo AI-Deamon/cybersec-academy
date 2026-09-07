@@ -289,3 +289,20 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
 - **Weekly formative quizzes** — `week1..4/quiz.md`, 10 auto-gradable questions each with an
   answer key + rationale for the tricky ones. Referenced from each `student-pack.md`. Self-
   check before the weekend assignment; cuts grading load by front-loading retention.
+- **Day 4 & Day 17 restructured as explicit two-part days** — each run sheet now has a marked
+  **PART 1 / PART 2** split and a **MID-POINT GATE** (Day 4 @ min 40: TLS done; Day 17 @ min
+  48: through the attack-chain artifact) with a written recovery path if behind. No content
+  cut — just an honest structure for a day that carries ~2 days of material.
+- **New Tier-2 segments folded into existing days:**
+  - **Day 3** — "Wi-Fi — the network you don't control" (open/WPA2/WPA3/evil twin; closes the
+    loop on the Day 1 Wi-Fi-sniff trailer; "you can't trust Wi-Fi you don't run → encrypt anyway").
+  - **Day 7** — "Hardening — the other side of who-can-do-what" (SSH keys/no-root/fail2ban,
+    disable services, `ufw` default-deny, `unattended-upgrades`, `lynis` + CIS Benchmarks) —
+    the concrete checklist for the Week 2 hardening assignment.
+  - **Day 11** — "Email authentication — SPF · DKIM · DMARC" (what each does, reading
+    `Authentication-Results`, what it stops and doesn't — lookalikes and hacked mailboxes pass).
+  - **Day 17** — "Containers — a lighter box, not a VM" (shared kernel; the Docker socket = root;
+    `--privileged`; non-root in-container; `trivy`/`grype`) — marked "if time, else reading".
+- **Capstone offline fallback** — `week4/student-pack.md` now points at `capstone/offline/`
+  (`securecorp-target.ova` run isolated + `incident-logs/` + `capstone.pcap`) so a lab outage
+  doesn't sink the final assessment.

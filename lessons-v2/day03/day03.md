@@ -302,6 +302,30 @@ hostile and encrypt anyway." That's the whole reason for tomorrow's HTTPS lesson
 
 ---
 
+## Wi-Fi — the network you don't control
+
+Being **on the same Wi-Fi** is exactly the Day 1 threat model.
+
+| | Risk |
+|---|---|
+| **Open / "guest" Wi-Fi** | no encryption on the air — anyone nearby can capture everything |
+| **WPA2 (a shared password)** | anyone with the password can often decrypt *others'* traffic |
+| **Evil twin** | a fake AP with the same name as a real one — you connect, they're the router |
+| **WPA3** | fixes the shared-password decryption problem; use it where you can |
+
+**Defence:** WPA3 · a separate guest network · **and, because you can't trust any Wi-Fi you
+don't run: HTTPS everywhere + a VPN on untrusted networks.**
+
+<!--
+This closes the loop on the Day 1 trailer (a Wi-Fi sniff). The point for students: "coffee
+shop Wi-Fi" is not a safe place to log into anything over plain HTTP, and even WPA2 home Wi-Fi
+isn't private from a housemate who has the password. WPA3's SAE handshake gives per-session
+keys. Enterprise Wi-Fi (802.1X / WPA2-Enterprise) is per-user — name it, don't detail it.
+CUT to 2 min if behind — the one line to keep: "you can't trust Wi-Fi you don't run; encrypt anyway."
+-->
+
+---
+
 ## Do it now — measure the distance
 
 ```

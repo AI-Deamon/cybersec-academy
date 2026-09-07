@@ -265,6 +265,12 @@ course repo. Same lab, same ROE. **Test only the lab targets or your own machine
 *Submit **one PDF + your repo link**. The biggest single piece — start this weekend. Only your
 assigned capstone target. Snapshot first.*
 
+> **If the class lab is down** — use the **offline fallback bundle** (`capstone/offline/`):
+> `securecorp-target.ova` (import into VirtualBox on an **Internal Network** adapter — see
+> `LAB-SETUP.md` §3 — run it fully isolated) for Part A, and `capstone/incident-logs/` + the
+> `capstone.pcap` for Part B. Same deliverables, done offline. Note in your report that you
+> used the offline path.
+
 ### Part A — Cross-domain engagement
 On the capstone target, run the full lifecycle and deliver **two** proven findings — **one web
 vulnerability** (SQLi / XSS / IDOR / …) **and one infrastructure / service finding** (an

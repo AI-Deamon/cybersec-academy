@@ -306,6 +306,29 @@ just created. If something "needs 777", the real problem is wrong ownership.
 
 ---
 
+## Hardening — the other side of "who can do what"
+
+The defender's checklist for a Linux box (this is the Week 2 assignment):
+
+- **SSH:** keys not passwords (`PasswordAuthentication no`), no root login (`PermitRootLogin no`),
+  `fail2ban` to auto-block brute force.
+- **Services:** turn off what you don't use (`systemctl disable --now <svc>`) — every listening
+  port is attack surface (Day 3).
+- **Firewall:** `ufw default deny incoming`, then allow only what's needed.
+- **Accounts:** no shared logins, disable unused ones, `sudo` not shared root.
+- **Updates:** `unattended-upgrades` for security patches.
+- **Audit it:** `sudo lynis audit system` scores your box and lists fixes. The **CIS
+  Benchmarks** are the industry checklist — you don't memorise them, you run a tool against them.
+
+<!--
+This is the "do it to your own things first" lesson made concrete. The Week 2 weekend
+assignment asks students to harden their VM and write a script that flags weak settings —
+this slide is the checklist for that. `lynis` is free and its output IS a to-do list.
+CUT to the SSH + firewall + "run lynis" lines if behind.
+-->
+
+---
+
 ## Today's attack / defence / artifact
 
 - **Attack:** land as a normal user, then find where root gave something away — a SUID binary,
