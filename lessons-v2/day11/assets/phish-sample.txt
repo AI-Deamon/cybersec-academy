@@ -1,0 +1,52 @@
+=== Day 11: dissect this phishing email ===
+Defanged sample (links are not live). Full headers included on purpose.
+
+Return-Path: <bounce@mailer-247send.ru>
+Received: from mail-247send.ru (mail-247send.ru [45.155.205.86])
+	by mx.yourcompany.com with ESMTP id 8fA21c
+	for <ravi.k@yourcompany.com>; Mon, 03 Mar 2025 02:14:07 -0800
+Received: from [10.0.0.44] (unknown [45.155.205.86])
+	by mail-247send.ru with SMTP; Mon, 03 Mar 2025 02:14:05 -0800
+From: "IT Support - YourCompany" <it-suppport@yourc0mpany-helpdesk.com>
+Reply-To: <helpdesk.verify@secure-mailbox.info>
+To: <ravi.k@yourcompany.com>
+Subject: [URGENT] Your mailbox will be deactivated in 24 hours
+Date: Mon, 03 Mar 2025 02:14:04 -0800
+Message-ID: <20250303.021404.887766@247send.ru>
+Content-Type: text/html; charset="UTF-8"
+X-Mailer: PHPMailer 6.1
+
+--- BODY (rendered) -------------------------------------------------
+
+  Dear User,
+
+  Our system has detected that your mailbox storage is FULL and
+  sign-in from an unrecognised device. Your account is scheduled
+  for DEACTIVATION within 24 hours.
+
+  To keep your account active, verify your identity immediately:
+
+      [ Verify My Account Now ]
+        (link points to:  http://account-verify.yourcompany.review/owa/login.php?id=ravi.k )
+
+  Failure to verify will result in permanent loss of all emails.
+
+  Regards,
+  IT Support Team
+  YourCompany Helpdesk
+
+--- BODY (raw HTML snippet) -----------------------------------------
+
+  <a href="http://account-verify.yourcompany.review/owa/login.php?id=ravi.k">
+     Verify My Account Now
+  </a>
+  <img src="http://45.155.205.86/o.gif?u=ravi.k" width="1" height="1">
+
+
+=== Questions ===
+1. Display name vs actual From: address?
+2. Link text ("Verify My Account Now") vs where it actually goes?
+3. Which words are engineering urgency / fear?
+4. What is the attacker actually asking you to do?
+5. Name TWO header fields that give it away.
+6. What is that 1x1 <img> for?

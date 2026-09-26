@@ -1,0 +1,867 @@
+
+
+SecureCorp
+Security Assessment Engagement
+Junior Cybersecurity Consultant Handbook
+A Four-Week Capstone Engagement
+Cybersecurity Fundamentals to Practical Security Operations Program
+CONFIDENTIAL — For Consultant Use Only
+
+Contents
+1. Welcome Letter
+2. Project Mission
+3. Company Background — SecureCorp
+4. Project Rules & Rules of Engagement
+5. How to Use This Handbook
+6. Doing R&D — How to Research Like a Consultant
+7. Lab Setup Guide
+8. The Consulting Methodology
+9. Week 1 — Understanding the Environment
+10. Week 2 — Red Team Assessment (Network & Web Attack Surface)
+11. Week 3 — Investigation & Detection (Wazuh)
+12. Week 4 — Recommendations & Client Debrief
+13. Final Deliverables Summary
+14. Appendix A — Master Report Template
+15. Appendix B — Evidence Collection Guidelines
+16. Appendix C — Marking Rubric
+17. Appendix D — Common Mistakes
+18. Appendix E — Submission Checklist
+19. Appendix F — Alternative Lab Architectures
+
+Welcome Letter
+SecureCorp Inc.
+142 Ashford Business Park, Suite 300
+Office of the IT Director
+
+Dear Cybersecurity Consultant,
+Welcome to SecureCorp.
+Our company has recently experienced suspicious activity on our systems, and management is concerned about the state of our overall security posture. We do not currently have a dedicated security team, which is why we have engaged your consulting group.
+You have been retained to assess our security posture, identify weaknesses in our systems and applications, investigate whether any of the recent suspicious activity constitutes a genuine incident, and recommend practical improvements we can act on.
+You will have four weeks to complete this engagement. At the end of the engagement, we expect a written report and a short debrief meeting with our leadership team summarizing what you found and what we should do about it.
+We understand this is your first engagement of this kind. Work carefully, document everything, and ask questions when something is unclear. We are relying on your findings to make real decisions about our security budget.
+Good luck.
+
+Sincerely,
+M. Alvarez
+IT Director, SecureCorp Inc.
+
+Project Mission
+You are acting as a Junior Cybersecurity Consultant for SecureCorp. Your task is to build a small security testing environment that represents SecureCorp's vulnerable server infrastructure. You will first configure and understand the environment, then assess it from an attacker's perspective, and finally switch to the defender's perspective to investigate the activity using Wazuh.
+By the end of the engagement, you should be able to:
+Build and configure a small security lab.
+Identify hosts, ports and services.
+Understand the attack surface of a vulnerable server.
+Assess a vulnerable web application.
+Perform controlled network and application attacks.
+Collect evidence from your attacks.
+Send system and application logs to Wazuh.
+Determine whether security activity is automatically detected or only visible through log investigation.
+Investigate attacks using the Wazuh dashboard.
+Distinguish between events, alerts and incidents.
+Recommend security controls and present your findings to a client.
+The Security Operations Loop
+This loop is the project. Every task in this handbook contributes to one part of it — if you are ever unsure why you are doing a task, find it on this loop.
+Step
+Phase
+What you do
+1
+Build
+Create the lab environment — attacker, target, and Wazuh server.
+2
+Discover
+Identify the target's hosts, ports, and services — its attack surface.
+3
+Attack
+Perform controlled network and web attacks against the target.
+4
+Log
+Generate security telemetry that flows to Wazuh.
+5
+Detect
+Identify alerts and events in the Wazuh dashboard.
+6
+Investigate
+Determine what happened, as a defender who does not already know.
+7
+Assess
+Determine the risk and business impact of what you found.
+8
+Remediate
+Recommend security controls to fix the weaknesses.
+9
+Report
+Communicate findings to SecureCorp's management.
+Weeks 1–2 cover Build, Discover, and Attack (the Red Team). Week 3 covers Log, Detect, and Investigate (the Blue Team). Week 4 covers Assess, Remediate, and Report (the Consultant).
+Core, Challenge and Stretch
+Everyone completes the Core path. If you finish early or want to go further, Challenge and Stretch items let you deepen the work without changing the main project. You are not required to attempt Challenge or Stretch tasks, and skipping them does not affect whether you meet the core objectives.
+Core — everyone completes
+Build the target, attacker, and Wazuh server.
+Configure networking and confirm connectivity.
+Run Nmap and identify services.
+Access DVWA and run the four web attacks.
+Run the SSH brute-force detection exercise.
+Install the Wazuh agent and investigate the logs.
+Complete the risk assessment, report, and presentation.
+Challenge — go deeper
+Investigate an additional exposed service on the target.
+Use Wireshark to analyze one captured interaction.
+Run additional Wazuh searches or build a custom dashboard view.
+Document one extra finding beyond the required set.
+Stretch — advanced
+Add the optional Windows VM with a Wazuh agent.
+Write a custom Wazuh rule that detects one of your web attacks automatically.
+Add and assess an additional vulnerable service.
+Design a more advanced network architecture.
+Your instructor may direct you to a simplified lab option if your hardware cannot run the full three-machine environment — see the alternatives appendix.
+
+Company Background — SecureCorp
+SecureCorp is a fictional company created for this engagement. Treat the details below as the ground truth for your assessment — do not invent additional systems beyond what is described here unless your instructor tells you otherwise.
+Company Snapshot
+Attribute
+Detail
+Industry
+Software development (B2B SaaS)
+Size
+35 employees
+Departments
+Engineering, HR, Finance, Customer Support
+Primary systems
+Internal company website, customer-facing web portal, Ubuntu web server, Windows workstations
+Work model
+Mix of in-office and remote employees
+Security team
+None — first engagement of this kind
+Key Assets (as described by the client)
+Employee laptops and Windows workstations
+Ubuntu web server hosting the customer portal
+Customer portal web application (handles logins, customer data, support tickets)
+Internal company website
+Customer and employee database
+Employee user accounts and credentials
+Internet-facing connection
+In your own environment, the customer portal is represented by DVWA (Damn Vulnerable Web Application) running on a Metasploitable2 target machine, which you will build in Week 1. That target machine represents SecureCorp's production server. A separate Wazuh server machine monitors it and represents SecureCorp's security team. If you complete the optional Windows VM in Week 1, it represents one of SecureCorp's employee workstations.
+
+Project Rules & Rules of Engagement
+Every real security engagement operates under a signed Rules of Engagement (ROE) document. Yours is below. These rules are not optional — work outside this scope is not part of the assessed engagement and may violate your institution's acceptable use policy.
+Scope
+This engagement is authorized only against the lab environment you personally build for this project: your own virtual machine(s), reachable from WSL (or a fallback attacker VM, see Lab Setup Guide). Never scan, probe, or attack a device you do not personally own or control — including other devices on a shared dorm, office, or public Wi-Fi network.
+Rules
+Only assess systems inside your own lab. Never scan, probe, or attack a public website, IP address, or a device you don't personally own.
+Never attack, scan, or access another student's machine or account, even if invited to.
+Password attacks are limited to accounts you created yourself inside the lab.
+Every action you take that produces a finding must be backed by evidence (screenshot, terminal output, or log excerpt) — undocumented claims will not be credited.
+If WSL cannot reach your target VM even after switching to a bridged network adapter, add a second lightweight Linux VM as your attacker environment instead — do not work around this by bridging onto a network you don't control.
+If you are ever unsure whether something is in scope, stop and ask your instructor before proceeding.
+The vulnerable target must stay inside your approved lab. Because Metasploitable2 is intentionally insecure, never expose it to the public Internet or leave it reachable from devices you do not control.
+Only the assigned target IP may be assessed. Never scan your whole home, school, office, or public network — scan the single target address, not a broad range.
+Team Structure
+This is an individual engagement. Each consultant builds their own lab, performs their own testing, and submits their own report and evidence. Work is not shared or submitted jointly.
+
+How to Use This Handbook
+This handbook is organized the way a real consulting engagement is organized: by week, and within each week, by task. Every task in this handbook follows the same five-part structure so you always know what is being asked of you:
+Section
+Purpose
+Objective
+Why this task exists and what it accomplishes for the client.
+Background
+Brief context you need before starting.
+Student Tasks
+What you must do. This tells you what to achieve, not the exact steps — you choose how, using what you've learned in class.
+Expected Output
+Exactly what must exist in your submission when the task is done.
+Learning Outcome
+The skill this task is building.
+Some tasks also include a Hint — a nudge in the right direction, never a step-by-step answer. Blank templates for every report and table you need to produce are provided inline. The full submission checklist lives in Appendix E — use it as your single source of truth for what to hand in.
+Doing R&D — How to Research Like a Consultant
+This handbook deliberately tells you what to achieve, not the exact commands to type. That is not an oversight — it is the single most important skill this program builds. In a real engagement, no one hands a consultant a script. You are given a goal, and you research your way to it. The tasks ahead assume you will look things up, try things, hit errors, and work through them. The tips below are how to do that well, so that "figure it out yourself" feels like a method rather than a wall.
+Go to the official source first. For every tool in this lab — VirtualBox, Metasploitable2, DVWA, Wazuh, Nmap, Hydra — the project's own documentation is the most reliable answer, and it is written for the exact version you are running. Read the official docs before a random blog post, because installer commands and file paths change between versions and outdated tutorials are the most common reason a step "doesn't work."
+Read the error message before you search. The error almost always names the problem — a missing package, a permission denied, a connection refused, a wrong path. Read it in full, then search for the exact text of the error (in quotes) rather than a vague description like "it won't work." The precise message is what leads you to the precise fix.
+Use the tool's own help. Before searching the web, try the built-in manual: the man command, or a tool's --help flag, lists every option straight from the source. Learning to read a man page is faster than hunting for the right blog and is a core habit of everyone who works in this field.
+Change one thing at a time. When something breaks, resist changing five settings at once. Change one, test, and observe. This is how you learn what each setting actually does — and if you fix it, you will know exactly why, which is the difference between guessing and understanding.
+Understand before you paste. You will find commands online. Before you run one — especially anything with sudo — make sure you can explain in one sentence what it does. Never paste a command you do not understand into a machine you care about. On a security team, a command you did not understand is how incidents start.
+Keep a research log. Write down what you tried, what happened, and the link or source that helped. This turns a frustrating hour into reusable notes, feeds straight into your report's methodology, and means you never solve the same problem twice.
+Judge your sources. Prefer official docs, then well-known community sites, then dated forum posts — in that order. Check the date on anything you find; a fix from years ago may not apply to your version. When two sources disagree, the official documentation wins.
+Know when to ask for help. Research first is the rule, but stuck for a long time on the same wall is not a badge of honour. When you do ask, show what you already tried and what the exact error was — a good question is itself a research skill, and it gets you a far better answer.
+The mindset: every professional in this field spends part of every day looking something up. The goal of this program is not for you to already know the answers — it is for you to get comfortable finding them. Treat each "I don't know how" as the actual work, not a detour from it.
+
+Lab Setup Guide
+This section lists requirements, not exhaustive instructions. You are expected to research installation using official documentation and what you've learned in class, and you're encouraged to try your own tweaks to the architecture below as long as you stay inside the Rules of Engagement and document what you built. Your lab is built from three machines — an attacker, a target, and a Wazuh server — detailed in the Lab Architecture section below.
+Required Software
+Tool
+Purpose
+VirtualBox or VMware
+Run your target virtual machine
+Target VM (Metasploitable2 + DVWA)
+Your target machine (Machine 2) — runs Metasploitable2 with DVWA. Set its network adapter to Bridged (see Network Requirement).
+DVWA (Damn Vulnerable Web Application)
+The vulnerable web application under assessment — the four DVWA-based Week 2 attacks (Tasks 2.3–2.6) target its built-in modules.
+WSL 2 (Windows Subsystem for Linux) with a Linux distribution
+Your primary attacker/analyst environment. Run Nmap, Hydra, and other command-line tools from here against the target VM.
+Fallback: a second lightweight Linux VM (optional)
+Only needed if WSL cannot reach your target VM even on a bridged network. Use this as your attacker environment instead.
+Wazuh (manager + dashboard)
+Installed on its own separate Ubuntu VM (Machine 3), since Wazuh's server components require Linux. Your centralized logging/SIEM platform for Week 3.
+Nmap and Hydra
+Network/service discovery and brute-force testing (run from WSL or your fallback VM)
+Wireshark
+Packet capture and traffic analysis
+Windows VM + Wazuh agent (optional/stretch)
+A free Microsoft evaluation VM running only the Wazuh agent — represents a monitored SecureCorp employee workstation. Not required to complete the engagement.
+Firefox or Chrome
+Access DVWA and the Wazuh dashboard
+Required Hardware
+One laptop or desktop capable of running WSL 2 and at least two virtual machines simultaneously (the target VM and the Wazuh server VM)
+Minimum 8 GB RAM recommended, since you run two VMs at once and Wazuh's manager, indexer, and dashboard are heavier than a typical single VM — 4 GB is very tight, especially if you also run the optional Windows VM
+At least 30 GB free disk space across the target and Wazuh VMs (more if you add the optional Windows VM)
+Network Requirement
+Set the network adapter on both the target VM and the Wazuh server VM to Bridged, not Host-only. This puts both VMs on your own home network, so your attacker machine can reach the target and the Wazuh agent can reach the manager far more reliably than on a Host-only/isolated adapter. This is a deliberate trade-off: the VMs are technically on your home Wi-Fi rather than a fully isolated segment, which is why the Rules of Engagement above are explicit that you may only ever target devices you personally own.
+Hint: If WSL still cannot reach the VM after switching to Bridged, don't spend hours debugging WSL networking — add a second lightweight Linux VM on the same network and use it as your attacker environment instead. This is an accepted, documented fallback, not a workaround you need permission for.
+Setup Verification Checklist
+☐  Your target VM is reachable from WSL, or from your fallback attacker VM (test with ping)
+☐  DVWA loads in a browser from the target VM's IP address
+☐  The Wazuh dashboard is reachable in a browser and shows your target VM's agent as Active
+☐  (If completed) The Wazuh dashboard shows your Windows VM's agent as Active
+☐  An Nmap scan run against the target VM returns results
+☐  If any check above fails, work through the Ports & Services Reference and the "Before You Move On" checklist later in this section before continuing
+Lab Architecture — Go Beyond the Minimum
+The steps below are a working baseline, not the only correct way to build this lab. You are encouraged to research alternatives on your own — a different hypervisor, a different Linux distribution for the attacker box, a different network layout, or a different order of installation — and to document what you changed and why. Treat the official documentation for VirtualBox/VMware, Metasploitable2, DVWA, and Wazuh as your primary source, not this handbook. Two things stay fixed regardless of how you architect it: everything must run inside your own personally-owned lab, and your final network diagram must accurately reflect whatever you actually built.
+At a minimum, your environment is built from three machines:
+Machine 1 — Attacker. Flexible — WSL2, a dedicated attacker VM, or a second physical laptop all satisfy this role.
+Machine 2 — Target. A Metasploitable2 virtual machine hosting DVWA and multiple intentionally vulnerable network services — the systems you assess in Week 2.
+Machine 3 — Wazuh Server. A separate manager/dashboard install that receives logs from an agent on Machine 2 and turns your Week 2 attacks into Week 3 alerts.
+
+Figure — baseline three-machine lab architecture. Redraw this with your own IPs once your lab is built.
+Machine 1 — Attacker (Flexible)
+This machine is not a fixed requirement — it is a role. Any of the following satisfy it, and you can research others:
+WSL2. The default option. Install a Linux distribution, then install nmap, hydra, and a browser inside it.
+A dedicated attacker VM. A lightweight Linux VM (e.g. Kali or plain Ubuntu with tools added) on the same bridged network as Machine 2. Use this if WSL2 cannot reach your target.
+A separate physical laptop. If you have a second machine on the same home network, it can act as the attacker box directly — no virtualization required. Confirm it can reach Machine 2's IP before you rely on it.
+Note: whichever option you pick, state it explicitly in your report's Methodology section and in your network diagram, so a reader knows exactly what generated your evidence.
+Machine 2 — Target: Metasploitable2 + DVWA
+Metasploitable2 is an intentionally vulnerable Ubuntu-based virtual machine that contains multiple intentionally vulnerable network services and web applications. It is your target server. DVWA (Damn Vulnerable Web Application) is one of the vulnerable web applications that runs on it — not a separate machine, but an application hosted inside the target. Keep this distinction in mind throughout the project: you attack the server's network services (like SSH) and you attack the web application (DVWA) that the server hosts.
+Step 1 — Import Metasploitable2. Download the Metasploitable2 image from an official Rapid7 source, unzip it, and import it into VirtualBox or VMware as a new VM. Set its network adapter to Bridged, exactly like your other target VM options. Boot it and log in at the console with the well-documented default credentials, then immediately research how to change them — do not leave the default password in place for the rest of the engagement.
+Step 2 — Confirm and enable services. From the Metasploitable2 console, check which services are already running (SSH, a web server, and a database are the ones you'll rely on). Research the command to list listening ports and running services on Linux, and use it to build the "what's running" note that Task 2.1 asks for — don't just copy a services list from the internet.
+Step 3 — Install DVWA alongside it. Metasploitable2 already ships an Apache/PHP/MySQL stack, so DVWA can run on the same box as an additional site, or you can install DVWA on a second Ubuntu Server VM if you'd rather keep the two apart — either is an acceptable architecture as long as you document which one you chose. Either way you will need to: download DVWA's source, place it where the web server serves it from, create a dedicated MySQL database and user for it, and edit its config file to point at that database.
+Step 4 — Set file permissions. DVWA needs its upload directory and its configuration file to be writable by the web server user, and nothing more permissive than that. Research the ownership and permission bits the web server process runs as, apply the minimum permissions that let DVWA function, and be ready to explain in your report why over-permissive settings (e.g. world-writable directories) would themselves be a finding.
+Step 5 — Open the required ports. If a firewall is enabled on the target, allow inbound traffic on the required service ports — HTTP (80), FTP (21), and SSH (22) — so Machine 1 can reach the services required for Week 2, and, once installed, the Wazuh agent's outbound connection to Machine 3 — see the Ports & Services Reference table below for the full list. Research your distribution's firewall tool (e.g. ufw on Ubuntu) rather than disabling the firewall outright — opening only what you need is itself a demonstrable security control.
+Step 6 — Verify from Machine 1. From your attacker machine, confirm DVWA's login page loads at Machine 2's IP address and that SSH is reachable, before you go any further.
+Machine 3 — Wazuh Server
+Step 1 — Provision the server. Create a third Ubuntu VM. If your hardware cannot comfortably run a separate Wazuh VM, use the Low-Resource Lab architecture described in Appendix F and connect your target agent to an instructor-provided or shared Wazuh server — do not combine the Wazuh server with the vulnerable target for the Core project; a real SOC would never co-locate its SIEM with a monitored host. Give it a bridged network adapter like the others.
+Step 2 — Install the Wazuh manager, indexer, and dashboard. Use Wazuh's official single-node quickstart installer for this — it installs all three components together and is intended for exactly this kind of lab-scale deployment. Follow the current instructions on Wazuh's own documentation site, since installer commands change between versions; do not copy commands from an outdated blog post. Once it finishes, note the auto-generated admin credentials it prints out.
+Step 3 — Open the dashboard. The dashboard listens on HTTPS. Confirm you can reach it from a browser using Machine 3's IP address and log in with the credentials from Step 2. Expect a self-signed certificate warning in your browser — that is normal for a lab deployment, not a finding against your own setup.
+Step 4 — Install and enroll the agent on Machine 2. On the target VM, install the Wazuh agent package and configure it with Machine 3's IP address as its manager. Enrollment typically requires a registration step against the manager — follow Wazuh's current agent-enrollment documentation for your Linux distribution. Configure the agent to forward both the Linux authentication log and your web server/DVWA access log, since Week 3 depends on both being ingested.
+Step 5 — Confirm the agent is Active. In the dashboard's Agents view, Machine 2 should show as Active with a recent check-in time. If it shows Disconnected or Never connected, research the agent's connection log on Machine 2 before assuming the manager is at fault — a mismatched manager IP or a blocked outbound port are the two most common causes.
+Step 6 — Trigger and confirm your first security event. Before Week 2 begins, perform a small number of failed SSH login attempts against Machine 2 from Machine 1. Check the Wazuh dashboard to determine whether the activity generates an alert or appears as a collected authentication event instead. This verifies that the logging pipeline works before the full Week 2 exercises begin — confirming it now, on a small scale, saves you from discovering a broken pipeline three weeks from now.
+Ports & Services Reference
+The single most common reason a student's lab "doesn't work" is that a service is not running, or its port is not open through the firewall. Before you move on to Week 2, confirm every service below is running on the right machine and reachable from where it needs to be. The port numbers are the standard defaults — if you changed one, use your own value.
+Port
+Service
+On which machine
+Why it must be open / reachable
+21 (TCP)
+FTP
+Machine 2 (Target)
+Machine 1 must reach it for the FTP user-login brute-force (Task 2.7).
+80 (TCP)
+HTTP (Apache / DVWA)
+Machine 2 (Target)
+Machine 1 must reach it to load DVWA and run the web attacks (Tasks 2.2–2.6).
+22 (TCP)
+SSH (OpenSSH server)
+Machine 2 (Target)
+Machine 1 must reach it for the SSH brute-force (Task 2.8).
+3306 (TCP)
+MySQL (DVWA database)
+Machine 2 (Target)
+Used locally by DVWA. Keep it bound to localhost — it does not need to be open to Machine 1.
+1514 / 1515 (TCP)
+Wazuh agent → manager (enrollment + events)
+Machine 3 (Wazuh)
+The Wazuh agent on Machine 2 connects to the Wazuh manager on Machine 3. Allow the required agent/manager communication from Machine 2 to Machine 3 according to the current Wazuh documentation — if it's blocked, the agent shows Disconnected.
+443 (TCP)
+Wazuh dashboard (HTTPS)
+Machine 3 (Wazuh)
+Your browser must reach it to open the dashboard in Week 3.
+Note: the Wazuh installer may use additional internal ports (e.g. the indexer on 9200). For a single-machine Wazuh install you normally do not need to open those to the rest of the lab — check Wazuh's current documentation if you split the components across machines.
+Before You Move On — Verify Each Machine
+If something later "doesn't work," it is almost always one of the checks below that was skipped. Do not start Week 2 until every one passes. The commands named here are starting points — research the exact syntax for your distribution.
+Is the service actually running? On the target, confirm the web server, SSH, and database services are started (e.g. with a service-status command such as systemctl status). A stopped service is the most common cause of "connection refused."
+Is the port listening? On the target, list the ports the machine is listening on (e.g. with ss or netstat) and confirm 80 and 22 appear. If a port is not listening, the service is not running or is bound only to localhost.
+Is the firewall allowing it? Check the target's firewall status (e.g. ufw status). A service can be running and listening but still unreachable because the firewall is dropping the traffic. Allow only the ports you need — do not disable the firewall.
+Can Machine 1 reach it? From the attacker machine, ping the target, then confirm the specific ports are open from the outside (a quick Nmap scan of the target does both jobs at once and doubles as your Task 2.1 evidence).
+Does DVWA load and is it set up? Open DVWA in a browser from Machine 1, run its "Setup / Reset Database" step once, and set the security level to "low." A blank page or database error here usually means the DVWA config file points at the wrong database name, user, or password.
+Is the Wazuh agent connected? In the Wazuh dashboard's Agents view, the target must show as Active, not Disconnected or Never connected. If it is not Active, the two usual causes are a wrong manager IP in the agent config or ports 1514/1515 being blocked between Machine 2 and Machine 3.
+Hint: Work through these in order — running, listening, firewall, reachable. Each check assumes the one before it passed, so fixing them top-to-bottom is faster than guessing.
+Understanding the Target — Its Attack Surface
+The target is not just a website. It is a server with multiple attack surfaces. A common beginner mistake is to think of the target as "the DVWA site." In reality, the target is a whole server, and DVWA is only one of the things running on it. The server exposes network services (each on a port), and one of those services — the web server — hosts the DVWA application. Both the network services and the web application are things you can attack. Understanding this layout is the point of Week 2's reconnaissance.
+The target's attack surface has two layers:
+Network services. Programs the server runs that listen on a port and accept connections over the network — for example SSH (remote login), the web server (HTTP), a file transfer service (FTP), and a database. Each open port is a doorway into a service, and each service is a potential way in.
+Web application. Sitting on top of the web service is DVWA, which has its own weaknesses — Brute Force, SQL Injection, XSS, and Command Injection. These are attacks against the application's logic and inputs, not against the network service itself.
+Pictured as a tree, the target looks like this:
+Metasploitable2 (Target Server)
+├─ Network Services
+│    ├─ SSH → SSH brute force (Task 2.8)
+│    ├─ FTP → FTP user-login brute force (Task 2.7)
+│    └─ Other exposed services
+└─ Web Service (via HTTP)
+     └─ DVWA
+          └─ Brute Force, SQL Injection, XSS, Command Injection
+This is the logic of the whole project: ports lead to services, services lead to attacks, one service hosts the application, the application has its own attacks, and every attack leaves evidence in a log that Wazuh can collect.
+Notice the project deliberately includes two service-level authentication attacks (SSH and FTP) and one application-level authentication attack (DVWA Brute Force). As you work through Week 2 and Week 3, compare how the evidence each one generates differs — same underlying technique (credential guessing), three different layers, three different footprints in the logs.
+The purpose is not to perform the same attack three times; it is to compare how the same credential-guessing technique produces different telemetry depending on the service or application being attacked.
+
+The Consulting Methodology
+Before you start, understand why this engagement is structured the way it is. Professional security consultants do not begin by attacking a system. They follow a lifecycle, and each week of this handbook corresponds to one stage of it.
+Stage
+Real-World Purpose
+Corresponding Week
+Scoping & Discovery
+Understand what the client has and what matters most to them before touching anything.
+Week 1
+Assessment
+Identify weaknesses an attacker could exploit, in a controlled and authorized way.
+Week 2
+Detection & Investigation
+Determine whether the weaknesses found were actually exploited, using evidence from a real SIEM (Wazuh).
+Week 3
+Remediation & Reporting
+Translate technical findings into a plan of action and communicate it to decision-makers.
+Week 4
+Skipping ahead — for example, trying to "hack" the application before completing Week 1 — is not how real engagements work and will produce a weaker final report, since you won't be able to explain why a finding matters to SecureCorp's business.
+
+Week 1 — Understanding the Environment
+Stage: Scoping & Discovery
+In the real world, consultants never begin by attacking a system. They first understand the environment: what the organization has, what is valuable, and what could go wrong if it were compromised. Attacking a system you don't understand produces a report nobody can use.
+This week, you are not testing anything yet. You are building your lab — including the centralized logging platform you'll rely on in Week 3 — and building your understanding of SecureCorp as a business.
+R&D reminder: from here on, tasks tell you what to achieve, not the exact steps. When you hit something you don't know how to do, that is the task — work it out using the official docs and the habits in "Doing R&D" above.
+
+Task 1.1 — Lab Deployment
+Objective: Stand up the environment you will assess for the rest of the engagement.
+Background: SecureCorp's customer portal, described in the Company Background section, is represented in your lab by DVWA running on a Metasploitable2 target machine. You will assess it from WSL, which represents your own consulting laptop. See the Lab Architecture section above for the full three-machine layout.
+Student Tasks
+Install VirtualBox or VMware and create your target VM running Metasploitable2 — this is Machine 2. Set its network adapter to Bridged.
+Install DVWA on the target VM, alongside Metasploitable2.
+Install WSL 2 with a Linux distribution on your host machine — this is your primary attacker/analyst environment for the rest of the engagement.
+Confirm DVWA is reachable from a browser, and that WSL can reach the target VM. If it cannot, add a second lightweight Linux VM as your fallback attacker environment instead (see Lab Setup Guide).
+Expected Output
+Screenshots showing the VM running and DVWA loaded in a browser, with the VM's IP address visible.
+A simple network diagram showing all three machines — your attacker environment (WSL or fallback VM), the target VM, and the Wazuh server VM — their IP addresses, and how they connect.
+Learning Outcome: How a basic web application environment is deployed and networked, and how an assessment environment is separated from its target.
+Hint: Take your setup screenshots now — you'll want a clean "before" state to compare against once Week 2 activity has taken place.
+
+Task 1.2 — Asset Identification
+Objective: Identify everything at SecureCorp that has value and would need protecting.
+Background: An asset is anything the business would suffer a loss from if it were compromised — not just servers and code.
+Student Tasks
+Review the Company Background section and list every asset you can identify.
+Classify each asset by type (hardware, software, data, personnel, or connectivity).
+Note who within SecureCorp would be responsible for or affected by each asset.
+Expected Output
+A completed Asset Inventory table (template below).
+Learning Outcome: Every organization has a range of assets, not just servers, that require protection.
+
+Asset
+Type
+Owner / Department
+Why It Matters
+
+Task 1.3 — CIA Analysis
+Objective: Apply the Confidentiality, Integrity, and Availability triad to real assets rather than in the abstract.
+Student Tasks
+For each major asset from Task 1.2, explain why Confidentiality matters for it.
+Explain why Integrity matters for it.
+Explain why Availability matters for it.
+Expected Output
+A completed CIA Analysis table (template below), covering at least 5 assets.
+Learning Outcome: Applying the CIA Triad to real-world assets rather than reciting the definition.
+Hint: Example — Asset: Customer Database. Confidentiality: customer data must stay private. Integrity: data must not be altered without authorization. Availability: employees must be able to reach it whenever needed.
+
+Asset
+Confidentiality
+Integrity
+Availability
+
+Task 1.4 — Threat and Risk Assessment
+Objective: Connect abstract threat categories to SecureCorp's specific assets and business impact.
+Student Tasks
+List plausible threats to SecureCorp (for example: malware, SQL injection, brute force, insider threat, phishing).
+For each threat, identify which asset is affected and what the business impact would be.
+Recommend a security control that would reduce the risk.
+Expected Output
+A completed Risk Assessment table (template below).
+Learning Outcome: How threats translate into real business impact, and how controls reduce risk.
+
+Asset
+Threat
+Vulnerability
+Impact
+Risk Rating
+Recommendation
+
+Task 1.5 — Deploy Centralized Logging (Wazuh)
+Objective: Stand up centralized log collection so Week 3 investigation works from a real SIEM instead of manually reading log files.
+Background: Wazuh's manager and dashboard require Linux, so they run on their own separate Ubuntu VM (Machine 3), not on the target machine — a real security team never runs its monitoring on the same box it is monitoring. Windows can only run the lightweight Wazuh agent, not the full server, which is why the optional Windows VM below only ever runs the agent.
+Student Tasks
+Install the Wazuh manager and dashboard on your separate Wazuh server VM (Machine 3).
+Install a Wazuh agent on the target VM (Machine 2) and enroll it with the manager on Machine 3, so the target's authentication and DVWA logs are ingested.
+Optional/stretch: set up a Windows VM using Microsoft's free evaluation image, install only the Wazuh agent on it, and enroll it with your manager. This represents a monitored SecureCorp employee workstation.
+Expected Output
+A screenshot of the Wazuh dashboard showing your target VM's agent as Active.
+If completed, a screenshot showing the Windows agent as Active.
+Learning Outcome: How centralized logging/SIEM platforms are deployed, and the practical difference between a Linux-only server component and a cross-platform agent.
+Hint: Use Wazuh's single-node install script — this is a lab-scale deployment, not a production multi-node cluster.
+
+Week Deliverables
+☐  Lab setup screenshots
+☐  Asset Inventory
+☐  CIA Analysis
+☐  Risk Assessment table
+☐  Wazuh dashboard screenshot showing at least one agent Active
+☐  A short progress note (3–4 bullet points) on what you completed and any blockers
+
+Week 2 — Red Team Assessment (Network & Web Attack Surface)
+Stage: Assessment
+This phase introduces the mindset professionals call the Red Team: thinking like an attacker in order to find weaknesses before a real one does. Your objective is not advanced penetration testing — it is to carry out the required, well-understood attack simulations against your target and document them precisely enough for Week 3. Four of the required activities (Tasks 2.3–2.6) are application attacks against DVWA; the other two (Tasks 2.7–2.8) are network-service authentication attacks against FTP and SSH. Comparing how these different layers generate evidence is a deliberate part of the design — not a repeat of the same lesson.
+Everything you do this week must stay inside the Rules of Engagement defined earlier: your own lab, nothing external. Run each attack from WSL (or your fallback attacker VM) against the target VM over the network — not locally on the target itself.
+The Assessment Method: Recon Before Exploitation
+Real attackers do not start by attacking. They work through stages, each answering a different question. Follow the same order this week — it keeps your evidence organized and your report credible.
+Reconnaissance — "What can I see?" Discover the target's IP and which ports respond.
+Enumeration — "What services are running?" Identify the service and, where possible, its version behind each open port.
+Assessment — "What appears vulnerable?" Decide which services or application inputs look weak.
+Exploitation / Attack Simulation — "Can I demonstrate the weakness?" Carry out the controlled attack.
+Evidence — "Can I prove it?" Capture the screenshot, output, and timestamp before moving on.
+Note that reconnaissance and enumeration (Nmap, service discovery) are not attacks — they are how you decide what to attack. This is why Task 2.1 comes first.
+What You Should NOT Do
+You are not being assessed on how much damage you can cause. You are being assessed on whether you can work through the full professional cycle:
+identify → demonstrate → document → detect → investigate → explain → remediate
+A clean, well-documented attack that you can detect and explain is worth far more than a dramatic one you cannot. Keep each attack controlled and small — just enough to prove the weakness exists and to generate the evidence you will need in Week 3.
+Before You Attack — Capture a Baseline
+Before you run a single attack, record what the environment looks like when nothing is wrong. Defenders call this a baseline — the "normal" you compare against later. Without it, you cannot tell what your attacks actually changed, and your Week 3 investigation loses its most useful reference point.
+Capture and save, clearly labelled as "baseline":
+The target's IP address, open ports, and running services.
+The DVWA application loading normally in the browser.
+The target's FTP and SSH services are reachable from the attacker environment.
+The Wazuh agent showing as Active and the dashboard in its quiet, pre-attack state.
+Required: take a baseline screenshot of the Wazuh dashboard before conducting the Week 2 attacks. In Week 3 you will compare it against the post-attack state to see exactly what your activity produced.
+
+Task 2.1 — Network Discovery
+Objective: Understand how an attacker gathers information about a target before attempting anything else.
+Student Tasks
+Identify the IP address, open ports, running services, and the authentication or application attack surface each one represents on your target VM.
+Document everything you discover.
+Expected Output
+A recorded scan output listing IP, open ports, and services, with a short note on what each open port suggests is running.
+Learning Outcome: How attackers perform reconnaissance before attempting an attack.
+Hint: Think about what information an attacker can discover about a target before ever attempting to exploit it.
+
+Task 2.2 — Web Application Mapping
+Objective: Understand the attack surface of the application before testing it.
+Student Tasks
+Browse DVWA and identify its login page and each vulnerability module you'll be using this week (Brute Force, SQL Injection, XSS, Command Injection).
+Create a simple map noting what each module does and what input it accepts.
+Expected Output
+An application map listing each module and what it does.
+Learning Outcome: Recognizing an application's attack surface before testing it.
+
+Task 2.3 — Attack Simulation 1 — Brute Force
+Objective: Demonstrate a credential attack against SecureCorp's customer portal login and generate real application evidence for Week 3.
+Background: DVWA's Brute Force module is intentionally vulnerable to repeated login attempts. Set DVWA's security level to "low" for this attack.
+Student Tasks
+From WSL (or your fallback attacker VM), run a brute-force attack against DVWA's Brute Force login page using a small, realistic password list.
+Record the number of attempts, timing, and result.
+Expected Output
+Terminal output/log of the DVWA brute-force attack, with timestamps and the result. Record the exact start and end time and the source IP used, since you'll need them to locate this activity in Wazuh during Week 3.
+Learning Outcome: How brute-force and credential attacks work in practice, and why weak or reused passwords are a real business risk.
+Hint: Hydra can automate both. Keep your wordlist small — the point is to observe how the attack behaves, not to run it for hours.
+
+Task 2.4 — Attack Simulation 2 — SQL Injection
+Objective: Extract data DVWA's customer portal should protect, the way a real attacker would.
+Background: Use DVWA's SQL Injection module at security level "low."
+Student Tasks
+Identify the injectable input field.
+Craft a payload that returns data you shouldn't normally see (for example, additional user records).
+Record the exact payload and the response.
+Expected Output
+A screenshot of the payload and the resulting data disclosure, with a timestamp and the source IP used, since you'll need both to locate this activity in Wazuh during Week 3.
+Learning Outcome: How unsanitized input becomes a data-disclosure vulnerability.
+Hint: Start with a single quote to see how the application reacts to broken query syntax.
+
+Task 2.5 — Attack Simulation 3 — Cross-Site Scripting (XSS)
+Objective: Demonstrate how unsanitized input can execute code in another user's browser.
+Background: Use DVWA's XSS (Reflected or Stored) module at security level "low."
+Student Tasks
+Inject a script payload into a vulnerable field.
+Confirm it executes (for example, an alert box).
+Record the payload, where you placed it, and the result.
+Expected Output
+A screenshot of the payload executing, with a timestamp and the source IP used, since you'll need both to locate this activity in Wazuh during Week 3.
+Learning Outcome: The difference between reflected and stored XSS, and why input sanitization matters.
+Hint: A simple alert-box script is enough to prove the vulnerability — you don't need anything more elaborate.
+
+Task 2.6 — Attack Simulation 4 — Command Injection
+Objective: Demonstrate how an application that passes user input to the operating system can be hijacked to run arbitrary commands.
+Background: Use DVWA's Command Injection module at security level "low."
+Student Tasks
+Identify the field that passes input to a system command.
+Chain an additional OS command onto the expected input.
+Record the payload and the command output returned by the application.
+Expected Output
+A screenshot of the payload and the resulting command output, with a timestamp and the source IP used, since you'll need both to locate this activity in Wazuh during Week 3.
+Learning Outcome: Why passing user input directly to the OS is dangerous, and how attackers escalate from a web form to server-level access.
+Hint: Chain a harmless command, like listing files, rather than anything destructive.
+
+Task 2.7 — Attack Simulation 5 — FTP User-Login Brute Force
+Objective: Assess a network-service authentication mechanism that is separate from both SSH and the DVWA web application, and understand how FTP login activity appears in security logs.
+Background: The target exposes an FTP service on port 21 (see the Ports & Services Reference). FTP is a different authentication surface from both SSH (Task 2.8) and the DVWA login form (Task 2.3) — comparing how each generates evidence is the point of this task. Use the same low-privilege account and small password list approach you used for the other credential attacks.
+Student Tasks
+Confirm the FTP service you identified during Task 2.1 and identify its login prompt from the attacker environment.
+From WSL (or your fallback attacker VM), run a controlled brute-force attack against the FTP login using a small password list.
+Record the source IP, target IP, port, username, number of attempts, start and end time, and the result.
+Before you leave this task, identify which target-side log should contain this authentication activity — you'll need it in Week 3, whether or not Wazuh alerts on it automatically.
+Expected Output
+A screenshot or terminal output of the FTP brute-force attempts, with a timestamp, plus the expected log source you identified.
+Learning Outcome: How network-service authentication attacks generate different telemetry than web application attacks, and why the same attack technique (credential brute-forcing) can look completely different in the logs depending on the service it targets.
+Hint: Hydra supports FTP the same way it supports SSH and HTTP forms — research the right module/flag. Keep your attempt count small; the point is to observe the behavior, not to run it for hours.
+
+Task 2.8 — Attack Simulation 6 — SSH Brute Force (Wazuh Detection)
+Objective: Brute-force the SSH login of a user account on the target VM and confirm whether Wazuh automatically detects it as an alert.
+Background: Use the low-privilege user account you create for this task on the target VM — give it a deliberately weak password. The target's Linux authentication logs should provide telemetry for the SSH activity. If the Wazuh agent, log collection, and applicable rules are correctly configured, repeated authentication failures are expected to generate a Wazuh alert — but record the actual result from your lab rather than assuming an alert exists.
+Student Tasks
+On the target VM, create the low-privilege user account described above.
+From WSL (or your fallback attacker VM), run a brute-force attack against that user's SSH login on the target VM.
+Open the Wazuh dashboard and determine whether the attempts appear as an automatic alert. If no alert is generated, locate the corresponding authentication events through manual log investigation.
+Record the target user, the number of attempts, the timestamp, and the result.
+Expected Output
+A screenshot of the Wazuh alert or corresponding authentication event, with a timestamp and the detection status recorded as Automatic, Manual, or Not Visible.
+Learning Outcome: How brute-force and credential attacks work in practice, and why weak or reused passwords are a real business risk.
+Hint: Hydra can automate both. Keep your wordlist small — the point is to observe how the attack behaves, not to run it for hours.
+
+Attack Log — Required Assessment Activities
+Attack
+Target / Module
+Payload / Method
+Timestamp
+Result / Evidence
+Wazuh Detection Status (Week 3)
+
+Week Deliverables
+☐  Network discovery notes (IP, ports, services)
+☐  Application map
+☐  Completed Attack Log covering all required assessment activities, each with evidence and a timestamp
+☐  A short progress note (3–4 bullet points)
+Keep everything you generate this week — especially the timestamps for all six activities. In Week 3, you'll pull each of these up inside the Wazuh dashboard and investigate them as if you were seeing them for the first time.
+
+Week 3 — Investigation & Detection
+Stage: Detection & Investigation
+This week, SecureCorp's monitoring team has detected unusual activity on the customer portal. That activity is the required assessment activities (Tasks 2.3–2.8) you carried out in Week 2. Your task is now to switch sides: put on the Blue Team hat and investigate those same activities inside the Wazuh dashboard, as if you had no prior knowledge of what caused them.
+This is the same technique real defenders use: correlating SIEM data against known attack patterns to determine what happened, when, and how serious it is.
+You Are Now Changing Roles
+During Week 2 you knew exactly what was happening, because you were the attacker. During Week 3, pretend you do not know what caused the activity. You are now a SOC analyst who arrives after the fact, sees only the evidence the security team collected, and must reconstruct the story. The discipline of setting aside what you already know — and letting the evidence speak — is the core skill of this week.
+Week 2: "I did this attack."   →   Week 3: "I am a SOC analyst. What happened?"
+Event → Alert → Investigation → Incident
+Important: an event is not necessarily an alert. Some of your attacks will generate an automatic Wazuh alert. Others will only sit quietly in the collected logs and require you, the analyst, to go looking for them. Learning the difference is one of the strongest Blue Team lessons in this project. These four terms describe how raw activity becomes a declared incident:
+Event — any single logged activity, such as one login attempt or one HTTP request. Most events are harmless.
+Alert — an event, or pattern of events, that a rule flagged as worth a human's attention (for example, many failed logins in a row).
+Investigation — the analyst's work of examining the alert and surrounding logs to decide what really happened.
+Incident — a confirmed security event that has real impact and requires a response, such as confirmed unauthorized access.
+Rough guide: a single failed login is an event; repeated failed logins is an alert; confirmed unauthorized access is an incident. Part of your job this week is to decide, for each activity, where it sits on that scale.
+Detection Coverage Matrix
+As you investigate, fill in what actually happened in your lab. The "Auto Alert?" and "Manual Search?" columns below are what you should typically expect — but your job is to record your real result, which may differ. This teaches a crucial lesson: detection coverage is never perfect, and a SIEM shows you only what its rules and its collected logs allow.
+Activity
+Expected Evidence
+Auto Alert?
+Manual Search?
+Log Source
+SSH brute force (2.8)
+Repeated authentication failures
+Expected if authentication logs and applicable rules are correctly configured
+Optional
+Linux auth log
+DVWA brute force (2.3)
+Repeated login POSTs / auth activity
+May vary
+Yes
+Apache / DVWA log
+FTP brute force (2.7)
+Repeated FTP authentication failures
+May vary
+Yes
+FTP / vsftpd log
+SQL Injection (2.4)
+Suspicious HTTP request with SQL payload
+May not
+Yes
+Apache / DVWA log
+XSS (2.5)
+Suspicious HTTP request with script payload
+May not
+Yes
+Apache / DVWA log
+Command Injection (2.6)
+Suspicious HTTP request with OS command
+May not
+Yes
+Apache / DVWA log
+Nmap scan (2.1)
+Burst of connections across many ports
+May not
+Depends
+Network / security log
+After completing the matrix, answer these four questions in your detection notes: What did Wazuh detect automatically? What did it collect but not alert on? What evidence, if any, was missing? What would you improve? These questions lead directly into the concept of SIEM tuning — improving detection so that important activity does not go unnoticed — without needing to write advanced rules.
+
+Task 3.1 — Confirm Monitoring Coverage
+Objective: Confirm your monitoring is actually capturing what you did in Week 2 before you try to investigate it.
+Student Tasks
+Open the Wazuh dashboard and confirm your target VM's agent is Active with recent events.
+Confirm the DVWA/Apache log and the Linux authentication log both appear as ingested log sources.
+Expected Output
+A screenshot of the dashboard confirming log ingestion is current (a recent timestamp).
+Learning Outcome: Verifying monitoring coverage before relying on it — a step real defenders check first, since coverage gaps are how real incidents get missed.
+
+Task 3.2 — Investigate the Required Assessment Activities
+Objective: Locate the evidence of each Week 2 attack inside the Wazuh dashboard, the way a SOC analyst triages alerts.
+Background: Wazuh's built-in rules will likely auto-flag the SSH brute-force (Task 2.8) as repeated authentication failures, since it targets Linux's own authentication log directly. The FTP brute-force (Task 2.7) and the DVWA brute-force (Task 2.3) are less certain to auto-alert — whether they do depends on how their logs are collected and which rules are active in your lab, so record your actual result rather than assuming. SQL Injection, XSS, and Command Injection should be treated as manual investigation exercises in the Core project — search the ingested Apache/DVWA logs for the payloads and timestamps you recorded in Week 2. If an automatic alert is also generated in your lab, record that result too.
+Student Tasks
+For the three brute-force attacks (Tasks 2.3, 2.7, and 2.8), find the corresponding alerts or log entries in Wazuh.
+For each of the other three attacks (SQL Injection, XSS, and Command Injection), search the dashboard's log data using your recorded timestamp and payload, and confirm you can locate it.
+For each required assessment activity, note whether Wazuh auto-alerted or required a manual log search.
+A screenshot alone is not sufficient. For each activity, use the extended fields in the Standard Attack Evidence Template (Appendix B) — detection status, log source, rule ID and level where applicable, your search method, and a short explanation of how the evidence connects to the attack you performed. If the expected evidence cannot be found, record "Not Visible" and explain which telemetry or logging limitation prevented the investigation — a missing log is itself a valid, gradeable finding.
+For each activity, answer the same ten analyst questions. Using the same structure every time builds a repeatable SOC investigation habit:
+What happened?
+When did it happen?
+Which system was affected?
+Which source generated the activity?
+What was the source IP?
+What account or application was targeted?
+Was it automatically detected, or did you have to search for it?
+What evidence supports your conclusion?
+What was the potential impact?
+What should the organization do next?
+Not every question will have a clean answer for every activity — where the evidence does not tell you, say so. "The log does not show X" is itself a valid analyst finding.
+Expected Output
+One short detection note (a few sentences) per required assessment activity, each with a supporting dashboard screenshot.
+Learning Outcome: The real-world difference between automatic detection and manual log review, and why SIEM tuning matters.
+Hint: Search by source IP or by a distinctive part of your payload to narrow results quickly.
+
+Task 3.3 — Incident Investigation
+Objective: Practice evidence-based incident investigation and produce a report SecureCorp's management could act on.
+Background: SecureCorp has reported suspicious activity and wants to know what happened. Use your Task 3.2 detection notes as your evidence base.
+Student Tasks
+Determine what happened, which system was affected, how you identified it, and what evidence supports your conclusion.
+Recommend immediate actions SecureCorp should take.
+Expected Output
+A completed Incident Report (template below), including a timeline of events.
+Learning Outcome: Basic incident response and evidence-based analysis.
+
+Time
+Event
+Source (Wazuh/Log)
+Evidence / Notes
+
+Classify Each Activity
+Using the Event → Alert → Investigation → Incident scale from earlier this week, classify each activity you investigated. There is no single correct answer for every case — justify your classification with the evidence you found.
+Activity
+Typical Classification
+Single failed login attempt
+Event
+Repeated failed login attempts
+Alert
+Confirmed unauthorized access
+Incident
+Add a row for each required Week 2 assessment activity and record how you classified it, in your own report.
+
+Week Deliverables
+☐  Monitoring coverage confirmation screenshot
+☐  One detection note per required assessment activity, with dashboard screenshots
+☐  Incident Report with timeline and evidence
+☐  A short progress note (3–4 bullet points)
+
+Week 4 — Recommendations & Client Debrief
+Stage: Remediation & Reporting
+Findings without recommendations are not useful to a client. This final week is about turning three weeks of technical work into a plan SecureCorp's leadership can actually act on — and presenting it the way a consultant would in a real closing meeting.
+
+Task 4.1 — Security Recommendations
+Objective: Translate findings into practical, prioritized improvements.
+Student Tasks
+Recommend improvements across areas such as password policy, multi-factor authentication, role-based access control, firewall configuration, patch management, logging and monitoring, backup strategy, and user security awareness.
+Explain why each recommendation matters, referencing specific findings from Weeks 2 and 3 where possible.
+Expected Output
+A completed Recommendations table (template below), each item tied to a finding where applicable.
+Learning Outcome: Understanding how specific security controls reduce specific risks.
+
+Area
+Current State
+Recommendation
+Priority
+
+Task 4.2 — Executive Summary
+Objective: Communicate technical findings to a non-technical business audience.
+Student Tasks
+Write a one-page summary covering overall security posture, the most critical findings, the highest business risks, and your top recommendations.
+Write it so a non-technical manager could understand it without any of your Week 2–3 detail.
+Expected Output
+A one-page Executive Summary.
+Learning Outcome: Communicating technical findings to business stakeholders.
+
+Task 4.3 — Final Client Debrief
+Objective: Present your engagement the way a consultant closes out real client work.
+Student Tasks
+Prepare a 10–15 minute presentation covering SecureCorp's security posture, key findings, evidence (a live demonstration is optional), recommendations, and lessons learned.
+Be ready to answer follow-up questions from "SecureCorp leadership" (your instructor/peers) about your findings.
+Expected Output
+A slide deck or presentation document, and a delivered presentation.
+Learning Outcome: Presenting a security assessment professionally and confidently.
+
+Final Deliverables Summary
+Submit the items in Appendix E as a single package at the end of the engagement. They are the same deliverables called out at the end of each week above — Appendix E simply consolidates them into one submission checklist.
+
+Appendix A — Master Report Template
+Assemble your final report in this order. Each section corresponds to a deliverable produced earlier in the handbook.
+1. Cover Page — engagement title, your name, date
+2. Executive Summary (Task 4.2)
+3. Scope & Rules of Engagement (Project Rules section)
+4. Asset Inventory & CIA Analysis (Tasks 1.2–1.3)
+5. Risk Assessment (Task 1.4)
+6. Methodology — how you approached discovery, testing, and investigation, including your Wazuh deployment (Task 1.5)
+7. Attack Simulation Findings — Attack Log for all required assessment activities (Tasks 2.3–2.8)
+8. Detection Coverage, Investigation Notes & Incident Timeline (Tasks 3.1–3.3)
+9. Recommendations (Task 4.1)
+10. Appendices — raw scan output, full logs, additional screenshots
+
+Appendix B — Evidence Collection Guidelines
+Findings without evidence will not be credited. Follow these guidelines for each evidence type.
+Screenshots
+Capture the full browser or terminal window, not a cropped fragment — the URL bar or prompt should be visible.
+Name files descriptively, e.g. week2-sqli-payload.png.
+Terminal Output
+Capture the full command you ran along with its output, not just the result.
+Save as text where possible so it can be copied into your report.
+Wazuh Dashboard Evidence
+Capture the full dashboard panel, including the timestamp and source fields, not just the highlighted row.
+Note whether the evidence came from an automatic alert or a manual search.
+Log Evidence
+Include enough surrounding lines for context — a single isolated line is not sufficient.
+Highlight or annotate the specific line(s) that support your finding.
+Standard Attack Evidence Template
+Record every attack in the same structure. Consistency across the class makes your report easier to read and easier to mark. Copy this table once per attack.
+Attack ID
+
+Target
+
+Source IP (attacker)
+
+Target IP
+
+Port
+
+Service / Application
+
+Attack type
+
+Tool used
+
+Payload / Method
+
+Start time
+
+End time
+
+Result
+
+Evidence (file names)
+
+Wazuh event / alert / log evidence
+
+Detection status (Automatic / Manual / Not Visible)
+
+Wazuh log source
+
+Wazuh rule ID (if an alert exists)
+
+Wazuh rule level (if applicable)
+
+Wazuh search method / filter used
+
+Analyst explanation (how the evidence supports the attack)
+
+Standard Finding Template
+An attack result is not yet a finding. A finding turns your evidence into a professional statement of a security problem. Use this template for each weakness you report.
+Title
+e.g. Weak SSH Authentication
+Affected asset
+e.g. Metasploitable2 target server
+Affected service
+e.g. SSH
+Evidence
+Screenshot / log reference
+Attack demonstrated
+e.g. SSH brute force
+Impact
+What could happen to SecureCorp if exploited
+Risk rating
+Low / Moderate / High / Critical
+Detection
+How it appeared in Wazuh (alert or manual)
+Recommendation
+The control that would fix it
+Evidence File Naming
+Name every evidence file so anyone can tell what it is without opening it. Use the pattern Week-Task-description, for example:
+W1-T1.1-target.png, W1-T1.1-network.png, W1-T1.5-wazuh-agent.png, W2-T2.1-nmap.txt, W2-T2.3-dvwa-bruteforce.png, W2-T2.4-sqli.png, W2-T2.5-xss.png, W2-T2.6-command-injection.png, W2-T2.7-ftp-bruteforce.png, W2-T2.8-ssh-bruteforce.png, W3-T3.2-dvwa-bruteforce-wazuh.png, W3-T3.2-sqli-wazuh.png, W3-T3.2-xss-wazuh.png, W3-T3.2-command-injection-wazuh.png, W3-T3.2-ftp-wazuh.png, W3-T3.2-ssh-wazuh.png, W3-T3.3-timeline.png
+A consistent naming scheme saves you time when assembling the report and makes your evidence trail easy to follow.
+
+Appendix C — Marking Rubric
+Total: 100 marks.
+Criteria
+Marks
+Lab Setup & Wazuh Deployment
+10
+Asset Identification & Risk Assessment
+10
+Attack Simulations (Week 2)
+20
+Investigation & Detection (Week 3)
+25
+Security Recommendations
+15
+Final Report Quality
+10
+Presentation & Communication
+10
+
+Appendix D — Common Mistakes
+Claiming a finding with no supporting screenshot, terminal output, or log excerpt.
+Missing recommendations — a finding without a suggested fix is incomplete.
+Unsupported claims — stating something is a risk without explaining the impact.
+No references to course material or standard terminology (CVE, CVSS, CIA triad, etc.) where relevant.
+Poor organization — findings scattered instead of following the report template in Appendix A.
+Treating Week 3 as unrelated to Week 2, instead of investigating your own Week 2 attacks.
+Not recording timestamps during Week 2 attacks, making them hard or impossible to locate in Wazuh during Week 3.
+Writing the Executive Summary in the same technical language as the rest of the report.
+
+Appendix E — Submission Checklist
+This is your single source of truth for what to submit. Before submitting, confirm you have every item below.
+☐  Network Diagram / Application Map
+☐  Asset Inventory
+☐  CIA Analysis
+☐  Risk Assessment
+☐  Wazuh dashboard screenshot (agent Active)
+☐  Attack Log covering all required assessment activities, each with evidence and a timestamp
+☐  One detection note per required assessment activity, with Wazuh dashboard screenshots
+☐  Incident Report (with timeline and evidence)
+☐  Security Recommendations
+☐  Executive Summary
+☐  Final Presentation
+☐  All evidence files named and organized per Appendix B
+☐  Wazuh detection status recorded for every activity: Automatic / Manual / Not Visible
+
+Appendix F — Alternative Lab Architectures
+The main handbook assumes the default architecture below. If your hardware or network cannot support it, use one of these approved alternatives instead — note which one you used in your report's Methodology section.
+Option A — Recommended (Default)
+WSL2 (attacker) + Metasploitable2 target VM + Wazuh server VM, all on a Bridged network adapter. This is the architecture assumed throughout the handbook.
+Option B — Dedicated Attacker VM
+Use a lightweight Linux VM (e.g. Kali, or plain Ubuntu with Nmap/Hydra/Wireshark added) instead of WSL2 as your attacker environment. Choose this if WSL2 cannot reach your target VM even on a bridged network.
+Option C — Low-Resource Lab
+If your host cannot comfortably run three VMs at once, use an instructor-provided or shared Wazuh server if available, so your own machine only needs to run the attacker environment and the target VM. Confirm this option with your instructor before relying on it — it changes what you can independently demonstrate about Wazuh deployment in Task 1.5.
+Option D — Advanced / Extended Lab
+Dedicated attacker VM + target VM + Wazuh VM + the optional Windows VM with its own Wazuh agent, each on its own machine. This is the architecture to use if you are attempting the Stretch tier.
+Whichever option you use, the Ports & Services Reference and "Before You Move On" verification checklist in the Lab Setup Guide still apply — the port numbers and troubleshooting order do not change with the architecture.

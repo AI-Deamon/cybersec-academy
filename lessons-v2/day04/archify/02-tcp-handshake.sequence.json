@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "TCP: The Reliable Phone Call",
+    "output": "lessons-v2/day04/archify/02-tcp-handshake.html",
+    "viewBox": [1068, 560],
+    "column_fit": "spread",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": { "entries": { "emphasis": { "label": "handshake" }, "return": { "label": "reply / ACK" }, "dashed": { "label": "lost on the way" }, "security": { "label": "re-send" }, "default": { "label": "data chunk" } } },
+    "views": [
+      { "id": "handshake", "label": "3-way handshake", "focus": ["laptop", "server"], "note": "Hello? Hello, I can hear you. Great, go ahead. Nothing is sent until all three land." },
+      { "id": "numbered-data", "label": "Numbered + acknowledged", "focus": ["laptop", "server"], "note": "Every chunk carries a number; the other side confirms what it got." },
+      { "id": "lost-and-resent", "label": "A lost chunk", "focus": ["laptop", "server"], "note": "No ACK arrives, so the sender re-sends. This is what IP alone never does." }
+    ]
+  },
+  "participants": [
+    { "id": "laptop", "type": "frontend", "label": "Your laptop", "sublabel": "source port 51514" },
+    { "id": "server", "type": "backend", "label": "Web server", "sublabel": "listening on 443" }
+  ],
+  "segments": [
+    { "from": 165, "to": 262, "label": "1. Handshake: can we talk?" },
+    { "from": 278, "to": 345, "label": "2. Data: numbered and acknowledged" },
+    { "from": 360, "to": 470, "label": "3. Loss: no ACK, so re-send" }
+  ],
+  "messages": [
+    { "id": "syn", "from": "laptop", "to": "server", "y": 182, "label": "SYN  \"can we talk?\"", "variant": "emphasis" },
+    { "id": "syn-ack", "from": "server", "to": "laptop", "y": 212, "label": "SYN-ACK  \"yes, can you hear me?\"", "variant": "return" },
+    { "id": "ack", "from": "laptop", "to": "server", "y": 242, "label": "ACK  \"yes. go.\"", "variant": "emphasis", "note": "connection open" },
+    { "id": "chunk-1", "from": "laptop", "to": "server", "y": 295, "label": "chunk #1", "variant": "default" },
+    { "id": "ack-1", "from": "server", "to": "laptop", "y": 325, "label": "ACK: got #1", "variant": "return" },
+    { "id": "chunk-2", "from": "laptop", "to": "server", "y": 378, "label": "chunk #2 (lost on the way)", "variant": "dashed" },
+    { "id": "chunk-2-again", "from": "laptop", "to": "server", "y": 418, "label": "chunk #2 again (no ACK came back)", "variant": "security" },
+    { "id": "ack-2", "from": "server", "to": "laptop", "y": 450, "label": "ACK: got #2", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "laptop", "from": 177, "to": 455, "type": "frontend" },
+    { "participant": "server", "from": 207, "to": 455, "type": "backend" }
+  ],
+  "cards": [
+    { "dot": "violet", "title": "Why TCP exists", "items": ["IP just fires packets and hopes (Day 3)", "TCP adds a connection, numbering, ACKs and re-sends", "Result: complete and in order, or an error", "Web, email, SSH all sit on top of it"] },
+    { "dot": "amber", "title": "Class check", "items": ["How many messages before the first real byte of data?", "What tells the sender that chunk #2 never arrived?", "Which port does the server use, and which did the laptop pick?"] }
+  ]
+}

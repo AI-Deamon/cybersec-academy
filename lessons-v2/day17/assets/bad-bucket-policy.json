@@ -1,0 +1,25 @@
+{
+  "_comment": "Day 17: an S3-style bucket policy on 'northwind-customer-invoices'.",
+  "_intent": "Only the invoicing service (role: arn:aws:iam::111122223333:role/invoicing-svc) should read/write objects. Customers get their invoice via a signed URL the app generates - they never touch the bucket directly.",
+
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicRead",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": ["s3:GetObject", "s3:ListBucket"],
+      "Resource": [
+        "arn:aws:s3:::northwind-customer-invoices",
+        "arn:aws:s3:::northwind-customer-invoices/*"
+      ]
+    }
+  ],
+
+  "_your_task": [
+    "1. Who can currently read the invoices? (careful: Principal is '*')",
+    "2. What's the over-grant, and why is s3:ListBucket especially bad here?",
+    "3. Rewrite so ONLY the invoicing-svc role can GetObject/PutObject on the objects, and nobody can ListBucket.",
+    "4. Name one AWS account-level setting that would have blocked this regardless of the policy. (hint: 'Block Public Access')"
+  ]
+}

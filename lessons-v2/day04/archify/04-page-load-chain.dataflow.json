@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Loading a Web Page: The Whole Chain",
+    "output": "lessons-v2/day04/archify/04-page-load-chain.html",
+    "viewBox": [1068, 520],
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": { "entries": { "emphasis": { "label": "the chain" }, "security": { "label": "encrypted from here" } } },
+    "views": [
+      { "id": "find", "label": "1. Find it (DNS)", "focus": ["dns"], "note": "example.com becomes an IP address. Routers need numbers, not names." },
+      { "id": "connect-lock", "label": "2-3. Connect, then lock", "focus": ["tcp", "tls"], "note": "TCP opens a reliable line to that IP on port 443; TLS scrambles it and checks the server's ID." },
+      { "id": "talk", "label": "4. The conversation (HTTP)", "focus": ["request", "response"], "note": "Inside the locked line it is plain text: GET /, then 200 OK plus the HTML." },
+      { "id": "render-repeat", "label": "5-7. Render, then repeat", "focus": ["response", "render"], "note": "The browser draws the page, finds it needs css/js/images, and runs the chain again for each." }
+    ]
+  },
+  "stages": [
+    { "label": "1. Find" },
+    { "label": "2. Connect" },
+    { "label": "3. Lock" },
+    { "label": "4. Talk" },
+    { "label": "5-7. Show" }
+  ],
+  "nodes": [
+    { "id": "dns", "type": "cloud", "label": "DNS", "sublabel": "example.com -> IP", "tag": "name to number", "stage": 0, "row": 1 },
+    { "id": "tcp", "type": "backend", "label": "TCP", "sublabel": "handshake to port 443", "tag": "reliable line", "stage": 1, "row": 1 },
+    { "id": "tls", "type": "security", "label": "TLS", "sublabel": "scramble + check ID", "tag": "the padlock", "stage": 2, "row": 1 },
+    { "id": "request", "type": "frontend", "label": "HTTP request", "sublabel": "GET / + Host + Cookie", "tag": "plain text inside", "stage": 3, "row": 0 },
+    { "id": "response", "type": "backend", "label": "HTTP response", "sublabel": "200 OK + HTML", "tag": "status + body", "stage": 3, "row": 2 },
+    { "id": "render", "type": "frontend", "label": "Browser renders", "sublabel": "repeat per css/js/img", "tag": "dozens per page", "stage": 4, "row": 1 }
+  ],
+  "flows": [
+    { "id": "dns-to-tcp", "from": "dns", "to": "tcp", "label": "IP address", "classification": "A record", "variant": "emphasis", "route": "straight", "labelDy": 52 },
+    { "id": "tcp-to-tls", "from": "tcp", "to": "tls", "label": "connected", "classification": "connection open", "variant": "emphasis", "route": "straight", "labelDy": 52 },
+    { "id": "tls-to-request", "from": "tls", "to": "request", "label": "locked line", "classification": "encrypted from here", "variant": "security" },
+    { "id": "request-to-response", "from": "request", "to": "response", "label": "server answers", "classification": "same connection", "variant": "emphasis", "fromSide": "bottom", "toSide": "top", "route": "straight", "labelDy": 24 },
+    { "id": "response-to-render", "from": "response", "to": "render", "label": "HTML", "classification": "the page", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "violet", "title": "The 7 steps (your assignment)", "items": ["1. type the URL, press Enter", "2. DNS: name to IP", "3. TCP: reliable connection to that IP:port", "4. TLS: lock the connection", "5. HTTP: request, then response", "6. the browser renders the HTML", "7. repeat 2-6 per image, script, stylesheet"] },
+    { "dot": "amber", "title": "Class check", "items": ["Which happens first, TLS or TCP? Why that order?", "Which step is the padlock, and what does it NOT promise?", "Where does a stolen session cookie live in this picture?"] }
+  ]
+}

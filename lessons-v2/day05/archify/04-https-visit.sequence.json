@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "HTTPS: What Happens When You Visit google.com",
+    "output": "lessons-v2/day05/archify/04-https-visit.sequence.html",
+    "viewBox": [1068, 528],
+    "column_fit": "spread",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": { "entries": { "emphasis": { "label": "key step" }, "return": { "label": "reply" }, "security": { "label": "verification" }, "default": { "label": "the move" }, "dashed": { "label": "before the visit" } } },
+    "views": [
+      { "id": "certified", "label": "Google got certified", "focus": ["ca", "server"], "note": "Before you visit: Google generates a key pair and gets a CA to sign a certificate for google.com." },
+      { "id": "arrives", "label": "Your browser arrives", "focus": ["browser", "server"], "note": "Your browser opens a connection. Google responds with a certificate that carries its public key and the CA's signature." },
+      { "id": "verify", "label": "Check the certificate", "focus": ["browser", "ca"], "note": "The browser checks the CA's signature against trusted root keys it already ships with — no network call needed." },
+      { "id": "encrypted", "label": "Session key and encrypted traffic", "focus": ["browser", "server"], "note": "A session key is encrypted with Google's public key and sent. From here on, everything is symmetric-encrypted." }
+    ]
+  },
+  "participants": [
+    { "id": "browser", "type": "frontend", "label": "Your browser", "sublabel": "sees the padlock" },
+    { "id": "server", "type": "backend", "label": "Google's server", "sublabel": "google.com : 443" },
+    { "id": "ca", "type": "security", "label": "Certificate Authority", "sublabel": "signs certificates" }
+  ],
+  "segments": [
+    { "from": 165, "to": 210, "label": "1. Google got certified — keys + certificate" },
+    { "from": 226, "to": 442, "label": "2. You visit google.com — live handshake" }
+  ],
+  "messages": [
+    { "id": "cert-signed", "from": "ca", "to": "server", "y": 182, "label": "signed certificate: public key + google.com", "variant": "dashed", "note": "Google generated keys, then asked the CA to sign" },
+    { "id": "client-hello", "from": "browser", "to": "server", "y": 240, "label": "ClientHello: I want HTTPS", "variant": "default", "note": "your browser opens a connection" },
+    { "id": "server-hello", "from": "server", "to": "browser", "y": 272, "label": "ServerHello + Certificate: here is my public key", "variant": "return", "note": "carries Google's public key and the CA's signature" },
+    { "id": "verify-cert", "from": "browser", "to": "ca", "y": 316, "label": "verify: did you sign this cert?", "variant": "security", "note": "checked locally — your browser ships with the CA's key" },
+    { "id": "cert-valid", "from": "ca", "to": "browser", "y": 348, "label": "signed — it belongs to google.com", "variant": "return" },
+    { "id": "session-key", "from": "browser", "to": "server", "y": 392, "label": "session key (encrypted with your public key)", "variant": "default", "note": "only Google's private key can decrypt this" },
+    { "id": "encrypted-traffic", "from": "server", "to": "browser", "y": 424, "label": "encrypted traffic — symmetric from here", "variant": "emphasis", "note": "both sides now share the session key" }
+  ],
+  "activations": [
+    { "participant": "ca", "from": 176, "to": 354, "type": "security" },
+    { "participant": "server", "from": 176, "to": 430, "type": "backend" },
+    { "participant": "browser", "from": 234, "to": 430, "type": "frontend" }
+  ],
+  "cards": [
+    { "dot": "violet", "title": "How HTTPS really works", "items": ["Before you visit: Google generates a key pair and gets a CA to sign a certificate", "When you arrive: Google sends the certificate with its public key and CA signature", "Your browser verifies the signature against trusted root keys it ships with", "A session key travels encrypted with Google's public key — then everything is symmetric"] },
+    { "dot": "amber", "title": "Class check", "items": ["What does the certificate prove?", "Who vouches for it?", "What happens if the signature doesn't verify?"] }
+  ]
+}

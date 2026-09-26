@@ -1,0 +1,5 @@
+5f4dcc3b5aa765d61d8327deb882cf99   # md5, in the wordlist
+f25a2fc72690b780b2a14e140ef6a9e0   # md5, in the wordlist
+3fc0a7acf087f549ac2b266baf94b8b1   # md5, in the wordlist
+5e6f3076f14e9f6094006d8106098d8f   # md5, NOT in the wordlist
+pbkdf2$600000$9f8e7d6c5b4a39281706f5e4d3c2b1a0$3f6eb43177b18910378e555abf387444176eb7d067c8ca33978f1ee36532e058   # salted + slow; same kind of password, hopeless in class

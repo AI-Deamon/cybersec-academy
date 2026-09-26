@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "TCP vs UDP: Phone Call or Shout Down the Hall",
+    "output": "lessons-v2/day04/archify/03-tcp-vs-udp.html",
+    "viewBox": [1068, 520],
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": { "entries": { "emphasis": { "label": "TCP: guaranteed" }, "dashed": { "label": "UDP: best effort" } } },
+    "views": [
+      { "id": "tcp-path", "label": "TCP: the phone call", "focus": ["tcp-app", "handshake", "tcp-stream", "tcp-receiver"], "note": "Connect first, then numbered chunks, each acknowledged, gaps re-sent." },
+      { "id": "udp-path", "label": "UDP: shout and hope", "focus": ["udp-app", "datagrams", "udp-receiver"], "note": "No handshake, no numbering, no re-send. Fast, and fine when a lost piece does not matter." },
+      { "id": "who-uses-what", "label": "Who uses which", "focus": ["tcp-receiver", "udp-receiver"], "note": "Web, email, SSH need every byte: TCP. DNS, video calls, games need speed: UDP." }
+    ]
+  },
+  "stages": [
+    { "label": "Sender" },
+    { "label": "Setup" },
+    { "label": "Transfer" },
+    { "label": "Receiver" }
+  ],
+  "nodes": [
+    { "id": "tcp-app", "type": "frontend", "label": "App over TCP", "sublabel": "browser, SSH, email", "tag": "needs every byte", "stage": 0, "row": 0 },
+    { "id": "handshake", "type": "security", "label": "3-way handshake", "sublabel": "SYN, SYN-ACK, ACK", "tag": "connection first", "stage": 1, "row": 0 },
+    { "id": "tcp-stream", "type": "messagebus", "label": "Numbered chunks", "sublabel": "each one acknowledged", "tag": "lost = re-sent", "stage": 2, "row": 0 },
+    { "id": "tcp-receiver", "type": "backend", "label": "Arrives complete", "sublabel": "in order, or an error", "tag": "reliable", "stage": 3, "row": 0 },
+    { "id": "udp-app", "type": "frontend", "label": "App over UDP", "sublabel": "DNS, video call, game", "tag": "needs speed", "stage": 0, "row": 2 },
+    { "id": "datagrams", "type": "messagebus", "label": "Datagrams", "sublabel": "fire and forget", "tag": "no ACK", "stage": 2, "row": 2 },
+    { "id": "udp-receiver", "type": "backend", "label": "Arrives... mostly", "sublabel": "some may go missing", "tag": "best effort", "stage": 3, "row": 2 }
+  ],
+  "flows": [
+    { "id": "tcp-connect", "from": "tcp-app", "to": "handshake", "label": "can we talk?", "classification": "connection setup", "variant": "emphasis", "route": "straight", "labelDy": 52 },
+    { "id": "tcp-send", "from": "handshake", "to": "tcp-stream", "label": "connection open", "classification": "ordered stream", "variant": "emphasis", "route": "straight", "labelDy": 52 },
+    { "id": "tcp-deliver", "from": "tcp-stream", "to": "tcp-receiver", "label": "in order, gaps re-sent", "classification": "guaranteed", "variant": "emphasis", "route": "straight", "labelDy": 52 },
+    { "id": "udp-send", "from": "udp-app", "to": "datagrams", "label": "no handshake, just send", "classification": "no setup", "variant": "dashed", "route": "straight", "labelDy": 52 },
+    { "id": "udp-deliver", "from": "datagrams", "to": "udp-receiver", "label": "no re-send if lost", "classification": "best effort", "variant": "dashed", "route": "straight", "labelDy": 52 }
+  ],
+  "cards": [
+    { "dot": "violet", "title": "Same job, different promise", "items": ["Both put a PORT number on the packet (which program)", "TCP promises: complete, in order, or an error", "UDP promises: nothing, but it is fast and light", "The app picks. You do not choose per packet"] },
+    { "dot": "emerald", "title": "Why anyone would pick UDP", "items": ["A DNS lookup is one tiny question: a handshake would triple the wait", "A video call: a lost frame is better late than re-sent, so skip it", "Games: the newest position matters, not the old one", "QUIC / HTTP/3 = HTTP on top of UDP with reliability rebuilt on top"] },
+    { "dot": "amber", "title": "Class check", "items": ["Loading a bank page: TCP or UDP? Why?", "A Zoom call dropped one frame. Should it be re-sent?", "Which of these has a 3-way handshake?"] }
+  ]
+}

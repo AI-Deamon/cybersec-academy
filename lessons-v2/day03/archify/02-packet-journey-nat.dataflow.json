@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "One Packet's Journey: Private Laptop to Public Website",
+    "output": "lessons-v2/day03/archify/02-packet-journey-nat.html",
+    "viewBox": [1068, 540],
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "views": [
+      { "id": "inside-home", "label": "Inside the home", "focus": ["laptop", "wifi", "router"], "note": "Your laptop has a private address; the router is its default gateway." },
+      { "id": "nat-boundary", "label": "NAT boundary", "focus": ["router", "isp", "server"], "note": "The router maps the private request to the home public IP and remembers where the reply belongs." },
+      { "id": "return-path", "label": "Reply returns", "focus": ["server", "router", "laptop"], "note": "The router uses its NAT mapping to return the reply to the right private device." }
+    ]
+  },
+  "stages": [
+    { "label": "Your Device" },
+    { "label": "Local Network" },
+    { "label": "Public Edge" },
+    { "label": "Internet" },
+    { "label": "Website" }
+  ],
+  "nodes": [
+    { "id": "laptop", "type": "frontend", "label": "Student Laptop", "sublabel": "IP 192.168.1.7", "tag": "browser request", "stage": 0, "row": 1 },
+    { "id": "wifi", "type": "cloud", "label": "Wi-Fi / Switch", "sublabel": "local link", "tag": "one local hop", "stage": 1, "row": 1 },
+    { "id": "router", "type": "security", "label": "Home Router", "sublabel": "gateway + NAT", "tag": "public IP outside", "stage": 2, "row": 1 },
+    { "id": "isp", "type": "cloud", "label": "ISP and Routers", "sublabel": "many IP hops", "tag": "forwards one step", "stage": 3, "row": 1 },
+    { "id": "server", "type": "backend", "label": "example.com", "sublabel": "public web server", "tag": "HTTPS :443", "stage": 4, "row": 1 }
+  ],
+  "flows": [
+    { "from": "laptop", "to": "wifi", "label": "send to gateway", "classification": "local delivery", "variant": "default", "route": "straight", "labelDy": 52 },
+    { "from": "wifi", "to": "router", "label": "MAC reaches router", "classification": "next-hop label", "variant": "security", "route": "straight", "labelDy": 52 },
+    { "from": "router", "to": "isp", "label": "NAT: private to public", "classification": "router remembers mapping", "variant": "emphasis", "route": "straight", "labelDy": 52 },
+    { "from": "isp", "to": "server", "label": "route toward destination IP", "classification": "IP routing", "variant": "default", "route": "straight", "labelDy": 52 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "NAT in one sentence", "items": ["Many private devices share one public address", "The router keeps a mapping so replies return to the right device", "NAT is not a firewall"] },
+    { "dot": "amber", "title": "Use with the demo", "items": ["Compare ipconfig or ip a with whatsmyip", "Ping the gateway, then ping 1.1.1.1", "Use traceroute to see the routers between you and a destination"] }
+  ]
+}

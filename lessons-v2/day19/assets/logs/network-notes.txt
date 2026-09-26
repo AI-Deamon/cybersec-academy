@@ -1,0 +1,19 @@
+Day 19 -- network / EDR summary for northwind-web (10.0.2.15), night of 12 Mar. Fictional.
+(This is the kind of thing a SIEM dashboard or an EDR timeline would show you.)
+
+02:21  process: apache2 -> sh -> wget   (child shell spawned by the web server -- unusual)
+02:27  10.0.2.15 -> 203.0.113.66:8000   inbound-initiated download, 240 KB  (a tool pulled to /tmp)
+02:33  new file: /etc/cron.d/apache-cache   -> runs "/tmp/.sync" every 10 minutes as root
+02:33  new file: /tmp/.sync   (executable, hidden)
+02:40 - 02:53  10.0.2.15 -> 10.0.2.1 .. 10.0.2.254 on ports 22,80,139,445,3306
+               ~4,000 connection attempts in 13 min   (internal port scan from a web server -- very unusual)
+02:55  10.0.2.15 -> 10.0.2.20:3306   MySQL connection (the internal DB -- web server has no reason to reach it directly)
+03:05 - 03:26  10.0.2.15 -> 198.51.100.23:443   outbound, 1.4 GB total, steady rate  (large exfil to an external host)
+03:12  /tmp/.sync -> 198.51.100.23:443   beacon every 10 min, ~600 bytes each  (matches the cron schedule)
+03:29  ssh session from 203.0.113.66 closed
+
+Baseline for comparison (a normal night):
+  - inbound web traffic only, from many client IPs
+  - no child shells under apache2
+  - no outbound connections initiated by the web server except OS updates (to the distro mirror) around 04:00
+  - total outbound < 50 MB/night

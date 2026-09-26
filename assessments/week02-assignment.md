@@ -26,6 +26,8 @@ This is a real onboarding/hardening task any system administrator or junior secu
 > Goal and success criteria are given; the exact commands are yours to pick (you learned them on Days 6-9). Screenshots required as evidence.
 > **Platform rule:** Complete **at least one** of Task 2 (Linux) or Task 3 (Windows) using your own machine/lab. **Bonus:** demonstrate both.
 
+### Part 1 — OS & permissions (Tasks 1-5)
+
 **Task 1 — "Who controls this machine?" explainer (written, ~1 page).**
 Using the **one unified Restaurant→Computer metaphor** (Restaurant=Computer, Manager=OS, Chef=CPU, Kitchen counter=RAM, Pantry=Storage, Employees=Processes, Walkie-talkie=Shell, Key cabinet=Permissions), explain: what an OS is, why permissions matter, and how a Python script is just "you, automated" (a Process with your badge). Plain language — imagine the manager reading it.
 
@@ -45,6 +47,37 @@ Write a **read-only, standard-library-only** Python script that lists every file
 - **What am I building toward?** How does this connect to secure coding (Day 15), incident response (Day 19), and the capstone?
 - *(Least-privilege prompt)* If you had to harden this laptop for real, what is the *one* change you'd make first, and why?
 
+### Part 2 — OverTheWire Bandit & command mastery (Tasks 6-7)
+> Same "less guided" spirit as Part 1: the goal and success criteria are given, you do the work.
+> This part is submitted **separately as evidence**, not folded into the Part 1 portfolio PDF.
+
+**Task 6 — OverTheWire Bandit (hands-on, minimum 10 levels).**
+Work through the [OverTheWire Bandit wargame](https://overthewire.org/wargames/bandit/), starting
+at Level 0. **Minimum requirement: complete through Level 10.** Stretch goal (bonus): continue
+through **Level 15**.
+- Keep a **Bandit Flag Log** as you go — one row per level: `Level | command(s)/technique used to
+  find the password | flag obtained`.
+- **Do not upload the flag log to Google Drive (or any shared location) until your instructor
+  explicitly asks for it.** Keep it local. Sharing flags early spoils the exercise for other
+  students and defeats its use as a plagiarism check.
+- This is a real SSH-based Linux exercise — it reinforces the Day 6-7 shell, permissions, and
+  `find`/`grep` skills in an unguided, "figure it out" environment (the opposite of the
+  "do it now" beats, which are guided).
+
+**Task 7 — Linux & Windows command explainer (hands-on).**
+For **every command introduced in the Day 6-9 slide decks**, run it for real on your own
+system (not copy-pasted from the slide) and write, per command:
+1. The exact command you ran.
+2. The output (screenshot or pasted text).
+3. **In your own words** — what does this output tell you about the system, and what is this
+   command actually used for? When would a sysadmin, SOC analyst, or attacker reach for it?
+
+Use your **Linux cheat-sheet** (`lessons-v2/day06/assets/linux-cheatsheet-template.md`) as your
+Linux command list, and the **Windows cheat-sheet**
+(`lessons-v2/day08/assets/windows-cheatsheet-template.md`) as your Windows command list — every
+command you added to either cheat-sheet during the week needs its explainer entry here. If a
+cheat-sheet is missing commands you were shown in class, add them first, then explain them.
+
 ## Deliverables
 A single PDF/portfolio entry titled **"Week 2 — Before the Laptop Leaves the Building"**, containing:
 - The Task 1 explainer (plain-language, metaphor-based).
@@ -52,6 +85,12 @@ A single PDF/portfolio entry titled **"Week 2 — Before the Laptop Leaves the B
 - The Task 5 reflection (four "So What" questions answered).
 - The **Career Connection** section.
 Assembled into one document (the same portfolio format as Week 1, so the collection grows week by week).
+
+Separately (Part 2, submitted as its own evidence set — **not** merged into the portfolio PDF
+until asked):
+- The completed **Linux & Windows cheat-sheets** (Task 7 command list).
+- The **command explainer write-up** (Task 7): command + output + explanation, for every entry.
+- The **Bandit Flag Log** (Task 6) — kept local; only submit/upload when the instructor asks.
 
 ## Rubric
 | Criterion | Excellent (3) | Adequate (2) | Needs work (1) |
@@ -63,9 +102,13 @@ Assembled into one document (the same portfolio format as Week 1, so the collect
 | **Reflection (Task 5)** | All four "So What" answered; least-privilege insight | Partial | Missing |
 | **Career Connection** | Names a fitting role + explains why | Names a role | Missing |
 | **Portfolio PDF** | Clean, captioned, manager-readable | Acceptable | Sloppy |
+| **Bandit levels (Task 6)** | ≥ 10 levels, flag log complete and correct per level | 6–9 levels | < 6 levels |
+| **Bandit bonus: Levels 11-15** | All 5 bonus levels logged correctly | 1–4 bonus levels | — |
+| **Command explainer (Task 7)** | Every cheat-sheet command run for real, output shown, explanation shows understanding (not restated slide text) | Most commands covered, some explanations thin | Copied from slides / missing output |
+| **Windows cheat-sheet exists & is complete** | Filled in, matches Day 8-9 commands actually taught | Partial | Missing |
 
-**Scoring guidance:** core (OS + 1 platform + Python + reflection + career + PDF) 18–21 strong; 12–17 on track; ≤11 revisit. Bonus points awarded for demonstrating both platforms.
-**Definition-of-Success check (ADD §13):** can the student explain the OS in their own words, perform the tasks without step-by-step hand-holding, connect least privilege across the week, and name a career that performs this task?
+**Scoring guidance:** core (OS + 1 platform + Python + reflection + career + PDF) 18–21 strong; 12–17 on track; ≤11 revisit. Bonus points awarded for demonstrating both platforms. Part 2 (Bandit + command explainer) is scored separately, out of 9 (6 + 3 command-explainer), and does not gate the Part 1 portfolio grade — but both parts are required to complete Week 2.
+**Definition-of-Success check (ADD §13):** can the student explain the OS in their own words, perform the tasks without step-by-step hand-holding, connect least privilege across the week, and name a career that performs this task? For Part 2: can the student work through an unguided challenge (Bandit) and explain, in their own words, what a command they ran actually did?
 
 ## Reflection (course-level)
 - This is the **second** of four weekly portfolio pieces. Week 3 will be *scenario-based* (a realistic brief, you choose tools); Week 4 a *mini-capstone* (open-ended, integrates the course).
@@ -91,7 +134,7 @@ You're not just learning OS permissions — you're practicing the *exact* verifi
 Follow the official 5-session cadence (ADD §12). Run Day 10 as a **workshop**, not a lecture:
 1. **Review (20–30 min):** recap Week 2's key ideas — OS = Manager, the key cabinet (Linux `rwx` / Windows ACL), Users/groups/AD, and "a script is you, automated." Use the OS signature diagram and show all three lenses on one slide.
 2. **Q&A (20 min):** students ask questions — especially around `chmod` vs ACL, and why `777`/"Everyone: Full Control" are the same mistake.
-3. **Assignment briefing (15 min):** walk the scenario, objectives, the tasks (stressing **"complete at least one platform; bonus for both"**), deliverables, rubric, **and the new Career Connection section**. Show the Week 1 portfolio PDF as the format example so students know the bar. Stress: **Less guided — you choose the commands.**
+3. **Assignment briefing (15 min):** walk the scenario, objectives, the tasks (stressing **"complete at least one platform; bonus for both"**), deliverables, rubric, **and the new Career Connection section**. Show the Week 1 portfolio PDF as the format example so students know the bar. Stress: **Less guided — you choose the commands.** Also brief **Part 2** (Task 6-7): give out the Bandit link, explain the minimum-10-levels requirement and that flags stay local, and point students at the Linux/Windows cheat-sheets as the command list for the explainer task.
 4. **Guided in-class work (remaining time):** students start Tasks 1-2 with the instructor available. The assignment is then **completed over the weekend (no classes Sat/Sun)** and **submitted before Day 11** (next Monday); Week 3 (security thinking) starts fresh.
 
 > Day 10 is explicitly a *workshop*, not a lecture — same cadence as Day 5.

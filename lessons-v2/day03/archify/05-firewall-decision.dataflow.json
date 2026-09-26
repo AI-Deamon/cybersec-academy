@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "A Firewall Is a Rule List: Allow or Drop",
+    "output": "lessons-v2/day03/archify/05-firewall-decision.html",
+    "viewBox": [1068, 520],
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": { "entries": { "emphasis": { "label": "allowed path" }, "security": { "label": "dropped path" }, "dashed": { "label": "no reply at all" } } },
+    "views": [
+      { "id": "packet-arrives", "label": "A packet arrives", "focus": ["packet", "rules"], "note": "The firewall reads only the envelope: source IP, destination IP, destination port, protocol." },
+      { "id": "allowed", "label": "Matched an allow rule", "focus": ["rules", "allowed", "process"], "note": "Port 22 from the local network is allowed, so the packet reaches the listening SSH process." },
+      { "id": "dropped", "label": "No rule matched: drop", "focus": ["rules", "dropped", "scanner"], "note": "Everything else is silently dropped. A port scanner sees no reply and reports 'filtered'." }
+    ]
+  },
+  "stages": [
+    { "label": "Packet" },
+    { "label": "Firewall" },
+    { "label": "Verdict" },
+    { "label": "Result" }
+  ],
+  "nodes": [
+    { "id": "packet", "type": "external", "label": "Incoming packet", "sublabel": "to 192.168.1.7 : 22", "tag": "envelope only", "stage": 0, "row": 1 },
+    { "id": "rules", "type": "security", "label": "Rule list", "sublabel": "first match wins", "tag": "IP + port + protocol", "stage": 1, "row": 1 },
+    { "id": "allowed", "type": "backend", "label": "ALLOW", "sublabel": "port 22 from the LAN", "tag": "matched", "stage": 2, "row": 0 },
+    { "id": "dropped", "type": "security", "label": "DROP", "sublabel": "deny everything else", "tag": "no match", "stage": 2, "row": 2 },
+    { "id": "process", "type": "backend", "label": "SSH process", "sublabel": "listening on port 22", "tag": "gets the data", "stage": 3, "row": 0 },
+    { "id": "scanner", "type": "external", "label": "Port scanner", "sublabel": "no reply comes back", "tag": "sees 'filtered'", "stage": 3, "row": 2 }
+  ],
+  "flows": [
+    { "id": "inspect", "from": "packet", "to": "rules", "label": "read src IP, dst port, protocol", "classification": "no look inside the data", "variant": "emphasis", "route": "straight", "labelDy": 52 },
+    { "id": "match-allow", "from": "rules", "to": "allowed", "label": "matches an allow rule", "classification": "explicit allow", "variant": "emphasis" },
+    { "id": "match-drop", "from": "rules", "to": "dropped", "label": "matches nothing", "classification": "default deny", "variant": "security" },
+    { "id": "deliver", "from": "allowed", "to": "process", "label": "delivered", "classification": "reaches the program", "variant": "emphasis", "route": "straight", "labelDy": 52 },
+    { "id": "silence", "from": "dropped", "to": "scanner", "label": "silence", "classification": "no reply at all", "variant": "dashed", "route": "straight", "labelDy": 52 }
+  ],
+  "cards": [
+    { "dot": "violet", "title": "What a firewall actually does", "items": ["Reads only the envelope: addresses, port, protocol", "Walks the rule list top to bottom; first match decides", "Last rule is almost always 'deny everything else'", "Never reads your data; NAT is not a firewall"] },
+    { "dot": "amber", "title": "Class check", "items": ["Which fields of the packet does the firewall look at?", "A packet matches no rule at all. What happens to it?", "Why does 'filtered' in a port scan mean 'there is a firewall'?"] }
+  ]
+}

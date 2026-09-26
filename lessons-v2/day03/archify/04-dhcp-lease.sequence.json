@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "DHCP: Where Your IP Address Came From",
+    "output": "lessons-v2/day03/archify/04-dhcp-lease.html",
+    "viewBox": [1068, 480],
+    "column_fit": "spread",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": { "entries": { "emphasis": { "label": "laptop asks" }, "return": { "label": "router answers" }, "dashed": { "label": "renewal, later" } } },
+    "views": [
+      { "id": "discover-offer", "label": "Discover and offer", "focus": ["laptop", "router"], "note": "A laptop with no address shouts to everyone; the router replies with a spare one." },
+      { "id": "request-ack", "label": "Request and ack", "focus": ["laptop", "router"], "note": "The laptop accepts; the router confirms and adds the gateway and DNS server addresses." },
+      { "id": "lease-renew", "label": "It is a lease", "focus": ["laptop", "router"], "note": "The address is borrowed for a fixed time and renewed quietly before it expires." }
+    ]
+  },
+  "participants": [
+    { "id": "laptop", "type": "frontend", "label": "Your laptop", "sublabel": "no IP yet" },
+    { "id": "router", "type": "cloud", "label": "Home router", "sublabel": "DHCP server" }
+  ],
+  "segments": [
+    { "from": 165, "to": 300, "label": "D-O-R-A: Discover, Offer, Request, Ack" },
+    { "from": 316, "to": 405, "label": "Later: renew before the lease expires" }
+  ],
+  "messages": [
+    { "id": "discover", "from": "laptop", "to": "router", "y": 182, "label": "DISCOVER  \"anyone? I need an address\"", "variant": "emphasis", "note": "sent to everyone (broadcast)" },
+    { "id": "offer", "from": "router", "to": "laptop", "y": 214, "label": "OFFER  \"take 192.168.1.7?\"", "variant": "return" },
+    { "id": "request", "from": "laptop", "to": "router", "y": 246, "label": "REQUEST  \"yes, I'll take 192.168.1.7\"", "variant": "emphasis" },
+    { "id": "ack", "from": "router", "to": "laptop", "y": 280, "label": "ACK  \"yours for 24h + gateway .1 + DNS\"", "variant": "return", "note": "lease starts" },
+    { "id": "renew", "from": "laptop", "to": "router", "y": 335, "label": "REQUEST  \"can I keep 192.168.1.7?\"", "variant": "dashed" },
+    { "id": "renew-ack", "from": "router", "to": "laptop", "y": 367, "label": "ACK  \"another 24h\"", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "laptop", "from": 177, "to": 372, "type": "frontend" },
+    { "participant": "router", "from": 209, "to": 372, "type": "cloud" }
+  ],
+  "cards": [
+    { "dot": "violet", "title": "What the lease hands you", "items": ["Your private IP (e.g. 192.168.1.7)", "The subnet mask: which addresses are local", "The default gateway: the router, usually .1", "The DNS server to ask (often the router too)"] },
+    { "dot": "amber", "title": "Class check", "items": ["Who picks your laptop's IP: you, the laptop, or the router?", "Why does DISCOVER have to be a broadcast?", "What three other things arrive with the address?"] }
+  ]
+}

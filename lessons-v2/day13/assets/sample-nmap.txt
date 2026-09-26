@@ -1,0 +1,39 @@
+Day 13 practice: turn this Nmap output into an asset-list table.
+(Fictional host. Do not scan any real address from this file.)
+
+$ nmap -sV -sC -p- 10.10.14.6
+
+Starting Nmap 7.94 ( https://nmap.org )
+Nmap scan report for northwind-srv (10.10.14.6)
+Host is up (0.00042s latency).
+Not shown: 65526 closed tcp ports (reset)
+
+PORT      STATE SERVICE     VERSION
+21/tcp    open  ftp         vsftpd 2.3.4
+| ftp-anon: Anonymous FTP login allowed (FTP code 230)
+|_-rw-r--r--    1 0        0             107 Jul 12  2021 notes.txt
+22/tcp    open  ssh         OpenSSH 7.2p2 Ubuntu 4ubuntu2.10 (Ubuntu Linux; protocol 2.0)
+80/tcp    open  http        Apache httpd 2.4.29 ((Ubuntu))
+|_http-title: Northwind Traders - Staff Portal
+|_http-server-header: Apache/2.4.29 (Ubuntu)
+139/tcp   open  netbios-ssn Samba smbd 4.x
+445/tcp   open  netbios-ssn Samba smbd 4.7.6-Ubuntu
+| smb-os-discovery:
+|   OS: Windows 6.1 (Samba 4.7.6-Ubuntu)
+|_  Computer name: northwind-srv
+631/tcp   open  ipp         CUPS 2.2
+3306/tcp  open  mysql       MySQL 5.7.33-0ubuntu0.18.04.1
+|_mysql-empty-password: Host is not allowed to connect
+8080/tcp  open  http        Apache Tomcat 9.0.30
+|_http-title: Apache Tomcat/9.0.30
+| http-open-proxy: Potentially OPEN proxy.
+|_methods supported: GET HEAD POST OPTIONS
+9200/tcp  open  http        Elasticsearch REST API 6.8.0 (name: es01; cluster: nw-logs)
+|_http-title: 401 Unauthorized
+
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+--- your task ---
+1. Build the table: host | port | proto | service | version | notes / worth a look?
+2. Which THREE findings would you investigate first, and why?
+3. Which finding is a misconfiguration rather than an old version?
