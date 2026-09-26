@@ -368,6 +368,17 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   added a Part E line (Bandit + command explainer, separate submission) plus a speaker-note
   reminder that Part E is due across the week, not started fresh at the Day 10 briefing.
 
+## 2026-09-26 (5)
+
+- **`day11/assets/lab-install-guide.md` + `.pdf` added** — an install-only handout, separate
+  from the full teaching guide (`lab-setup-student-guide.md`, unchanged). Covers WSL2 + Ubuntu,
+  the toolbox packages (names + apt install only), Podman, and the three targets via Podman
+  (Metasploitable2, DVWA, Juice Shop) with their own IPs — same verified commands as the full
+  guide. Deliberately excludes all scan/attack commands, tool-usage examples, and the "scan your
+  lab" class exercises; those stay in the full guide, taught in class. No OWASP ZAP (still
+  deferred to the Exploitation days, confirmed with the user). PDF built with make-pdf
+  (`--toc --no-confidential`), 9 pages.
+
 ## 2026-09-26 (4)
 
 - **Dry-run verified `day11/assets/lab-setup-student-guide.md` end to end.** Wiped the instructor
