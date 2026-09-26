@@ -13,6 +13,11 @@ Keep this open in class. Same course repo — an attack, a defence, and an artif
 - **The class Linux box:** SSH in with your account (fallback for any laptop).
 - *Not* Git Bash — too limited.
 
+> **Start now, not on the weekend:** the Weekend Assignment's **Part E** (OverTheWire Bandit +
+> the Linux/Windows command explainer, below) draws on the cheat-sheets you build **every day**
+> this week (Day 6 Linux, Day 8 Windows). Do a few Bandit levels and a few explainer entries
+> each day — don't leave all of Part E for the weekend.
+
 ---
 
 ## Day 6 — Linux I: files, the tree, and the shell
@@ -257,7 +262,8 @@ nothing else.** Scanning networks you don't own is illegal (Day 1: "no scope, no
 
 ## Weekend Assignment — Week 2
 
-*Briefed at the end of Day 10. Submit **one PDF before Monday**. Test **only your own VM**.*
+*Briefed at the end of Day 10. Submit **one PDF before Monday** for Parts A-D. Test **only your
+own VM**. Part E (Bandit + command explainer) is submitted separately — see below.*
 
 ### Part A — Integrate (harden your machine)
 On your Linux VM:
@@ -285,7 +291,36 @@ On your Linux VM:
 ### Part D — Reflection
 3–4 sentences: what clicked this week, what's still fuzzy.
 
-### Marking checklist (15 marks)
+### Part E — OverTheWire Bandit & command mastery
+> Submitted **separately from Parts A–D** — its own evidence set, not merged into the weekend
+> PDF until your instructor asks for it.
+
+**E1 — OverTheWire Bandit (minimum 10 levels).**
+Work through the [OverTheWire Bandit wargame](https://overthewire.org/wargames/bandit/), starting
+at Level 0. **Minimum requirement: complete through Level 10.** Stretch goal (bonus): continue
+through **Level 15**.
+- Keep a **Bandit Flag Log** as you go — one row per level: `Level | command(s)/technique used to
+  find the password | flag obtained`.
+- **Do not upload the flag log to Google Drive (or any shared location) until your instructor
+  explicitly asks for it.** Keep it local — sharing flags early spoils the exercise for other
+  students and defeats its use as a plagiarism check.
+- This is unguided, SSH-based Linux practice — it's the "figure it out yourself" counterpart to
+  the guided Day 6-7 "do it now" beats.
+
+**E2 — Linux & Windows command explainer.**
+For **every command introduced in the Day 6-9 slide decks** — i.e. every command in your
+`linux-cheatsheet.md` (started Day 6) and your `windows-cheatsheet.md`
+(`lessons-v2/day08/assets/windows-cheatsheet-template.md`, started Day 8) — run it for real on
+your own system (not copy-pasted from the slide) and write, per command:
+1. The exact command you ran.
+2. The output (screenshot or pasted text).
+3. **In your own words** — what does this output tell you about the system, and what is the
+   command actually used for? When would a sysadmin, SOC analyst, or attacker reach for it?
+
+If either cheat-sheet is missing a command you were actually shown in class, add it first, then
+explain it — the explainer should cover the same list your cheat-sheet does.
+
+### Marking checklist (15 marks + 9 marks for Part E)
 - [ ] Part A1 — half-page threat model of the VM: asset, actor, entry points (2)
 - [ ] Part A2 — non-root user created, `id` shown (1)
 - [ ] Part A3 — 3 weak settings fixed, `ls -l` before/after for each (3)
@@ -293,3 +328,5 @@ On your Linux VM:
 - [ ] Part B — real research beyond class, correct mechanism **and** defence (2)
 - [ ] Part C — all three pieces of evidence present and legible (2)
 - [ ] Part D — a genuine reflection (1)
+- [ ] Part E1 — Bandit flag log shows ≥ 10 levels completed correctly (4); bonus: levels 11-15 (+2)
+- [ ] Part E2 — every cheat-sheet command run for real with output + a real (not slide-copied) explanation (3)

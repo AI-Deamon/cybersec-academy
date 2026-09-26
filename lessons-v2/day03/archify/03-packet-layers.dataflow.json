@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Inside One Network Message: Layers Working Together",
+    "output": "lessons-v2/day03/archify/03-packet-layers.html",
+    "viewBox": [1068, 520],
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "views": [
+      { "id": "wrap-message", "label": "Wrap the message", "focus": ["http", "transport", "internet"], "note": "Each lower layer adds the information it needs to move the same application message." },
+      { "id": "router-change", "label": "At a router", "focus": ["internet", "router"], "note": "Routers choose the next direction with IP and replace the local MAC wrapper for the next hop." },
+      { "id": "arrival", "label": "Deliver to process", "focus": ["transport", "server"], "note": "At the destination, the port tells the operating system which listening process receives the data." }
+    ]
+  },
+  "stages": [
+    { "label": "Application" },
+    { "label": "Transport" },
+    { "label": "Internet" },
+    { "label": "Link / Router" },
+    { "label": "Destination" }
+  ],
+  "nodes": [
+    { "id": "http", "type": "frontend", "label": "HTTP Request", "sublabel": "GET /", "tag": "application data", "stage": 0, "row": 1 },
+    { "id": "transport", "type": "backend", "label": "Transport", "sublabel": "ports 51514 to 443", "tag": "which program", "stage": 1, "row": 1 },
+    { "id": "internet", "type": "cloud", "label": "Internet", "sublabel": "source + destination IP", "tag": "whole journey", "stage": 2, "row": 1 },
+    { "id": "router", "type": "security", "label": "Router", "sublabel": "MAC only for next hop", "tag": "replaces frame", "stage": 3, "row": 1 },
+    { "id": "server", "type": "backend", "label": "Server Process", "sublabel": "listens on port 443", "tag": "receives data", "stage": 4, "row": 1 }
+  ],
+  "flows": [
+    { "from": "http", "to": "transport", "label": "add ports", "classification": "transport wrapper", "variant": "emphasis", "route": "straight", "labelDy": 52 },
+    { "from": "transport", "to": "internet", "label": "add IP addresses", "classification": "internet wrapper", "variant": "emphasis", "route": "straight", "labelDy": 52 },
+    { "from": "internet", "to": "router", "label": "MAC for first hop", "classification": "link wrapper", "variant": "security", "route": "straight", "labelDy": 52 },
+    { "from": "router", "to": "server", "label": "new MAC each hop", "classification": "IP stays end to end", "variant": "security", "route": "straight", "labelDy": 52 }
+  ],
+  "cards": [
+    { "dot": "violet", "title": "Four practical TCP/IP layers", "items": ["Application: HTTP, DNS, SSH", "Transport: TCP or UDP plus ports", "Internet: IP routing", "Link: MAC, Wi-Fi, Ethernet"] },
+    { "dot": "amber", "title": "Class check", "items": ["Which layer changes at every hop?", "Which layer tells the OS the receiving process?", "Which layer moves traffic between networks?"] }
+  ]
+}

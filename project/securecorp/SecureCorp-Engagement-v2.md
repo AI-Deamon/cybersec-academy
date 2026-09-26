@@ -4,9 +4,9 @@
 *Cybersecurity Fundamentals → Practical Security Operations*
 **CONFIDENTIAL — For Consultant Use Only**
 
-> **Version 2.0** — verified against VirtualBox 7.0/7.1 · Kali 2025.x · Metasploitable2 ·
-> DVWA v1.10 · Wazuh 4.9. Re-check tool versions before starting; installer commands change.
-> What changed from v1 and why: see `WHAT-CHANGED-v1-to-v2.md`.
+> **Version 2.1** (2026-09-10) — verified against VirtualBox 7.0/7.1 · Kali 2025.x ·
+> Metasploitable2 · DVWA v1.10 · Wazuh 4.9. Re-check tool versions before starting; installer
+> commands change. What changed from v1, and what v2.1 added: see `WHAT-CHANGED-v1-to-v2.md`.
 
 ---
 
@@ -87,13 +87,15 @@ main project — optional, and skipping them does not affect whether you meet th
   service inventory · exploit **one real service vulnerability** to a shell · the four DVWA
   attacks at security *low* · the three-layer credential-attack comparison (SSH / FTP / DVWA) ·
   **manual log analysis** of your own activity · **the seeded-incident investigation** · risk
-  assessment, report, presentation.
+  assessment, report (every finding carrying CWE + CVSS), a one-page **red/blue reflection**,
+  presentation.
 - **Challenge:** DVWA at security *medium* (show that filtering isn't a fix) · crack the hashes
   you extract · Wireshark on one captured interaction · deploy **Wazuh** and compare its
-  detection to your manual analysis · one extra documented finding.
-- **Stretch:** a Windows VM with a Wazuh agent · a **custom Wazuh rule** that auto-detects one
-  of your web attacks · an additional vulnerable service, assessed · a more advanced network
-  design.
+  detection to your manual analysis · document Task 2.3 as a **kill chain** · one extra
+  documented finding.
+- **Stretch:** a Windows VM with a Wazuh agent · **detection engineering** — a custom Wazuh
+  rule for *every* activity that analysis left as Manual or Not Visible, with before/after
+  evidence · an additional vulnerable service, assessed · a more advanced network design.
 
 ---
 
@@ -167,6 +169,14 @@ Organized by week, then by task. Every task has the same five parts:
 
 Some tasks add a **Hint** — a nudge, never a step-by-step. Templates are inline and in the
 appendices. **Appendix E** is your single source of truth for what to hand in.
+
+> **Portfolio option (recommended, not graded).** Keep the whole engagement in a Git
+> repository — a folder per week, your evidence files, the report, and any scripts you write.
+> It doubles as version-control practice, and a public repo is something you can link on a CV:
+> *"authorized penetration test of an isolated lab — recon, real exploitation to shell, the
+> DVWA web attacks, a CVSS-scored report with prioritized remediation."* Two rules if you make
+> it public: **scrub anything that identifies your real home network**, and **never commit the
+> seeded-incident answer key** your instructor gives you in Week 3.
 
 ---
 
@@ -480,10 +490,13 @@ Pick **one** from your Task 2.1 results.
   (e.g. `/etc/passwd`).
 - *(Challenge)* enumerate for privilege escalation (`sudo -l`, `find / -perm -4000`); grab
   `/etc/shadow`; crack one hash with `john`/`hashcat`.
+- *(Challenge)* write this up as a **kill chain** — initial access → discovery → privilege
+  escalation → objective — with each step mapped to the lifecycle phase it belongs to. This is
+  the difference between "did some exercises" and "demonstrated an end-to-end attack path".
 
-**Expected Output:** the Standard Attack Evidence entry — the service, the CVE, the tool/PoC,
-the command, and a screenshot of the shell showing `id` and the proof file. Record the exact
-time and the source IP.
+**Expected Output:** the Standard Attack Evidence entry — the service, its **CVE**, the
+**CWE** class, a **CVSS v3.1** score, the tool/PoC, the command, and a screenshot of the shell
+showing `id` and the proof file. Record the exact time and the source IP.
 
 **Learning Outcome:** how a version banner becomes a CVE becomes a shell — and why patching
 and least privilege matter.
@@ -688,11 +701,20 @@ authorized testing from a real intrusion.
 After the investigation, answer in your detection notes: **What was detectable in the logs you
 had? What was collected but easy to miss? What evidence, if any, was missing? What would you
 improve?** This is **SIEM tuning** in plain terms — improving detection so important activity
-doesn't go unnoticed.
+doesn't go unnoticed. These same notes feed your report's **Limitations** section (Appendix A
+§10) and the **detective control** column of your recommendations (Task 4.1).
 
 *(Challenge: deploy Wazuh, replay the same log data, and add a column — did Wazuh auto-alert
-on each? Compare its coverage to your manual analysis. Stretch: write one custom rule that
-auto-detects your DVWA command-injection attack.)*
+on each? Compare its coverage to your manual analysis.)*
+
+*(Stretch — detection engineering: for **every** activity that came back **Manual** or
+**Not Visible**, write a custom Wazuh rule — a local decoder + rule in
+`/var/ossec/etc/rules/local_rules.xml` — that turns it into an automatic alert. For example, a
+rule that alerts on an Apache log line containing `' or 1=1` / `union select`, or one that
+groups 10+ failed FTP logins in 60 seconds. **Deliverable:** the rule XML plus a before/after
+screenshot of the same attack replayed, now auto-alerting. This is the line on a CV that reads
+"authored custom SIEM detection rules covering SQLi, XSS, and credential attacks" instead of
+"used a SIEM".)*
 
 ### Week 3 Deliverables
 ```
@@ -701,7 +723,7 @@ auto-detects your DVWA command-injection attack.)*
 ☐  Incident Report for the SEEDED activity: timeline, IOCs, classification, actions,
      and which events were yours vs not (Task 3.3)
 ☐  Detection coverage notes (Task 3.4)
-☐  (Challenge) Wazuh comparison column  (Stretch) one custom rule
+☐  (Challenge) Wazuh comparison column  (Stretch) a custom rule per Manual/Not-Visible activity, with before/after evidence
 ☐  Progress note (3–4 bullets)
 ```
 
@@ -718,8 +740,17 @@ leadership can act on.
 management, logging/monitoring, backup, segmentation, and user awareness. **Tie each to a
 specific finding** from Weeks 2–3 where possible. Explain why each matters.
 
-| Area | Current state (evidence) | Recommendation | Priority |
-|---|---|---|---|
+For each recommendation, give the fix at **three levels** where they apply:
+
+- **Technical fix** — the real remediation: patch the service, validate/parameterize input,
+  disable what isn't needed.
+- **Compensating control** — what reduces the risk when the fix can't ship immediately: a WAF,
+  rate limiting, network segmentation, MFA.
+- **Detective control** — the log source or alert (ideally the Wazuh rule from Task 3.4) that
+  tells SecureCorp it's happening if it happens anyway.
+
+| Area | Current state (evidence) | Technical fix | Compensating control | Detective control | Priority |
+|---|---|---|---|---|---|
 
 ### Task 4.2 — Executive Summary
 
@@ -735,6 +766,41 @@ leadership" (your instructor / peers).
 
 **Expected Output:** a slide deck + the delivered presentation.
 
+### Task 4.4 — Limitations & Reflection
+
+**Objective:** show the maturity to state what your assessment *didn't* cover, and what
+switching sides taught you. Both come up in interviews.
+
+**Tasks**
+
+- **Limitations** (goes in the report — Appendix A §10). List what this engagement did not
+  cover and why: services you didn't test, DVWA security levels above *low* if you stayed at
+  Core, activity you know you'd have missed without the timestamps you recorded in Week 2,
+  and anything an isolated lab can't represent (real user behaviour, production scale, an EDR
+  agent, a tuned SIEM). Pull the raw material straight from your Task 3.4 notes. A report that
+  implies you found everything is *less* credible, not more.
+- **Reflection** (one page, its own deliverable). Answer, in prose:
+  1. You attacked SecureCorp, then investigated it. **What did the attacker know that the
+     defender didn't?**
+  2. **Which of your attacks was hardest to detect, and why?**
+  3. **What did the seeded incident (Task 3.3) teach you that your own attacks didn't?**
+
+**Expected Output:** a Limitations section in the report, plus a one-page reflection —
+`W4-T4.4-reflection.pdf`.
+
+**Learning Outcome:** honest scoping, and the analyst mindset that comes from having sat in
+both chairs.
+
+### Week 4 Deliverables
+```
+☐  Security Recommendations — each tied to a finding, prioritized, with technical /
+     compensating / detective controls where they apply (4.1)
+☐  Executive Summary — one page, non-technical (4.2)
+☐  Final Presentation delivered (4.3)
+☐  Limitations section in the report + one-page reflection (4.4)
+☐  Progress note (3–4 bullets)
+```
+
 ---
 
 ## Appendix A — Master Report Template
@@ -749,8 +815,9 @@ leadership" (your instructor / peers).
 7. Attack Simulation Findings — the Attack Log for 2.3–2.8
 8. Detection Coverage & Investigation — Task 3.2 notes, **the seeded-incident Incident Report
    (3.3)**, detection coverage (3.4)
-9. Recommendations (4.1)
-10. Appendices — raw `nmap` output, full log excerpts, extra screenshots, your research log
+9. Recommendations (4.1) — each with the technical / compensating / detective levels where they apply
+10. Limitations — what this assessment did not cover, and why (4.4)
+11. Appendices — raw `nmap` output, full log excerpts, extra screenshots, your research log
 
 ---
 
@@ -767,6 +834,7 @@ context, the key line highlighted · note automatic vs manual for every SIEM fin
 
 ```
 Attack ID · Target · Source IP · Target IP · Port · Service/App · Attack type · Tool/PoC
+CVE / CWE (for a service-version exploit like Task 2.3) · CVSS v3.1 vector + score
 Payload / method · Start time · End time · Result · Evidence (filenames)
 Log evidence (file + line) · Detection status (Automatic / Manual / Not Visible)
 Log source · (Wazuh) rule ID + level · Search method / filter
@@ -778,10 +846,20 @@ Analyst explanation — how the evidence supports the attack
 ```
 Title (e.g. "Weak SSH authentication") · Affected asset · Affected service
 Evidence (screenshot / log ref) · Attack demonstrated
+CWE  — the weakness class. e.g. CWE-89 SQL injection · CWE-79 XSS · CWE-78 OS command
+       injection · CWE-307 improper restriction of excessive auth attempts
+CVE  — the specific CVE, when the finding is a known flaw in a service version
+       (e.g. vsftpd 2.3.4 backdoor = CVE-2011-2523). For a DVWA application-logic finding
+       there is usually no CVE — write "N/A — application-logic flaw, see CWE".
+CVSS — v3.1 base vector string + score + one line justifying the metrics you chose
+       (e.g. AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H = 9.8 Critical)
 Impact — what could happen to SecureCorp if exploited
 Risk rating — Low / Moderate / High / Critical
 Detection — how it appeared (alert / manual / not visible)
-Recommendation — the control that fixes it
+Remediation:
+  technical fix        — patch / validate input / disable the service
+  compensating control — WAF, rate limiting, segmentation, MFA (when the fix can't ship now)
+  detective control    — the log source or Wazuh rule that catches it if it recurs
 ```
 
 ### Incident Report (Task 3.3)
@@ -809,14 +887,16 @@ Immediate recommended actions
 | 2 | Centralized logging | 1.5 (logs arriving; failed-SSH events visible) | 6 |
 | 3 | Asset / CIA / Risk analysis | 1.2, 1.3, 1.4 | 10 |
 | 4 | Recon & service inventory | 2.1, 2.2 | 8 |
-| 5 | Real exploitation | 2.3 (shell + proof; +Challenge: priv-esc / cracked hash) | 10 |
+| 5 | Real exploitation | 2.3 (shell + proof; +Challenge: priv-esc / cracked hash / kill-chain write-up) | 10 |
 | 6 | Web & credential attacks | 2.4, 2.5, 2.6, 2.7, 2.8 — each with evidence + timestamp + source IP | 14 |
 | 7 | Manual investigation | 3.2 — detection note + ten answers per activity | 12 |
 | 8 | **The seeded incident** | 3.3 — timeline, IOCs, classification, "mine vs not", actions | 14 |
-| 9 | Detection coverage / tuning | 3.4 (+Challenge: Wazuh comparison; +Stretch: custom rule) | 4 |
-| 10 | Recommendations | 4.1 — tied to findings, prioritized | 8 |
-| 11 | Report quality & Executive Summary | Appendix A structure; 4.2 written for a non-technical reader | 6 |
+| 9 | Detection coverage / tuning | 3.4 (+Challenge: Wazuh comparison; +Stretch: a custom rule per Manual/Not-Visible activity) | 4 |
+| 10 | Recommendations | 4.1 — tied to findings, prioritized, with technical / compensating / detective controls | 8 |
+| 11 | Report quality, Limitations & Executive Summary | Appendix A structure; §10 Limitations (4.4); 4.2 for a non-technical reader | 6 |
 | 12 | Presentation & communication | 4.3 | 6 |
+| — | **Findings quality** | CWE + CVSS v3.1 on every finding; CVE where one applies | (folded into 5, 6, 10) |
+| — | **Reflection** | 4.4 — one page, the red/blue questions | (folded into 11) |
 | — | **Research log** (methodology evidence) | Appendix A §6, §10 | (folded into 7, 8, 11) |
 
 **Challenge/Stretch items add depth within their criterion — they do not add marks beyond the
@@ -828,8 +908,14 @@ maximum, and skipping them cannot fail you if the Core work is solid.**
 
 - A finding with no screenshot / output / log excerpt.
 - A finding with no recommended fix.
+- A finding with no **CWE** and no **CVSS** score — every finding needs both; a **CVE** too
+  where the flaw is a known issue in a service version.
+- A recommendation with only a technical fix and no **detective control** — if it recurs, how
+  would SecureCorp know?
 - "It's a risk" with no explanation of the impact.
-- No standard terminology (CVE, CVSS, CIA, IOC) where it belongs.
+- No standard terminology (CVE, CVSS, CWE, CIA, IOC) where it belongs.
+- No **Limitations** section — a report that implies you found everything reads as less
+  credible, not more.
 - Findings scattered instead of following Appendix A.
 - Treating Week 3 as unrelated to Week 2 — you're investigating your own attacks *plus* the
   seeded activity.
@@ -855,7 +941,10 @@ maximum, and skipping them cannot fail you if the Core work is solid.**
 ☐  Incident Report for the seeded activity (3.3) — timeline, IOCs, classification,
      "mine vs not", actions
 ☐  Detection coverage notes (3.4)
-☐  Security Recommendations (tied to findings)
+☐  Every finding carries CWE + CVSS v3.1 (+ CVE where one applies)
+☐  Security Recommendations — tied to findings, with technical / compensating / detective controls
+☐  Limitations section in the report (4.4)
+☐  One-page reflection — W4-T4.4 (4.4)
 ☐  Executive Summary (one page, non-technical)
 ☐  Final Presentation
 ☐  Research log

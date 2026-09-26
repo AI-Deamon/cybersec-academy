@@ -149,6 +149,115 @@ Each student can:
 
 ---
 
+## Bonus homework — process tracking in Event Viewer (Windows, admin only)
+
+Optional stretch item on the homework list. Ties the day's **PID** straight into a real audit
+log, and previews Day 19 (memory/log forensics) and general DFIR/SOC work — "process tracking"
+is a real Windows audit category, not a made-up term.
+
+**Steps to give students:**
+1. Open an **admin** Command Prompt / PowerShell and run:
+   `auditpol /set /subcategory:"Process Creation" /success:enable`
+   (`auditpol` works on Home edition too — no need for `secpol.msc`, which Home lacks.)
+2. Open a program you don't normally have running (Notepad or Calculator is fine).
+3. Task Manager → **Details** tab → note that program's **PID** (decimal).
+4. Open Event Viewer (`eventvwr.msc`) → **Windows Logs → Security**.
+5. Right-click the log → **Filter Current Log** → Event ID **4688** ("A new process has been
+   created").
+6. Find the most recent 4688 event for that program. Check "New Process Name" matches, and
+   convert "New Process ID" (shown in **hex**) to decimal — it should match the Task Manager PID.
+7. Screenshot the event detail pane and write one sentence: *what does this event prove about
+   how the OS keeps a record of every process it creates?*
+
+**Why this is optional, not required:** it needs local admin rights (many school/shared laptops
+don't have this), it's Windows-only (no clean Linux/macOS equivalent to assign in parallel —
+closest is `auditd`/`ausearch -m execve` or macOS `log show --predicate 'eventMessage contains
+"exec"'`, which are a bigger lift), and it's a second concept (auditing/logging) layered on an
+already-full day. Don't let it become required homework or eat class time.
+
+**Common snags (walk through these before setting students loose):**
+- **Hex vs. decimal PID confusion** — Event Viewer shows PIDs in hex (`0x...`), Task Manager in
+  decimal. Windows Calculator → menu → **Programmer** mode converts hex→dec directly; no need
+  for `certutil` or anything else.
+- **"New Process ID" vs. "Creator Process ID"** — the event lists both. "New Process ID" is the
+  program they launched; "Creator Process ID" is the *parent* that launched it (usually
+  `explorer.exe`). Students will grab the wrong one if not warned explicitly.
+- **Stale event / no fresh launch** — if the program was already running before they enabled
+  auditing, there's no 4688 for that launch. They must close it fully and reopen it *after*
+  running `auditpol`.
+- **Multi-process apps** — Chrome/Edge/most browsers spawn several processes per launch (GPU
+  process, renderer per tab, etc.), producing several near-simultaneous 4688 events. Steer
+  students toward single-process apps (Notepad, Calculator, Paint, VS Code) to avoid this.
+- **UAC prompt on Event Viewer** — `eventvwr.msc` requires elevation to read the Security log;
+  a UAC prompt is expected, not an error.
+- **Empty log despite auditpol succeeding** — `auditpol /get /subcategory:"Process Creation"`
+  should show "Success" enabled. If it does but no events appear, the machine is likely
+  domain/Group-Policy-managed (common on school-owned laptops) and GPO is silently overriding
+  the local setting on refresh. Tell those students to try their own personal machine, or just
+  skip the bonus — don't spend class time fighting a managed device.
+
+**Worked example to show in class (use Notepad — then send students off to track a *different*
+program):**
+1. Admin PowerShell: `auditpol /set /subcategory:"Process Creation" /success:enable` →
+   "The command was successfully executed."
+2. Open **Notepad**.
+3. Task Manager → Details → `notepad.exe` → PID **8420** (decimal, example value).
+4. Event Viewer → Windows Logs → Security → Filter Current Log → Event ID **4688**.
+5. Open the matching event. Details pane shows:
+   - New Process Name: `C:\Windows\System32\notepad.exe`
+   - New Process ID: `0x20E4`
+6. Convert `0x20E4` → decimal: **8420**. Matches the Task Manager PID. Confirmed — the OS logged
+   the exact moment that process was created, with the exact same ID Task Manager shows.
+
+**Tell students explicitly: don't submit Notepad — pick a different program** (Calculator,
+Paint, Chrome, VLC, Spotify, a game, anything else installed). The point is that each student
+does the PID lookup and hex conversion themselves on a process of their own choosing, not that
+they reproduce this exact walkthrough.
+
+---
+
+## Bonus homework — explore and set up WSL (Windows)
+
+Optional stretch item, separate from the Event Viewer task. Two payoffs: (1) it's a live,
+touchable example of today's "kernel" idea — WSL2 runs a **real Linux kernel** in a lightweight
+managed VM, side by side with the Windows kernel, on the same hardware; (2) practically, the
+course keeps giving paired commands (`htop`/Task Manager, `ip a`/`ipconfig`, `dig`/`nslookup`,
+`ncat`/PowerShell script) — this is what lets Windows students actually run the Linux side
+instead of only reading it.
+
+**Not the same thing as** the Kali/VirtualBox attacker VM used later for Days 12–20 labs — see
+`LAB-SETUP.md` §"WSL2 as the attacker": WSL2 can't cleanly reach an isolated VirtualBox lab
+network, so it's unsupported there. This bonus task is only about getting comfortable with a
+Linux shell early; it doesn't replace the later attacker VM.
+
+**Steps to give students:**
+1. Open PowerShell **as Administrator** → `wsl --install` (installs WSL2 + Ubuntu by default).
+   Restart if prompted.
+2. After restart, Ubuntu finishes installing and launches automatically — create a UNIX
+   username and password when asked (separate from their Windows login; the password won't
+   show characters as they type, that's normal).
+3. Verify it worked — Windows side: `wsl --status`; inside Ubuntu: `uname -a` (should print
+   `Linux ... microsoft-standard-WSL2 ...`).
+4. Inside Ubuntu: `sudo apt update && sudo apt install -y htop` then run `htop`. Compare it
+   side by side with Windows Task Manager — same idea (processes, PID, memory), a completely
+   separate kernel managing it.
+5. One-sentence check: *is the Ubuntu you just opened a separate physical computer, a separate
+   virtual machine, or something else?* (Answer: a real, lightweight Linux kernel running in a
+   managed VM under Hyper-V — same hardware, a second, isolated kernel.)
+
+**Common snags:**
+- **`wsl --install` fails / "WSL2 requires an update"** — needs Windows 10 version 2004+ (Build
+  19041+) or Windows 11. Very old Windows 10 installs will need a manual kernel update first
+  (`wsl --update`) or are out of luck.
+- **Virtualization disabled in BIOS** — same failure mode as VirtualBox in `LAB-SETUP.md`;
+  enable Intel VT-x / AMD-SVM in BIOS/UEFI.
+- **Corporate/managed laptop blocks it** — WSL and Hyper-V can be disabled by Group Policy on
+  school/work devices, same pattern as the Event Viewer bonus. Skip it there; it's optional.
+- **No internet in Ubuntu** — usually a DNS issue after a VPN was active during install; `wsl
+  --shutdown` then reopen Ubuntu often fixes it.
+
+---
+
 ## FAQ
 
 - **"Is more RAM the same as more storage?"** No. RAM is the temporary working area for running

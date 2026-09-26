@@ -19,20 +19,29 @@ RUN SHEET (~90 min). Hands-on is INTERLEAVED — four short "do it now" beats, ~
 00:05 The problem (the roadmap)                            2
 00:07 IP — the street address                              6
 00:13 DO: find your IP + gateway                           5
-00:18 Private vs public IP                                 3
-00:21 NAT — one public address for the house               7
-00:28 MAC — the local label                                6
-00:34 DO: find your MAC                                    3
-00:37 Ports + client/server                                8
-00:45 DO: what's listening on your machine                 6
-00:51 A packet, put together                               4
-00:55 The 4-layer model                                    4
-00:59 The journey + DO: ping/traceroute                    9
-01:08 Attack <-> defence (ARP spoof, scanning, sniffing)   8
-01:16 Wrap + homework                                      6
-CUT FIRST IF SHORT: 4-layer slide -> one sentence; ARP-spoof detail (keep the name); the
-ping "do it now".
+00:18 DHCP — where that number came from (live diagram)    2
+00:20 Private vs public IP                                 3
+00:23 NAT — one public address for the house               7
+00:30 MAC — the local label                                6
+00:36 DO: find your MAC                                    3
+00:39 Ports + client/server                                8
+00:47 DO: what's listening on your machine                 6
+00:53 A packet, put together                               4
+00:57 The 4-layer model                                    4
+01:01 The journey + DO: ping/traceroute                    9
+01:10 Attack <-> defence (ARP spoof, scanning, sniffing)   8
+01:18 What a firewall actually does (live diagram)         2
+01:20 Wrap + homework                                      6
+CUT FIRST IF SHORT: firewall slide -> one sentence; DHCP slide -> one sentence; 4-layer
+slide -> one sentence; ARP-spoof detail (keep the name); the ping "do it now".
 NEVER CUT: the three addresses (IP/MAC/port), NAT, at least two "do it now" beats.
+LIVE DIAGRAMS (folder archify/ — open every file in its own browser tab BEFORE class; each has
+view buttons that step through the story, and a light/dark toggle for the projector):
+  01-three-addresses.html    -> "The problem" slide, again on the Port slide (client/server view)
+  02-packet-journey-nat.html -> NAT slide
+  03-packet-layers.html      -> "A packet, put together" + "The 4-layer model"
+  04-dhcp-lease.html         -> DHCP slide
+  05-firewall-decision.html  -> firewall slide
 ONE ANALOGY (sanctioned extension of the kitchen): the POSTAL / DELIVERY system — the kitchen
 now orders supplies and ships out orders. Parcel=packet, street address=IP, next-leg label=MAC,
 department name=port, sorting office=router, front desk=NAT. Phone calls arrive tomorrow (TCP).
@@ -80,6 +89,8 @@ Three things solve it — an **address** (IP), a **local label** (MAC), a **"who
 
 <!--
 Keep this to ~2 min. It's the roadmap for the next section. Then straight into IP.
+LIVE DIAGRAM: archify/01-three-addresses.html, view "Three jobs" — one pass, 30 seconds, just
+so they have seen the three labels side by side before we take them one at a time.
 -->
 
 ---
@@ -113,7 +124,31 @@ Find three things and write them down:
 
 <!--
 90 seconds. Walk the room. Almost everyone: 192.168.x.x or 10.x.x.x, gateway usually .1 or .254.
-Ask two students to call theirs out — note they're similar/identical. That's the next slide.
+Ask two students to call theirs out — note they're similar/identical. That's the slide after
+next. First: "who typed that number in?" Nobody. Next slide.
+-->
+
+---
+
+## Where did that number come from? — DHCP
+
+You didn't type `192.168.1.7`. Your laptop **asked for it** the moment it joined the wifi:
+
+1. **Discover** — "anyone? I need an address" *(shouted to everyone on the network)*
+2. **Offer** — the router: "take `192.168.1.7`?"
+3. **Request** — "yes, I'll take it"
+4. **Ack** — "yours for 24 h — and here's your **gateway** and **DNS server** too"
+
+It's a **lease**, not ownership. Rejoin tomorrow and you may get a different one.
+
+<!--
+LIVE DIAGRAM: archify/04-dhcp-lease.html — click through the 3 views (~2 min).
+The point: nobody configured your laptop. The router's DHCP service handed out the IP, the
+gateway (.1) AND the DNS server in one go — that is why "find your gateway" just worked.
+169.254.x.x = DISCOVER got no answer (broken wifi, not a broken laptop).
+Security hook for later: a rogue DHCP server on the LAN can hand out a lying gateway — same
+family as ARP spoofing on the attack slide.
+CUT to one sentence if short: "the router leased you that address automatically."
 -->
 
 ---
@@ -151,6 +186,8 @@ router's public IP; ipconfig shows your laptop's private one. THAT is the Day 3 
 call it out explicitly, it's the homework question.
 Analogy: the whole household sends mail via one front-desk address; the front desk (router)
 keeps a log so replies get to the right person.
+LIVE DIAGRAM: archify/02-packet-journey-nat.html — 3 views: inside the home / NAT boundary /
+reply returns. Use the "Reply returns" view to answer "how does the reply find MY laptop?"
 Security note for later: NAT accidentally hides internal devices — not a firewall, but it
 means the internet can't directly address your laptop.
 -->
@@ -199,9 +236,15 @@ port), the other **answers** (server, a known port):
 |---|---|---|---|---|
 | 80 | HTTP (web) | | 22 | SSH (remote shell) |
 | 443 | HTTPS (encrypted web) | | 53 | DNS |
+| 21 | FTP (file transfer, plain text) | | 25 | SMTP (sending mail) |
+| 3389 | RDP (Windows remote desktop) | | 3306 | MySQL (a database) |
 
 <!--
 Analogy: IP gets the parcel to the building; the port is the department name on it.
+Rows 3-4 are for RECOGNITION only — don't explain them. Students meet FTP/SSH properly on
+Day 13 when Nmap finds them; RDP/MySQL are "things that should never face the internet."
+LIVE DIAGRAM: archify/01-three-addresses.html, view "Client and server" — the browser's
+random source port vs the server's fixed 443. 30 seconds.
 CLIENT/SERVER (a must-land): the client opens the conversation and picks a random source port
 so it can match the reply; the server sits listening on a fixed, known port. "Listening on a
 port" = a process (Day 2! it has a PID) told the OS "give me anything arriving for port 80."
@@ -243,6 +286,8 @@ reads the port; the program reads the data.
 This is the "envelopes inside envelopes" idea. Draw it as nested boxes on the board.
 The source port (51514) is a random high number your OS picks so it can match the reply.
 Don't say "encapsulation" unless asked — but that's the word.
+LIVE DIAGRAM: archify/03-packet-layers.html, view 1 "Wrap the message" — same numbers as this
+slide (51514 -> 443). Leave the tab open; views 2 and 3 belong to the next slide.
 -->
 
 ---
@@ -261,6 +306,9 @@ You'll also see a **7-layer (OSI)** version — same idea, more boxes. We use th
 <!--
 Per the course standard: teach the 4-layer model, mention OSI-7 once, move on.
 Map it back to the packet slide: each row = one of the envelopes.
+LIVE DIAGRAM: archify/03-packet-layers.html, views 2 "At a router" (MAC swapped, IP kept) and
+3 "Deliver to process" (port -> OS -> the PID from Day 2). Then read the "Class check" card
+aloud — those three questions ARE the exit check.
 CUT-TO-ONE-SENTENCE if short: "messages are built in layers — link, internet, transport,
 application — each wrapping the next; we'll meet transport tomorrow."
 -->
@@ -298,6 +346,32 @@ Tie it together: the Day 1 trailer worked because attacker + victim were on the 
 the login was plain HTTP. ARP spoofing is how you'd get in the middle even on a switch.
 The fix that actually scales isn't "secure the LAN perfectly" — it's "assume the network is
 hostile and encrypt anyway." That's the whole reason for tomorrow's HTTPS lesson.
+"Host firewall" in the port-scanning row — next slide makes that concrete.
+-->
+
+---
+
+## What a firewall actually does
+
+A firewall is a **rule list**. For every packet it reads only the *envelope* — source IP,
+destination IP, destination **port**, protocol — and walks the list top to bottom:
+
+```
+  allow  port 22   from 192.168.1.0/24     <- first match wins
+  allow  port 443  from anywhere
+  deny   everything else                   <- always the last line
+```
+
+Match an **allow** → the packet reaches the listening program.
+Match nothing → **dropped, silently**. The scanner gets no reply at all.
+
+<!--
+LIVE DIAGRAM: archify/05-firewall-decision.html — 3 views: arrives / allowed / dropped (~2 min).
+This is the "host firewall" from the port-scanning row made concrete. It does NOT read your
+data and does NOT know whether the data is malicious — it only decides which doors open for
+whom. NAT is not a firewall (teacher notes). "Filtered" in Nmap on Day 13 = this DROP branch.
+CUT to one sentence if short: "a firewall is a list of which ports open for which addresses;
+everything else is dropped silently."
 -->
 
 ---

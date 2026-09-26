@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "DNS: Turning a Name into an Address",
+    "output": "lessons-v2/day04/archify/01-dns-resolution.html",
+    "viewBox": [1068, 520],
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": { "entries": { "emphasis": { "label": "the question" }, "default": { "label": "referral: ask over there" }, "dashed": { "label": "cache check" } } },
+    "views": [
+      { "id": "ask-resolver", "label": "Ask the resolver", "focus": ["browser", "resolver", "cache"], "note": "Your device never walks the tree itself; it asks one resolver, which checks its cache first." },
+      { "id": "walk-the-tree", "label": "Walk the tree", "focus": ["resolver", "root", "tld", "authoritative"], "note": "On a cache miss the resolver asks root, then .com, then github.com's own servers." },
+      { "id": "cache-answer", "label": "Cache the answer", "focus": ["authoritative", "resolver", "cache", "browser"], "note": "The answer is kept for its TTL, so the next lookup from anyone nearby is instant." }
+    ]
+  },
+  "stages": [
+    { "label": "Your device" },
+    { "label": "Resolver" },
+    { "label": "Root" },
+    { "label": "TLD (.com)" },
+    { "label": "Authoritative" }
+  ],
+  "nodes": [
+    { "id": "browser", "type": "frontend", "label": "Browser", "sublabel": "github.com = ?", "tag": "asks once", "stage": 0, "row": 1 },
+    { "id": "cache", "type": "database", "label": "Resolver cache", "sublabel": "kept for the TTL", "tag": "minutes to hours", "stage": 1, "row": 0 },
+    { "id": "resolver", "type": "cloud", "label": "Resolver", "sublabel": "ISP or 1.1.1.1", "tag": "does the walking", "stage": 1, "row": 2 },
+    { "id": "root", "type": "external", "label": "Root servers", "sublabel": "know who runs .com", "tag": "13 named roots", "stage": 2, "row": 2 },
+    { "id": "tld", "type": "external", "label": ".com servers", "sublabel": "know github.com's servers", "tag": "TLD", "stage": 3, "row": 2 },
+    { "id": "authoritative", "type": "backend", "label": "github.com DNS", "sublabel": "answers 140.82.112.3", "tag": "A record", "stage": 4, "row": 2 }
+  ],
+  "flows": [
+    { "id": "query", "from": "browser", "to": "resolver", "label": "github.com?", "classification": "UDP port 53", "variant": "emphasis" },
+    { "id": "cache-check", "from": "resolver", "to": "cache", "label": "seen it recently?", "classification": "cache lookup", "variant": "dashed", "labelAt": [315, 285] },
+    { "id": "ask-root", "from": "resolver", "to": "root", "label": "who handles .com?", "classification": "cache miss", "variant": "default", "route": "straight", "labelDy": 52 },
+    { "id": "ask-tld", "from": "root", "to": "tld", "label": "ask the .com servers", "classification": "referral", "variant": "default", "route": "straight", "labelDy": 52 },
+    { "id": "ask-auth", "from": "tld", "to": "authoritative", "label": "ask github.com's servers", "classification": "referral", "variant": "default", "route": "straight", "labelDy": 52 }
+  ],
+  "cards": [
+    { "dot": "violet", "title": "What actually happens", "items": ["Your device asks ONE resolver and waits", "The resolver walks root -> .com -> github.com only on a cache miss", "The answer (an A record) is cached for its TTL at every level", "That is why the second lookup is instant"] },
+    { "dot": "emerald", "title": "See it yourself", "items": ["dig github.com (Windows: nslookup github.com)", "The A record line is the IPv4 answer", "TTL in the full output = how long it may be cached", "dig +short google.com a few times: big sites answer from many servers"] },
+    { "dot": "amber", "title": "Class check", "items": ["Which machine does the walking: your laptop or the resolver?", "Why is the second lookup of the same name faster?", "If an attacker fed the resolver a wrong IP, which step would that poison? (Day 4 attack slide)"] }
+  ]
+}

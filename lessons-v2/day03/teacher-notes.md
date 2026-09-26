@@ -43,11 +43,17 @@ the journey slide. This keeps energy up through ~50 min of otherwise-dense addre
 - The "assume the network is hostile → encrypt" line — it's the bridge to Day 4.
 
 **Cut in this order if behind:**
-1. The 4-layer model slide → one sentence ("messages are built in layers, each wrapping the
+1. The firewall slide → one sentence ("a list of which ports open for which addresses;
+   everything else is dropped silently").
+2. The DHCP slide → one sentence ("the router leased you that address automatically").
+3. The 4-layer model slide → one sentence ("messages are built in layers, each wrapping the
    next; we meet transport tomorrow").
-2. ARP-spoofing detail → keep the name and "lie on the LAN to get in the middle."
-3. The ping/traceroute "do it now" — slow/blocked on some networks.
-4. The packet "envelopes" slide → describe verbally over the journey slide.
+4. ARP-spoofing detail → keep the name and "lie on the LAN to get in the middle."
+5. The ping/traceroute "do it now" — slow/blocked on some networks.
+6. The packet "envelopes" slide → describe verbally over the journey slide.
+
+Cutting a slide does **not** mean skipping its live diagram if the tab is already open — a
+30-second trace on the projector is often faster than the sentence.
 
 ---
 
@@ -65,9 +71,25 @@ the journey slide. This keeps energy up through ~50 min of otherwise-dense addre
   **not** teach subnetting today. If asked: "it's how a device knows which addresses are local
   vs. need the router — we don't need the maths for this course."
 
-### DHCP (will come up in the hands-on)
+### DHCP (its own slide now, right after "find your address")
 Your laptop didn't choose its IP — the router's **DHCP** service leased it one when you joined
-the network, along with the gateway and DNS server addresses. One sentence is enough.
+the network, along with the subnet mask, gateway and DNS server addresses. The four messages
+are **D-O-R-A**: Discover (broadcast — the laptop has no address to send *from*), Offer,
+Request, Ack. It's a **lease** with an expiry; the laptop renews quietly before it runs out.
+If asked: `169.254.x.x` = Discover got no answer (link-local fallback). Security hook: a
+**rogue DHCP server** on the LAN can hand out a lying gateway or DNS server — same "trust the
+LAN" family as ARP spoofing; the fix is the same (DHCP snooping on managed switches, and
+encrypt anyway).
+
+### Firewalls (its own slide now, right after Attack ↔ Defence)
+A firewall is a **rule list** evaluated top to bottom, first match wins, with an implicit or
+explicit **deny everything else** at the end. It reads only the packet *envelope* — source /
+destination IP, destination port, protocol — never the data. Two verdicts: **allow** (packet
+reaches the listening program) or **drop** (silently discarded; some setups **reject**
+instead, sending an error back). "Host firewall" = on the laptop itself (`ufw`, Windows
+Defender Firewall); "network firewall" = on the router / at the boundary. Day 13 tie-in: an
+Nmap result of **filtered** means "no reply at all" — the drop branch. See NAT vs firewall
+below: NAT translates, it does not filter.
 
 ### MAC / ARP
 - MAC = 48 bits, first 3 bytes identify the manufacturer (OUI). Meant to be globally unique;
@@ -98,6 +120,27 @@ X" quiz game; it's a time sink with low payoff for beginners.
 ---
 
 ## Demo runbook
+
+### Live diagrams (folder `archify/`, projector)
+
+Five interactive diagrams, one HTML file each, no install — double-click to open in any
+browser. **Pre-flight: open all five in separate tabs before class**, in slide order, and set
+each to **Light** (top-right) if the projector washes out dark backgrounds. Each has numbered
+**view buttons** along the top that step through the story, a **Play story** button that runs
+them in sequence, and a **Class check** card at the bottom whose questions match the exit
+check.
+
+| File | Slide | How to use it (time) |
+|---|---|---|
+| `01-three-addresses.html` | "The problem"; again on the Port slide | view "Three jobs" once (30 s); later view "Client and server" (30 s) |
+| `02-packet-journey-nat.html` | NAT | all 3 views; "Reply returns" answers "how does the reply find *my* laptop?" (2 min) |
+| `03-packet-layers.html` | "A packet, put together" → "The 4-layer model" | view 1 on the packet slide; views 2–3 on the layer slide; read the Class check aloud (3 min) |
+| `04-dhcp-lease.html` | DHCP | all 3 views (2 min) |
+| `05-firewall-decision.html` | firewall | all 3 views; view 3 is the Day 13 "filtered" preview (2 min) |
+
+If a tab is lost mid-class, the slide's ASCII/table carries the same facts — don't stop to
+reopen. Source specs live next to each HTML as `.dataflow.json` / `.sequence.json`; regenerate
+with the `archify` skill, never hand-edit the HTML.
 
 ### Demo — traceroute (hook, 2 min)
 - Linux/mac: `traceroute example.com` · Windows: `tracert example.com`

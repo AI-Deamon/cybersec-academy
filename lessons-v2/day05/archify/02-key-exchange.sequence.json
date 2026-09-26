@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Symmetric vs Asymmetric: Solving Key Exchange",
+    "output": "lessons-v2/day05/archify/02-key-exchange.sequence.html",
+    "viewBox": [1068, 500],
+    "column_fit": "spread",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": { "entries": { "emphasis": { "label": "the plan" }, "return": { "label": "the reply" }, "security": { "label": "the open-wire risk" }, "default": { "label": "the message" } } },
+    "views": [
+      { "id": "symmetric-problem", "label": "1. The shared-secret problem", "focus": ["alice", "bob"], "note": "Both sides need the same key K — but moving K over a public wire is exactly where it leaks." },
+      { "id": "publish-public", "label": "2. Publish the public key", "focus": ["alice", "bob"], "note": "A public key is like a padlock with your name on it — anyone can take it and lock mail to you." },
+      { "id": "private-stays-home", "label": "3. Private key never travels", "focus": ["alice", "bob"], "note": "Only the private key can unlock. It never leaves its owner." }
+    ]
+  },
+  "participants": [
+    { "id": "alice", "type": "external", "label": "Alice", "sublabel": "sender" },
+    { "id": "bob", "type": "external", "label": "Bob", "sublabel": "receiver" }
+  ],
+  "segments": [
+    { "from": 165, "to": 262, "label": "1. Symmetric — one key, both sides" },
+    { "from": 278, "to": 372, "label": "2. Asymmetric — a public / private pair" }
+  ],
+  "messages": [
+    { "id": "same-key", "from": "alice", "to": "bob", "y": 182, "label": "\"we both need the same secret key K\"", "variant": "emphasis", "note": "one key opens both lockboxes" },
+    { "id": "share-question", "from": "bob", "to": "alice", "y": 214, "label": "\"so how do we hand K over safely?\"", "variant": "security", "note": "every hop on the wire can read the mail" },
+    { "id": "no-safe-wire", "from": "alice", "to": "bob", "y": 246, "label": "\"the wire is public — K could be copied\"", "variant": "return" },
+    { "id": "publish-public", "from": "bob", "to": "alice", "y": 296, "label": "\"here is my PUBLIC key — take it\"", "variant": "emphasis", "note": "public key encrypts — safe to travel in the open" },
+    { "id": "encrypt-to-bob", "from": "alice", "to": "bob", "y": 328, "label": "\"I lock my message with your public key\"", "variant": "default" },
+    { "id": "private-decrypts", "from": "bob", "to": "alice", "y": 360, "label": "\"my PRIVATE key unlocks it — never leaves me\"", "variant": "return", "note": "only the private key decrypts" }
+  ],
+  "activations": [
+    { "participant": "alice", "from": 177, "to": 365, "type": "external" },
+    { "participant": "bob", "from": 177, "to": 365, "type": "external" }
+  ],
+  "cards": [
+    { "dot": "violet", "title": "Symmetric vs asymmetric", "items": ["Symmetric: the same key on both sides — fast, but sharing the key is the catch", "Asymmetric: a public / private pair — public encrypts, only private decrypts", "The public key can travel in the open; the private key never leaves its owner", "Real systems use asymmetric to agree the secret key, then symmetric for speed"] },
+    { "dot": "amber", "title": "Class check", "items": ["Why is a shared secret key hard to distribute?", "Which key is safe to publish?", "Which key must never leave its owner?"] }
+  ]
+}

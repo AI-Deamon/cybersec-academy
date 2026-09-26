@@ -123,8 +123,15 @@ Full spec + checklist: `week2/student-pack.md`. Walk each part ~3 min.
 - **Part C:** the script + output, `ls -l` before/after, `id` for the new user.
 - **Part D:** honest reflection.
 - **One PDF before Monday.** Test **only** their own VM.
+- **Part E** (separate submission, not in the PDF): OverTheWire Bandit — minimum 10 levels,
+  stretch to 15, flags kept in a local log and **not** uploaded to Drive until asked — plus a
+  command explainer covering every entry in their Linux and Windows cheat-sheets (run it for
+  real, show the output, explain it in their own words). This is **not new work sprung on
+  Day 10** — it draws on the cheat-sheets they've been building since Day 6, so remind them
+  today is a deadline reminder, not the starting gun.
 
-**Marking:** checklist in the student pack — should be markable in ~4 min.
+**Marking:** checklist in the student pack — should be markable in ~4 min (Parts A-D) + a quick
+pass on the Bandit flag log and command explainer for Part E.
 
 ---
 

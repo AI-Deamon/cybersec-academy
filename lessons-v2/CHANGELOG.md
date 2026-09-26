@@ -306,3 +306,64 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
 - **Capstone offline fallback** — `week4/student-pack.md` now points at `capstone/offline/`
   (`securecorp-target.ova` run isolated + `incident-logs/` + `capstone.pcap`) so a lab outage
   doesn't sink the final assessment.
+
+## Live diagrams (archify) — Days 3 and 4
+
+- **New teaching layer: interactive diagrams per day**, built with the `archify` skill and
+  stored in `dayNN/archify/` as a `.dataflow.json` / `.sequence.json` spec + a self-contained
+  `.html` (open in any browser; view buttons step through the story; light/dark toggle for the
+  projector; a **Class check** card whose questions match the exit check). The HTML is
+  generated — regenerate from the spec, never hand-edit. Every deck's run sheet now carries a
+  **LIVE DIAGRAMS** block mapping file → slide, and every `teacher-notes.md` Demo runbook has a
+  "Live diagrams" table with pre-flight + timings.
+- **Day 3** — the three existing diagrams are now actually wired in (`01-three-addresses` →
+  "The problem" + Port slide; `02-packet-journey-nat` → NAT; `03-packet-layers` → packet +
+  4-layer slides). Two new: `04-dhcp-lease` (sequence, D-O-R-A + renewal) and
+  `05-firewall-decision` (dataflow, rule list → allow / drop → "filtered").
+- **Day 3 content — two gaps closed:** a **DHCP** slide right after "find your address"
+  ("where did that number come from?") and a **firewall** slide right after Attack ↔ Defence
+  ("host firewall" in the port-scanning row made concrete). Both are on the cut list as
+  one-sentence fallbacks; run sheet grows ~4 min. The port table gains 4 recognition-only rows
+  (21 FTP, 25 SMTP, 3389 RDP, 3306 MySQL) — named, not taught, until Day 13.
+- **Day 4** — four new diagrams: `04-page-load-chain` (the day's anchor — used twice, first
+  as the map, then with all views at the whole-chain slide; the "7 steps" card is the
+  assignment word for word), `01-dns-resolution`, `02-tcp-handshake` (view 3 shows the lost
+  chunk being re-sent — what the ASCII can't), `03-tcp-vs-udp`.
+- **Day 4 content — one gap closed:** **UDP** promoted from a cut-first one-liner to its own
+  3-min slide after the handshake "do it now" (TCP vs UDP table + live diagram). Mid-point gate
+  moves to minute 43 with it in, back to 40 if cut.
+- Decks `day03.html/.pptx` and `day04.html/.pptx` regenerated from source.
+
+## 2026-09-19
+
+- **Week 1 assignment rebuilt** (`week1/week1-assignment.md` + PDF, `student-pack.md` synced):
+  every day gets a security question and a Learn → Do → Investigate → Secure → Evidence → Commit
+  pattern; Day 3 ARP/NAT drawing; Day 4 request dissection; Day 5 "problem it solves" column;
+  weekend Part A is an 11-stage login story with a new Part E threat model and a 10-mark
+  rubric. The Day 2 Event Viewer bonus moved to `week1/week1-optional-lab-event-4688.md`.
+- **Day 5 content — vocabulary added:** new "What cryptography is" slide (definition + the four
+  goals: confidentiality, integrity, authentication, non-repudiation, mapped to the existing
+  "three jobs") and a "Three types — and where you already meet them" slide, mirrored as a
+  Background section in the student pack and handout. Run sheet grows 3 min (~88 min).
+  `day05.html/.pptx` regenerated from source.
+
+## 2026-09-22
+
+- **Week 2 weekend assignment — new Part E added** (owner-requested, run across Days 6–9, not
+  new content, no freeze issue — Week 2 is unfrozen): `week2/student-pack.md` gains **Part
+  E1 — OverTheWire Bandit** (minimum 10 levels, stretch to 15, flag log kept **local**, not
+  uploaded to Drive until asked) and **Part E2 — Linux/Windows command explainer** (run every
+  command from the Linux and Windows cheat-sheets for real, show the output, explain it in the
+  student's own words). Submitted separately from the Parts A–D weekend PDF. Marking checklist
+  extended (+9 marks). A heads-up note added near the top of the student pack so students start
+  Part E across the week instead of cramming it into the weekend.
+- **`day08/assets/windows-cheatsheet-template.md` added** — the Windows equivalent of the
+  existing `day06/assets/linux-cheatsheet-template.md`; was missing. Scoped strictly to
+  commands actually demonstrated in `day08.md` (do-it-now blocks + on-slide code), to avoid
+  Part E2 sending students hunting for a command (e.g. `Get-Acl`) that was never taught —
+  Day 8 teaches `icacls` for reading ACLs, not `Get-Acl`.
+- **`day10/day10.md` assignment-brief slide + `day10/teacher-notes.md` guide updated** — the
+  slide said "the assignment — 4 parts," which would now contradict the 5-part (A–E) student
+  pack during the live Day 10 briefing. Retitled to "the weekend PDF — 4 parts (A–D)" and
+  added a Part E line (Bandit + command explainer, separate submission) plus a speaker-note
+  reminder that Part E is due across the week, not started fresh at the Day 10 briefing.

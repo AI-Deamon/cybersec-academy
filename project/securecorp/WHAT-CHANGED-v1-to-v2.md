@@ -97,3 +97,26 @@ v2 is written to work either way. If you pair it with the 20-day course: the ter
 matches (Engagement Journal, the lifecycle phases, `searchsploit`, IOCs, the ROE), and this
 handbook's Task 2.3 + Task 3.3 are a natural extension of Days 15–19. If it's standalone, it
 stands on its own with §6 (R&D) carrying the "you research your way there" load.
+
+---
+
+## v2.0 → v2.1 — résumé-worthiness pass (2026-09-10)
+
+v2 is pedagogically complete. v2.1 doesn't change the project — it makes the *artifacts a
+student walks away with* read like professional work, at close to zero extra classroom time.
+Every change is additive; the Core path, the tiers, and the marks are unchanged.
+
+| # | Change | Where | Why |
+|---|---|---|---|
+| 1 | **Three-level remediation** — every recommendation gives a *technical fix · compensating control · detective control* | Task 4.1 table, Standard Finding entry (App. B) | Real remediation isn't one line. The detective-control column points back at Task 3.4, closing the red→blue loop the handbook is built on. |
+| 2 | **CWE + CVSS v3.1 on every finding; CVE where one applies** | Standard Finding entry, Standard Attack Evidence entry, Task 2.3, rubric, App. D/E | Maps a lab finding to real-world vulnerability management. CVE is *not* forced onto DVWA application-logic findings — those get "N/A, see CWE". |
+| 3 | **Limitations section** in the report | New Task 4.4, App. A §10, App. D/E | "What my assessment missed, and why" reads as maturity. The raw material already exists in the Task 3.4 notes. |
+| 4 | **Red/blue reflection** — a one-page deliverable (3 questions, incl. one about the seeded incident) | New Task 4.4, Week 4 deliverables, App. E | Gives students something articulate to say in behavioural interviews; the analyst mindset from having sat in both chairs. |
+| 5 | **Detection engineering promoted within Stretch** — was "one custom Wazuh rule"; now a rule for *every* Manual/Not-Visible activity, with before/after evidence + a CV line | Task 3.4, §2 tier list, rubric | The single biggest SOC-skill signal — kept in Stretch because deploying Wazuh isn't Core (the 8 GB decision in §2 above stands). |
+| 6 | **Kill-chain write-up** of Task 2.3 | Task 2.3 Challenge bullet, §2 tier list, rubric | Turns six independent attacks + one real exploit into a documented end-to-end path. |
+| 7 | **Git portfolio** — recommended, not graded | §5 callout | A public repo is a linkable CV artifact. Rules: scrub the real network, never commit the seed answer key. |
+| — | Added an explicit **Week 4 Deliverables** block (the other three weeks already had one). | §12 | Consistency. |
+
+**Not done, deliberately:** no Metasploit-module automation (students would learn nothing);
+no extra vulnerable services (depth over breadth); detection-rule writing stays out of Core
+(hardware reality — see §2 of this doc).

@@ -11,6 +11,24 @@ your daily homework, and the weekend assignment. Keep it open during class.
 add three things — today's attack, today's defence, today's artifact. By Day 20 it's your
 portfolio.
 
+### How the week fits together
+Each day answers one question. The weekend assignment puts all five answers into one story.
+
+| Day | The question | The path |
+|---|---|---|
+| **1** | What are we protecting, and what's the line we don't cross? | CIA → threats → authorization |
+| **2** | What is actually running on the machine? | program → executable → process → CPU/RAM → OS |
+| **3** | How does the machine talk to others? | IP → MAC → gateway → router (NAT) → ISP → Internet |
+| **4** | How does a web request work? | DNS → TCP → TLS → HTTP → server |
+| **5** | How is information protected? | encryption → hashing → passwords → certificates → signatures |
+| **Weekend** | Can you follow one login end to end — and say where it can fail? | integrate → threat-model → prove it |
+
+**Every homework follows the same pattern:** **Learn** (class) → **Do** (build or draw it) →
+**Investigate** (look at the real thing) → **Secure** (answer the day's security question) →
+**Evidence** (prove it on your machine) → **Commit** (push to your repo). Each day also ends
+with one **Real job** question — where would you meet this in a real security job? Two or three
+sentences is plenty.
+
 ---
 
 ## Day 1 — What is this, where did it come from, and where's the line?
@@ -47,21 +65,33 @@ Your pair gets one breach card. Fill in:
 
 ### Homework (due start of Day 2)
 
-**1. Set up your course repo** (step by step):
+> **Security question:** What could go wrong if this asset is compromised?
+
+**1. Do — set up your course repo** (step by step):
    1. Create a free account at github.com **or** gitlab.com (turn on 2-factor auth).
    2. Create a **private** repository named `cybersec-course`.
    3. On your laptop, install Git: Windows → https://git-scm.com/download/win ·
       Linux → `sudo apt install git` · macOS → `xcode-select --install`.
    4. `git clone <your repo URL>` then `cd cybersec-course`.
-   5. Create `README.md` (see item 2), then:
+   5. Create `README.md` (see item 3), then:
       `git add . && git commit -m "day 1" && git push`
    6. Structure to build over the course: `README.md`, `day01/`, `day02/`, … one folder per day.
    *Stuck? Bring your laptop to the start of Day 2 — we'll fix it in the first 5 minutes.*
 
-**2. Write `README.md`** — two short paragraphs: **why** you're taking this course, and the
-   sentence *"I will only test systems I am authorized to test."* Start a "Today I learned" list.
+**2. Investigate — pick one asset of your own** (your email account, your phone, your college
+   login — something real). In `day01/asset.md`, fill in:
 
-**3. Read and sign the Authorization Pledge** (below). Bring the signed copy to Day 2.
+   | Asset | Which CIA pillar matters most, and why? | If it were compromised, what could go wrong? |
+   |---|---|---|
+   | | | |
+
+**3. Secure — write `README.md`.** Two short paragraphs: **why** you're taking this course, and
+   the sentence *"I will only test systems I am authorized to test."* Start a "Today I learned"
+   list. Then read and sign the Authorization Pledge (below) and bring it to Day 2.
+
+**4. Evidence** — the signed pledge, plus your repo showing its first commit **including `day01/asset.md`** (`git add . && git commit -m "day 1" && git push`).
+
+**5. Real job** — Why does a penetration tester need written scope before touching anything?
 
 ### Authorization Pledge
 > I understand that accessing or testing computer systems without authorization is unlawful
@@ -110,10 +140,43 @@ Then watch the projector: the instructor runs a misbehaving program and the OS k
 one process — the machine is unharmed.
 
 ### Homework (due start of Day 3)
-1. Draw the **source code → executable → running process** pipeline yourself; label where CPU,
-   RAM and disk each come in.
-2. One paragraph: **what is the difference between a program and a process?**
-3. Commit both to your repo; update your README's "today I learned" list.
+
+> **Security question:** How could an attacker abuse a running process?
+
+1. **Do** — draw the **source code → executable → running process** pipeline yourself; label
+   where CPU, RAM and disk each come in.
+2. **Do** — one paragraph: **what is the difference between a program and a process?**
+3. **Investigate** — Task Manager → Details (Windows) or `htop` (Linux). Browsers run as *many* processes, so pick **one** browser process (e.g. one `chrome.exe`) and note its **PID** and **memory**. Then open ten tabs and note what happens to the memory (of that process or of the browser in total — say which).
+4. **Secure** — 2–3 sentences answering the security question. Use class ideas: a process runs
+   with the permissions of whoever started it; instructions and data share the same RAM.
+5. **Evidence** — a screenshot of the browser process with its PID and memory visible.
+6. **Commit** — everything above into `day02/`, and update your README's "today I learned" list.
+7. **Real job** — How could a SOC analyst use process information during an incident
+   investigation?
+
+**Optional extras (not graded):**
+- *Process tracking in Event Viewer (Windows, admin)* → see the separate handout
+  **`week1/week1-optional-lab-event-4688`**.
+- *WSL setup* → below.
+
+**Optional — explore and set up WSL (Windows Subsystem for Linux):**
+   A real Linux kernel running next to your Windows kernel, on the same machine — the live
+   version of today's "kernel" idea. It also lets you actually run the Linux commands used all
+   course (`htop`, `ip a`, `dig`, …) instead of only reading the Windows equivalent.
+
+   1. Open PowerShell **as Administrator** → `wsl --install`. Restart if prompted.
+   2. After restart, Ubuntu launches automatically and finishes installing — create a UNIX
+      username and password (separate from your Windows login; typed password won't show
+      characters, that's normal).
+   3. Check it worked: on Windows, `wsl --status`; inside Ubuntu, `uname -a` (should mention
+      `microsoft-standard-WSL2`).
+   4. Inside Ubuntu: `sudo apt update && sudo apt install -y htop`, then run `htop`. Compare it
+      side by side with Task Manager — same idea, completely separate kernel.
+   5. One sentence: is the Ubuntu you just opened a separate physical computer, a separate
+      virtual machine, or something else?
+
+   *(Not the same as the Kali attacker VM you'll use later for Days 12–20 labs — WSL2 isn't
+   used there; see `LAB-SETUP.md`. This is just to get comfortable with Linux early.)*
 
 ---
 
@@ -153,10 +216,43 @@ one process — the machine is unharmed.
 4. `ping <gateway>` vs `ping 1.1.1.1`, then `traceroute 1.1.1.1` → local vs. far, count the hops.
 
 ### Homework (due start of Day 4)
-1. Draw your home network: each device → wifi/switch → router → ISP. Label every private IP,
-   the gateway, and the router's public IP.
-2. Two sentences: **why does `whatsmyip.com` show a different address than `ipconfig` / `ip a`?**
-3. Commit both; update your "today I learned" list.
+
+> **Security question:** Where could an attacker intercept or redirect traffic?
+
+**1. Do — draw your home network** in this shape, using your own devices and real values:
+
+```text
+Your laptop      MAC: ______   Private IP: ______
+      |
+      |  local hop — the MAC address is used here
+      v
+Wi-Fi router     Default gateway: ______   NAT happens here
+      |
+      |  Public IP: ______
+      v
+ISP  →  Internet  →  Web server
+```
+
+Add every other device on your network (phone, TV, …) with its private IP — if you can't find one, write "unknown" (the router's device list often shows them). *On a hostel, college or mobile-hotspot network you may be behind an extra layer of NAT, so the router's public IP may not match what a "what's my IP" site shows — draw what you can and note it.* *Hint: `ip a` /
+`ipconfig /all` gives your IP, MAC and gateway; a "what's my IP" site shows the router's public IP.*
+
+**2. Investigate — answer these four questions in your own words:**
+1. Why does the laptop need a **MAC address** on the local network?
+2. Why does **your laptop** need a **default gateway**? What would break without it?
+3. **Where does NAT happen**, and what does it change?
+4. Does the **web server see your laptop's private IP**? Explain.
+
+Then two sentences: **why does `whatsmyip.com` show a different address than `ipconfig` / `ip a`?**
+
+**3. Secure** — 2–3 sentences answering the security question. Use class ideas: anyone on your
+local network can see your traffic, and ARP spoofing can put an attacker in the middle even on
+a switch. What is the real defence?
+
+**4. Evidence** — screenshot your `ip a` / `ipconfig /all` output (IP, MAC, gateway) and a `ping` and `traceroute` (Windows: `tracert`) to a public site. *(These also count for Part C of the weekend assignment.)*
+
+**5. Commit** — into `day03/`, and update your "today I learned" list.
+
+**6. Real job** — Why would a security engineer care whether an address is private or public?
 
 ---
 
@@ -204,10 +300,38 @@ one process — the machine is unharmed.
    (find the `Cookie` and `Set-Cookie`). *Blur credentials in any screenshot.*
 
 ### Homework (due start of Day 5)
-1. Write the **7-step story** of loading `example.com`, keypress → rendered page, in your own
-   words. *(This becomes Part A of the weekend assignment.)*
-2. From your DevTools login: screenshot the request line + headers, **credentials blurred**.
-3. One sentence: **what does the padlock guarantee, and what does it not?**
+
+> **Security question:** What can an attacker learn from an HTTP request?
+
+**1. Do — write the 7-step story** of loading `example.com`, keypress → rendered page, in your
+own words. *(The 7 steps from class: type the URL → DNS → TCP → TLS → HTTP → render → repeat for every image/script. Part A of the weekend assignment extends this into a full login story, so do it properly now.)*
+
+**2. Investigate — dissect one real request.** In DevTools → Network, log in to an account **you own** (a throwaway one is ideal — never someone else's) and pick the login request. Tips: tick **Preserve log** so the request survives the page redirect, and try the **Fetch/XHR** filter if you can't spot it. Fill in this table from what you see:
+
+| Field | What you found |
+|---|---|
+| HTTP method | |
+| URL | |
+| `Host` | |
+| `User-Agent` | |
+| `Content-Type` | |
+| `Cookie` | *(blur the value)* |
+| `Authorization` header | *(if present — blur the value; write "not present" otherwise)* |
+| Status code | |
+| Response headers worth noting | *(e.g. `Set-Cookie`, `Content-Type`)* |
+| HTTP or HTTPS? | |
+
+Then answer: your browser can see every field above. **Which of them would be hidden from someone watching your Wi-Fi (because of TLS), and what could that person still see?**
+
+**3. Secure** — 2–3 sentences answering the security question, and one more: **what does the
+padlock guarantee, and what does it not?**
+
+**4. Evidence** — a screenshot of the request line + headers, with **credentials blurred**.
+Never submit a screenshot showing a real password or token.
+
+**5. Commit** — into `day04/`, and update your "today I learned" list.
+
+**6. Real job** — Why does a penetration tester inspect HTTP headers?
 
 ---
 
@@ -236,6 +360,38 @@ one process — the machine is unharmed.
   symmetric key (asymmetric maths) → switch to fast symmetric encryption.
 - **Don't roll your own crypto.** Compose vetted library primitives.
 
+### Background — what cryptography is
+
+Cryptography is the mathematical practice of scrambling readable data into an unreadable format,
+so that information stays secure across networks and devices.
+
+**The four goals**
+
+| Goal | What it means | In class we called it |
+|---|---|---|
+| **Confidentiality** | Keeps data private: only authorized users with the decryption key can read it. | secrecy |
+| **Integrity** | Ensures data has not been altered or tampered with in storage or in transit. | tamper-evidence |
+| **Authentication** | Verifies the true identity of users, systems or devices. | identity |
+| **Non-repudiation** | Proves a specific party sent a message or signed a transaction, so they cannot deny it later. | signatures |
+
+**The three main types**
+- **Symmetric cryptography** — one secret key both locks (encrypts) and unlocks (decrypts) the
+  data. Fast and efficient for bulk data. Example: **AES**.
+- **Asymmetric cryptography** — a mathematically linked *pair* of keys: a public key encrypts, the
+  private key decrypts. Example: **RSA**. *(Signing runs the other way round: the private key
+  signs, the public key verifies.)*
+- **Hash functions** — turn data into a fixed-size, unique digital fingerprint, so any change is
+  detectable. A hash is one-way and has no key, so it is not "scrambling" you can undo. Hashes
+  are used for password storage, but a plain hash is not enough: sites store a **salted, slow**
+  hash (bcrypt / Argon2), as in class.
+
+**Where you already meet it**
+- **Secure web browsing** — SSL/TLS secures HTTPS traffic in online banking and shopping.
+- **End-to-end encryption** — messaging tools like WhatsApp protect private conversations from
+  being intercepted.
+- **Password hashing** — websites store password hashes instead of plain text, to protect user
+  accounts.
+
 ### Key terms
 `plaintext / ciphertext` · `key` · `symmetric` · `asymmetric / public-key` · `AES` · `RSA` ·
 `hash` · `SHA-256` · `MD5 (broken)` · `avalanche` · `salt` · `slow hash / KDF` ·
@@ -248,10 +404,35 @@ one process — the machine is unharmed.
 3. `python3 crack.py <hash> wordlist.txt` — 3 MD5s fall in milliseconds; one misses; the
    salted+slow one grinds the whole list and finds nothing.
 
-### Homework
-Finish the **Week 1 weekend assignment** (below). Also add the **5-primitives table** to your
-repo: symmetric encryption · asymmetric encryption · hash · salted-slow-hash (passwords) ·
-signature/certificate — with one real use of each.
+### Homework (due with the weekend assignment)
+
+> **Security question:** Which cryptographic primitive protects which security property?
+
+**1. Do — build the 5-primitives table** in `day05/primitives.md`. Use your own words; a definition copied from a website earns nothing. In the *Security problem it solves* column use the four goals from the background above (confidentiality, integrity, authentication, non-repudiation) — or name the specific attack it stops.
+
+| Primitive | What it does | Security problem it solves | One real use |
+|---|---|---|---|
+| Symmetric encryption | | | |
+| Asymmetric encryption | | | |
+| Hash | | | |
+| Salted slow hash (passwords) | | | |
+| Signature / certificate | | | |
+
+**2. Investigate** — two things from class, on your own machine:
+1. Browser padlock → certificate details: who issued it, when does it expire, what is the chain
+   up to a root CA?
+2. Hash a short text file (`sha256sum` / `Get-FileHash`), change **one letter**, hash again.
+
+**3. Secure** — 2–3 sentences: **why must a website never store your password as plaintext or
+"encrypted", and what should it store instead?**
+
+**4. Evidence** — a screenshot of the certificate chain, and of the two different hashes.
+
+**5. Commit** — into `day05/`, and update your "today I learned" list.
+
+**6. Real job** — Why does a security engineer need to tell hashing and encryption apart?
+
+Then finish the **Week 1 weekend assignment** (below).
 
 ---
 
@@ -259,31 +440,76 @@ signature/certificate — with one real use of each.
 
 *Briefed at the end of Day 5. Submit one PDF before Monday (start of Day 6).*
 
-### Part A — Integrate
-Write the story of **what happens, end to end, when you log in to a website** — from pressing a
-key to the server checking your password over an encrypted connection. Use the concepts from
-Days 1–5 (data, how a program runs, packets, TCP/DNS/HTTP, TLS). One to two pages, your own
-words, a diagram encouraged.
+This is the integration exercise: everything from Days 1–5, in one investigation.
+
+### Part A — Integrate: one login, end to end
+Explain **what happens when you log in to a website**, from pressing a key to the server
+checking your password. Your story **must cover these eleven stages, in this order**:
+
+```text
+ 1. Keyboard input
+        ↓
+ 2. Application / process        (the browser is a running process — Day 2)
+        ↓
+ 3. DNS resolution
+        ↓
+ 4. TCP connection
+        ↓
+ 5. TLS handshake
+        ↓
+ 6. HTTP request                 (the login POST)
+        ↓
+ 7. Router / NAT / Internet      (see the note below)
+        ↓
+ 8. Web server
+        ↓
+ 9. Authentication               (how does the server check your password?)
+        ↓
+10. HTTP response
+        ↓
+11. Browser renders the page
+```
+
+> *Note on stage 7:* your packets pass through the router (and NAT) from stage 3 onward, not
+> only at stage 7. Use stage 7 to explain what the router and NAT do to those packets on their
+> way out and back.
+
+**For each stage, write (a) what happens and (b) at least one security consideration** — one or two sentences each is enough, in your own words. Aim for about two pages, plus a diagram (the diagram can replace some of the words).
 
 ### Part B — R&D stretch (research something we did *not* cover)
 Pick **one**:
 - Explain **DNS-over-HTTPS (DoH)**: what problem it solves, and one reason it's controversial.
-- Find **one real CVE** in a DNS server or a TLS library. In 3–4 sentences: what broke, and
-  what an attacker could do.
+- Find **one real CVE** in a DNS server or a TLS library (search cve.org or nvd.nist.gov, e.g. for "BIND" or "OpenSSL") and give its ID. In 3–4 sentences: what broke, and
+  what could an attacker do?
 
 ### Part C — Hands-on evidence
-Screenshots / command output from your own machine:
+Screenshots or command output from your own machine. You can reuse your Day 3 and Day 4 screenshots, but they must appear in the PDF:
 - your IP, MAC and default gateway;
-- a `ping` and a `traceroute` to any public site;
+- a `ping` and a `traceroute` (Windows: `tracert`) to any public site;
 - one web request viewed in your browser's DevTools → Network tab (show the request headers).
 
 ### Part D — Reflection
 3–4 sentences: what clicked this week, and what's still fuzzy.
 
+### Part E — Think like an attacker
+Take the login scenario from Part A and pick **three different places** where it could be
+attacked. For each, fill in one row:
+
+| Attack point | Possible attack | Security control |
+|---|---|---|
+| *(example)* DNS | DNS spoofing sends you to an impostor | DNSSEC / secure DNS |
+| | | |
+| | | |
+| | | |
+
+The three attack points must be from **different stages** of your Part A story. Don't copy the example — DNS spoofing is already used, so pick other attack points.
+
 ### Marking checklist (10 marks)
-- [ ] Part A covers all five layers data → TLS, in the student's own words (3)
-- [ ] Part A is coherent as a single story, not disconnected facts (1)
-- [ ] Part B shows real research beyond class, correctly explained (2)
-- [ ] Part C — all three pieces of evidence present and legible (2)
-- [ ] Part D — a genuine reflection, not filler (1)
-- [ ] Submitted as one PDF, on time (1)
+- [ ] **Technical accuracy** — Part A is technically correct and in the student's own words (2)
+- [ ] **End-to-end explanation** — all eleven stages present, in order, one coherent story (2)
+- [ ] **Security analysis** — security considerations in Part A + a sound threat model in Part E (2)
+- [ ] **R&D / research** — Part B shows real research beyond class, correctly explained (2)
+- [ ] **Hands-on evidence** — Part C: all three pieces present and legible (1)
+- [ ] **Reflection** — Part D: genuine, not filler (1)
+
+*Not submitted as one PDF, or late? The student should talk to the instructor before the deadline.*

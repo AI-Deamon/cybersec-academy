@@ -40,7 +40,8 @@ party vouched for this name."
 
 **Cut in this order if behind:**
 1. Steps 5–6 "read then repeat" slide → one sentence.
-2. The UDP contrast line on the TCP slide.
+2. The UDP slide → one sentence on the TCP slide ("no handshake, no re-sends — shout it and
+   hope; DNS, video calls, games"). Cutting it moves the mid-point gate back to minute 40.
 3. The netcat "do it now" → just do a full read of `curl -v` instead.
 4. The "look-alike site" row of the attack table (keep the other three).
 
@@ -92,6 +93,14 @@ party vouched for this name."
 - **Stateless:** the server doesn't remember you between requests — the **cookie** is how
   "logged in" is carried. Whoever presents the session cookie is treated as that user. This is
   the hinge for the attack slide and for Day 16.
+- **If a student wants to push the netcat exercise further** (extra practice, not class time):
+  the same raw-text trick extends past the one-line GET. A query string is just more text on
+  the request line (`GET /search?q=hi HTTP/1.1`); a cookie is just another header line
+  (`Cookie: session=abc123`); a form submission is a `POST` with a `Content-Length` header and
+  the encoded fields as the body, after the blank line. Nothing about HTTP requires a browser —
+  a browser is just a program that's very good at *generating* this text and *rendering* the
+  text that comes back. That's the one-sentence version of what today's whole HTTP section is
+  building toward.
 
 ### The attacks (pair each with its fix on the slide)
 - **DNS spoofing / cache poisoning:** answer with a wrong IP before the real server does, or
@@ -109,6 +118,25 @@ party vouched for this name."
 ---
 
 ## Demo runbook
+
+### Live diagrams (folder `archify/`, projector)
+
+Four interactive diagrams, one HTML file each, no install — double-click to open in any
+browser. **Pre-flight: open all four in separate tabs before class** and set each to
+**Light** (top-right) if the projector washes out dark backgrounds. Numbered **view buttons**
+along the top step through the story; **Play story** runs them in sequence; the **Class
+check** card at the bottom matches the exit check.
+
+| File | Slide | How to use it (time) |
+|---|---|---|
+| `04-page-load-chain.html` | "The chain" (the map) — and again at the whole-chain slide | first time: play the trace once, no views (1 min). Second time: click all 4 views; the "7 steps" card is the assignment word for word (2 min) |
+| `01-dns-resolution.html` | Step 1 DNS | 3 views; view 1 is the must-land ("*your laptop does not walk the tree*") (2 min) |
+| `02-tcp-handshake.html` | Step 2 TCP | 3 views; view 3 (a lost chunk, re-sent) is what the slide's ASCII can't show (2 min) |
+| `03-tcp-vs-udp.html` | UDP | play the trace: top row goes through the handshake box, bottom row skips it (1–2 min) |
+
+If a tab is lost mid-class, the slide carries the same facts — don't stop to reopen. Source
+specs live next to each HTML as `.dataflow.json` / `.sequence.json`; regenerate with the
+`archify` skill, never hand-edit the HTML.
 
 ### Hook + TCP + HTTP — `curl -v` (projector, reused 3×)
 - `curl -v https://example.com`

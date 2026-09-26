@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Three Addresses, Three Jobs",
+    "output": "lessons-v2/day03/archify/01-three-addresses.html",
+    "viewBox": [1068, 560],
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "views": [
+      { "id": "address-jobs", "label": "Three jobs", "focus": ["browser", "port", "laptop", "gateway", "website"], "note": "IP finds the machine, MAC reaches the next local hop, and a port reaches the right program." },
+      { "id": "client-server", "label": "Client and server", "focus": ["browser", "port", "website"], "note": "The browser uses a temporary source port; the web server listens on its known HTTPS port." }
+    ]
+  },
+  "stages": [
+    { "label": "Application" },
+    { "label": "Your Laptop" },
+    { "label": "Local Network" },
+    { "label": "Internet" },
+    { "label": "Destination" }
+  ],
+  "nodes": [
+    { "id": "browser", "type": "frontend", "label": "Browser", "sublabel": "client process", "tag": "starts request", "stage": 0, "row": 1 },
+    { "id": "port", "type": "backend", "label": "Port 443", "sublabel": "HTTPS service", "tag": "which program", "stage": 1, "row": 0 },
+    { "id": "laptop", "type": "frontend", "label": "Laptop", "sublabel": "IP 192.168.1.7", "tag": "which machine", "stage": 1, "row": 2 },
+    { "id": "gateway", "type": "cloud", "label": "Home Router", "sublabel": "MAC: next hop", "tag": "local handoff", "stage": 2, "row": 1 },
+    { "id": "routers", "type": "cloud", "label": "Internet Routers", "sublabel": "follow destination IP", "tag": "routing", "stage": 3, "row": 1 },
+    { "id": "website", "type": "backend", "label": "Web Server", "sublabel": "IP 93.184.216.34", "tag": "destination machine", "stage": 4, "row": 1 }
+  ],
+  "flows": [
+    { "from": "browser", "to": "port", "label": "HTTPS", "classification": "application destination", "variant": "emphasis", "labelDy": -95 },
+    { "from": "port", "to": "laptop", "label": "packet leaves browser", "classification": "client source port is temporary", "variant": "default", "labelDy": 28 },
+    { "from": "laptop", "to": "gateway", "label": "MAC addresses this hop", "classification": "MAC changes next hop", "variant": "security" },
+    { "from": "gateway", "to": "routers", "label": "IP guides the route", "classification": "destination IP stays", "variant": "emphasis", "labelDy": 56 },
+    { "from": "routers", "to": "website", "label": "arrives at port 443", "classification": "server process receives it", "variant": "default", "labelDy": 56 }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Remember", "items": ["IP means where the machine is", "MAC means the next local hop", "Port means which program receives traffic"] },
+    { "dot": "amber", "title": "Ask the class", "items": ["Which address changes at every router?", "Which number tells the server to use HTTPS?", "Can a website see your laptop MAC address?"] }
+  ]
+}

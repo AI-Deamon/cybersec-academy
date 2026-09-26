@@ -27,18 +27,27 @@ RUN SHEET (~84 min). THIS IS A TWO-PART DAY — it carries ~2 days of material. 
 00:04 The chain — the 7 steps (the day's map)                  3   │
 00:07 Step 1: DNS — names to numbers                           7   │ PART 1
 00:14 DO: dig / nslookup                                       4   │ (DNS+TCP+TLS,
-00:18 Step 2: TCP — the reliable phone call                    8   │  done by :40)
+00:18 Step 2: TCP — the reliable phone call                    8   │  done by :43)
 00:26 DO: watch the handshake in curl -v                       3   │
-00:29 Step 3: TLS — locking the line + what it does NOT give   9   ┘
-00:38 Step 4: HTTP — request slide + response slide           11   ┐
-00:49 DO: hand-craft an HTTP request (netcat / ps1)            6   │ PART 2
-00:55 Steps 5-6 render (1 line) + the chain diagram            3   │ (HTTP + attacks
-00:58 Attack <-> defence                                       9   │  + DevTools)
-01:07 DO: DevTools -> Network on a real login                  6   │
-01:13 Wrap + homework                                          5   ┘
-CUT FIRST IF SHORT: the render/repeat slide (say one sentence); the UDP line; the netcat "do
-it now" (do a full read of curl -v instead); the "look-alike site" attack row.
+00:29 UDP — shout it and hope (live diagram)                   3   │
+00:32 Step 3: TLS — locking the line + what it does NOT give   9   ┘
+00:41 Step 4: HTTP — request slide + response slide           11   ┐
+00:52 DO: hand-craft an HTTP request (netcat / ps1)            6   │ PART 2
+00:58 Steps 5-6 render (1 line) + the chain diagram            3   │ (HTTP + attacks
+01:01 Attack <-> defence                                       9   │  + DevTools)
+01:10 DO: DevTools -> Network on a real login                  6   │
+01:16 Wrap + homework                                          5   ┘
+With the UDP slide in, the MID-POINT GATE is minute 43; cut UDP and it is back to minute 40.
+CUT FIRST IF SHORT: the render/repeat slide (say one sentence); the UDP slide (one sentence on
+the TCP slide instead); the netcat "do it now" (do a full read of curl -v instead); the
+"look-alike site" attack row.
 NEVER CUT: the DNS->TCP->TLS->HTTP order, what TLS does NOT give, the chain diagram, DevTools.
+LIVE DIAGRAMS (folder archify/ — open every file in its own browser tab BEFORE class; each has
+view buttons that step through the story, and a light/dark toggle for the projector):
+  04-page-load-chain.html -> "The chain" slide (the map), and again at the whole-chain slide
+  01-dns-resolution.html  -> Step 1 DNS
+  02-tcp-handshake.html   -> Step 2 TCP
+  03-tcp-vs-udp.html      -> UDP slide
 ANALOGY (sanctioned): the PHONE CALL. DNS = asking the operator / directory for the number.
 TCP handshake = "hello?… hello.… ok, go ahead." TLS = switching to a scrambler both ends share.
 HTTP = the actual conversation.
@@ -104,6 +113,8 @@ reply." Those are the four sections of today.
 <!--
 This slide is the map for the whole day AND the shape of the assignment (7 steps). Put them on
 the board and tick them off as you go. Every web attack later "lives" on one of these steps.
+LIVE DIAGRAM: archify/04-page-load-chain.html — play the trace once, no clicking through the
+views yet (60 seconds). "Five boxes. We do one at a time." Same tab comes back at :58.
 -->
 
 ---
@@ -127,6 +138,9 @@ Analogy: asking the operator for a number. First time it's a few hops; after tha
 who asked recently has it memorised (cache).
 Keep it to: resolver -> root -> TLD -> authoritative -> answer, plus caching. No record-type
 zoo (A, AAAA, MX, TXT) beyond naming A = "name to IPv4".
+LIVE DIAGRAM: archify/01-dns-resolution.html — 3 views: ask the resolver / walk the tree /
+cache the answer. The must-land point is view 1: YOUR laptop does not walk the tree, the
+resolver does. The third "Class check" question sets up DNS spoofing on the attack slide.
 -->
 
 ---
@@ -166,8 +180,11 @@ Then every chunk is numbered and acknowledged; lost chunks are re-sent.
 
 <!--
 Analogy: "hello?… hello, I can hear you.… great, go ahead." Only after that do you talk.
-Contrast UDP in one line: no handshake, no re-sends — "shout it and hope." Used for DNS, video
-calls, games, where speed beats perfection. CUT the UDP line first if short.
+LIVE DIAGRAM: archify/02-tcp-handshake.html — 3 views: handshake / numbered + acknowledged /
+a lost chunk. View 3 is the one the ASCII on this slide cannot show: chunk #2 vanishes, no
+ACK comes back, the sender re-sends. "That is the whole difference from IP."
+UDP gets its own slide after the "do it now". If you are cutting it: one line here — "UDP =
+no handshake, no re-sends, shout it and hope; DNS, video calls, games."
 -->
 
 ---
@@ -187,6 +204,32 @@ connection.
 <!--
 1-2 min. If you ran Wireshark you'd see the literal SYN / SYN-ACK / ACK — that's Day 13. For
 now curl's "Connected" line is the marker.
+-->
+
+---
+
+## UDP — shout it and hope
+
+Same job as TCP — put a **port** on the packet — but a different promise:
+
+| | **TCP** — the phone call | **UDP** — shout down the hall |
+|---|---|---|
+| Before sending | 3-way handshake | nothing — just send |
+| Lost piece | noticed, re-sent | gone |
+| Order | guaranteed | not guaranteed |
+| Cost | slower to start, heavier | fast, light |
+| Used by | web, email, SSH — *every byte matters* | DNS, video calls, games — *speed matters* |
+
+The **app** picks one. You never choose per packet.
+
+<!--
+LIVE DIAGRAM: archify/03-tcp-vs-udp.html — top row TCP, bottom row UDP, same sender and
+receiver. Play the trace: TCP goes through the handshake box first; UDP skips straight across.
+The two questions that make it land: "A bank page: TCP or UDP? Why?" and "Zoom dropped one
+frame — should it be re-sent?" (No: by the time it arrives it's old. Skip it.)
+Ask "why does DNS use UDP?" — one tiny question; a handshake would triple the wait.
+If asked about QUIC / HTTP/3: HTTP on top of UDP with reliability rebuilt on top (FAQ).
+CUT to one sentence on the TCP slide if short.
 -->
 
 ---
@@ -311,6 +354,10 @@ of the weekend assignment.</strong></div>
 <!--
 Point at the board where the 6 steps have been ticked off all lesson. Tell them tonight's
 homework is the first draft of this; Friday's briefing turns it into the full assignment.
+LIVE DIAGRAM: archify/04-page-load-chain.html again — NOW click through the 4 views in order
+(find / connect + lock / talk / render + repeat). The "7 steps" card on the right is the
+assignment, word for word. Read the "Class check" card aloud — the padlock question is the
+Day 4 trap.
 -->
 
 ---

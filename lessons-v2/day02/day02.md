@@ -291,9 +291,19 @@ The daily ritual. Three lines into the repo before they leave.
    the CPU, RAM and disk each come in.
 2. One paragraph: **what is the difference between a program and a process?**
 3. Add both to your repo. Update your README's "today I learned" list.
+4. **(Bonus, Windows admin only) Track a process's creation event in Event Viewer** — the class
+   example uses Notepad; pick a **different program** for your own submission. Full steps in
+   the week-1 student pack.
+5. **(Bonus, Windows) Explore and set up WSL** — a real Linux kernel running next to your
+   Windows kernel, same machine. Lets you run the Linux commands used all course (`htop`,
+   `ip a`, `dig`, …) yourself instead of only reading the Windows equivalent. Full steps in
+   the week-1 student pack.
 
 <!--
 Due start of Day 3. Checklist grading in the week-1 student pack.
+Item 4 is optional/stretch: needs an admin command prompt and doesn't apply to students on
+Linux/macOS or without admin rights on a school laptop. Don't grade it as required; it's a
+"if you want to go deeper" hook that pays off again on Day 19 (memory/log forensics).
 -->
 
 ---

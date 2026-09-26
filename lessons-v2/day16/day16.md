@@ -282,6 +282,41 @@ out credentials. CUT SSRF first if short.
 
 ---
 
+## Bonus — two more you'll see everywhere
+
+**CSRF — Cross-Site Request Forgery.** Your browser attaches cookies to a request
+**automatically**, no matter which site the request came from. A malicious page can silently
+submit a request to a site you're logged into, and your session cookie rides along:
+
+```
+<img src="https://bank.example/transfer?to=attacker&amount=1000">
+```
+
+If that link moves money and you're logged into the bank, just *viewing* the attacker's page
+does it for you — no click, no password prompt.
+- **Fix:** anti-CSRF tokens (a per-session secret the form must echo back), `SameSite=Lax`
+  cookies, re-auth for sensitive actions.
+
+**Command Injection.** The app passes your input straight into a shell command:
+
+```
+os.system(f"ping -c 1 {user_input}")
+```
+
+Input `8.8.8.8; cat /etc/passwd` → two commands run. Same trust-boundary bug as SQLi — text you
+typed became a command — just a shell instead of a database.
+- **Fix:** never build shell strings from input — call the library function directly
+  (`subprocess.run(["ping", "-c", "1", host])`, no `shell=True`), or a strict allowlist.
+
+<!--
+OPTIONAL slide — cut first if short, or assign as homework reading. Same "your data became
+code" pattern as the SQLi slide; students should recognise it immediately.
+DVWA has a Command Injection page and a CSRF page — good for extra practice beyond today's
+three DOs, if a student wants more after class.
+-->
+
+---
+
 ## Attack ↔ Defence — it's one pattern
 
 **Every** vuln today: *untrusted input reached something powerful because it wasn't checked at
@@ -293,6 +328,8 @@ the boundary.*
 | XSS | output encoding + CSP | catches `<script>` — bypassable |
 | IDOR | server-side authorization | can't see it at all |
 | SSRF | destination allowlist | limited help |
+| CSRF | anti-CSRF token + `SameSite` | doesn't see it — it's a valid-looking request |
+| Command injection | no shell string-building | catches known payloads — bypassable |
 
 **A WAF is defence in depth. The code is the fix.**
 
@@ -339,7 +376,10 @@ control for injection. The structural fix + validation + a WAF = defence in dept
    in the language of your choice.
 3. `assets/vuln-code.md` — read the two vulnerable snippets; rewrite each the safe way.
 4. Add `SQL injection`, `parameterized query`, `XSS (reflected/stored/DOM)`, `output encoding`,
-   `CSP`, `IDOR`, `authorization vs authentication`, `SSRF`, `WAF` to your glossary.
+   `CSP`, `IDOR`, `authorization vs authentication`, `SSRF`, `WAF`, `CSRF`, `command injection`
+   to your glossary.
+5. *(Optional, extra practice)* DVWA's **CSRF** and **Command Injection** pages — same
+   find/prove/fix approach as today's three DOs.
 
 <!--
 Due start of Day 17.

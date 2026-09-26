@@ -14,20 +14,20 @@ footer: "Practical Cyber Security (v2) · Week 1 · Day 5"
 **Week 1 · Building the foundation · + Week 1 assignment brief**
 
 <!--
-RUN SHEET (~85 min). Hands-on INTERLEAVED. Assignment brief is the last block.
+RUN SHEET (~88 min). Hands-on INTERLEAVED. Assignment brief is the last block.
 00:00 Journey check + hook (crack a hash on the projector)     4
-00:04 What crypto is for — three jobs                          4
-00:08 Job 1: encryption / symmetric                            6
-00:14 Asymmetric / public key — solves key exchange            8
-00:22 DO: inspect a real certificate                           4
-00:26 Job 2: hashing — one-way, tamper-evident                 8
-00:34 DO: sha256 a file, flip one byte                         4
-00:38 Password storage done right (the trap)                   7
-00:45 DO: crack hashes with a wordlist                        10
-00:55 Job 3: signatures + the TLS handshake in 4 steps         6
-01:01 Attack <-> defence + "don't roll your own"               5
-01:06 Wrap + artifact (the 5-primitives table)                 3
-01:09 WEEK 1 ASSIGNMENT BRIEF                                  16
+00:04 What crypto is: four goals, three types, three jobs      7
+00:11 Job 1: encryption / symmetric                            6
+00:17 Asymmetric / public key — solves key exchange            8
+00:25 DO: inspect a real certificate                           4
+00:29 Job 2: hashing — one-way, tamper-evident                 8
+00:37 DO: sha256 a file, flip one byte                         4
+00:41 Password storage done right (the trap)                   7
+00:48 DO: crack hashes with a wordlist                        10
+00:58 Job 3: signatures + the TLS handshake in 4 steps         6
+01:04 Attack <-> defence + "don't roll your own"               5
+01:09 Wrap + artifact (the 5-primitives table)                 3
+01:12 WEEK 1 ASSIGNMENT BRIEF                                  16
 CUT FIRST IF SHORT: the cert "do it now" (show one on the projector instead); the sha256 flip
 (describe it); the signatures detail (keep "private signs, public verifies, a cert is a CA's
 signature on a name").
@@ -75,6 +75,49 @@ Full student crack session is the "do it now" later; this is just the teaser.
 
 ---
 
+## What cryptography is
+
+The mathematical practice of **scrambling readable data into an unreadable form**, so
+information stays secure across networks and devices.
+
+| Goal | It means | We'll call it |
+|---|---|---|
+| **Confidentiality** | only someone with the key can read it | secrecy |
+| **Integrity** | it wasn't altered or tampered with | tamper-evidence |
+| **Authentication** | who a user, system or device really is | identity |
+| **Non-repudiation** | the sender can't deny sending or signing it | signatures |
+
+<!--
+Set the vocabulary before the tools. Four goals; the next-but-one slide groups them as the
+"three jobs" we'll use all day (authentication + non-repudiation both live under "identity").
+Non-repudiation = a signature is proof it was YOU; you can't later say "that wasn't me".
+Careful with "scrambling": encryption and signatures fit it; a hash does not (one-way, no key) --
+we make that point on the hashing slide.
+-->
+
+---
+
+## Three types — and where you already meet them
+
+- **Symmetric** — one secret key locks *and* unlocks. Fast, for bulk data. e.g. **AES**.
+- **Asymmetric** — a public/private key **pair**. e.g. **RSA**.
+- **Hash** — a fixed-size fingerprint of the data, to detect change. One-way, no key.
+
+**You already use all three:**
+- **HTTPS (TLS)** — online banking and shopping.
+- **End-to-end encrypted chat** — WhatsApp-style apps stop anyone in the middle reading it.
+- **Password storage** — sites keep a *hash* of your password, not the password.
+
+<!--
+Quick overview, ~2 min -- each type gets its own slide next. Two things to say out loud so the
+overview isn't misleading: (1) "public key encrypts, private key decrypts" is the encryption
+direction; signing runs the OTHER way (private signs, public verifies) -- Job 3 slide.
+(2) A plain hash is not enough for passwords -- salted + SLOW hash, two slides on. Don't let
+"hash = password storage" stand alone.
+-->
+
+---
+
 ## What cryptography is *for* — three jobs
 
 | Job | Question it answers | Tool |
@@ -86,6 +129,8 @@ Full student crack session is the "do it now" later; this is just the teaser.
 You **compose** these building blocks. **You never invent your own** — that's rule one.
 
 <!--
+Bridge from the previous slides: these three are the four goals grouped -- secrecy =
+confidentiality, tamper-evidence = integrity, identity = authentication + non-repudiation.
 Every secure system is some mix of these three. TLS (Day 4) uses all three at once.
 "Don't roll your own crypto" — we'll come back to why at the end. Say it now so it sinks in.
 -->

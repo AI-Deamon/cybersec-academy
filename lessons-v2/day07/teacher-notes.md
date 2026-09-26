@@ -83,6 +83,41 @@ lets any user run it and have it act as root *for that one program's logic*. Sam
 a general-purpose tool (`bash`, `find`, `vim`, `python`), hands an attacker root. **GTFOBins**
 catalogues which binaries can be abused this way — name it, don't teach it.
 
+**Optional instructor demo — SUID, made concrete (safe, 2 min, on a throwaway VM).** If a
+student asks "show me," this makes the mechanism un-abstract without doing real priv-esc
+(that's still Day 17). Reads `/etc/shadow`, which this day already treats as fine to view via
+`sudo` — the only new risk is leaving `/bin/cat` SUID-root system-wide, so **undo the chmod
+immediately**, in the same breath:
+```
+sudo chmod u+s /bin/cat
+ls -l /bin/cat                 # -rwsr-xr-x  <- the 's' where owner-execute was
+cat /etc/shadow                 # now works — cat is running AS root, not as you
+sudo chmod u-s /bin/cat        # undo it right away — don't leave this set
+```
+The lesson: `cat` didn't get smarter, it got a **different effective user**. Every permission
+check *inside* `cat` — including "can I open `/etc/shadow`?" — now asks "can root do this?",
+not "can this user do this?"
+
+A sharper follow-up if there's time: SUID-`cp` looks even more dangerous but has a twist worth
+walking through. Make a root-only scratch file first (`sudo sh -c 'echo secret > /root/x.txt;
+chmod 600 /root/x.txt'`), then:
+```
+sudo chmod u+s /bin/cp
+cp /root/x.txt ~/mine.txt      # cp runs as root, so it CAN read /root/x.txt
+ls -l ~/mine.txt                # but the new file's mode is FRESH, not copied
+cat ~/mine.txt                  # readable — you own the copy, default mode let you in
+cp -p /root/x.txt ~/other.txt  # -p PRESERVES the source's mode (600 root) on the copy
+cat ~/other.txt                 # denied — you gained nothing this time
+sudo chmod u-s /bin/cp         # undo it right away
+```
+The point: `cp` (no flags) creates the destination as a **new file** with a default mode —
+still owned by root (the process's effective UID), but with a typical `644`-ish mode rather
+than the source's restrictive one. `644` gives "other" read access, and *you* are "other"
+relative to a root-owned file — so you can still `cat` it. `-p` preserves the source's mode
+(`600 root`) onto the copy instead, and now nobody but root can read it — the "careful" flag
+turns out to be the one that fails. That's the twist pwn.college's access-control module builds
+this exact exercise around: the naive command works, the cautious one doesn't.
+
 ### Privilege escalation — the four classic local paths (concept only today)
 1. **SUID abuse** — unusual SUID binary → run it in a way that spawns a root shell.
 2. **Writable file a privileged process trusts** — root's cron/systemd runs

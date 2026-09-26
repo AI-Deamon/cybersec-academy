@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Example 1: The Padlocks in Your Mailbox",
+    "output": "lessons-v2/day05/archify/05-padlock-mailbox.sequence.html",
+    "viewBox": [1068, 528],
+    "column_fit": "spread",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": { "entries": { "emphasis": { "label": "the key step" }, "return": { "label": "the result" }, "security": { "label": "the outsider" }, "default": { "label": "the move" }, "dashed": { "label": "setup" } } },
+    "views": [
+      { "id": "set-up", "label": "1. Everyone gets their own padlock", "focus": ["alice", "bob"], "note": "No coordination — Alice puts her padlock on her mailbox, Bob does the same on his. Each keeps the only matching key." },
+      { "id": "send", "label": "2. Bob sends a secret letter", "focus": ["bob", "alice"], "note": "Bob walks to Alice's mailbox and snaps her padlock shut on the letter — encrypting with her public key." },
+      { "id": "open", "label": "3. Only Alice can open it", "focus": ["alice", "bob", "mailman"], "note": "The letter is locked. Bob hasn't got the key, the mailman hasn't either. Alice unlocks with her private key." }
+    ]
+  },
+  "participants": [
+    { "id": "alice", "type": "external", "label": "Alice", "sublabel": "sender" },
+    { "id": "bob", "type": "external", "label": "Bob", "sublabel": "receiver" },
+    { "id": "mailman", "type": "external", "label": "Mailman", "sublabel": "can lock, not open" }
+  ],
+  "segments": [
+    { "from": 165, "to": 255, "label": "1. Everyone owns a padlock + a key" },
+    { "from": 271, "to": 445, "label": "2. Bob sends Alice a secret letter" }
+  ],
+  "messages": [
+    { "id": "alice-setup", "from": "alice", "to": "bob", "y": 182, "label": "puts her PADLOCK on her mailbox", "variant": "dashed", "note": "the only key stays in her pocket" },
+    { "id": "bob-setup", "from": "bob", "to": "alice", "y": 214, "label": "does the same on his own mailbox", "variant": "dashed", "note": "each padlock opens only with its own key — never paired up" },
+    { "id": "snap-shut", "from": "bob", "to": "alice", "y": 296, "label": "snaps Alice's padlock shut on the letter", "variant": "default", "note": "encrypting with Alice's public key" },
+    { "id": "outsider", "from": "mailman", "to": "alice", "y": 332, "label": "the mailman could snap it too — never open it", "variant": "security", "note": "encrypt is public; decrypt is not" },
+    { "id": "locked", "from": "bob", "to": "alice", "y": 368, "label": "the letter is locked — even Bob can't open it", "variant": "emphasis", "note": "the sender does not hold the key" },
+    { "id": "unlock", "from": "alice", "to": "bob", "y": 404, "label": "unlocks with her own PRIVATE key — reads", "variant": "return", "note": "only the private key decrypts" }
+  ],
+  "activations": [
+    { "participant": "alice", "from": 177, "to": 409, "type": "external" },
+    { "participant": "bob", "from": 177, "to": 409, "type": "external" },
+    { "participant": "mailman", "from": 327, "to": 373, "type": "external" }
+  ],
+  "cards": [
+    { "dot": "violet", "title": "How the mailbox trick works", "items": ["A padlock = public key — anyone can snap one shut (encrypt to you)", "The one key = private key — only its owner opens (decrypt)", "The public padlock travels; the private key stays home", "Each padlock has its own matching key — locks never \"pair up\""] },
+    { "dot": "amber", "title": "Class check", "items": ["Which is the public key, which the private key?", "Why can't Bob open the letter he just locked?", "How does a padlock solve the \"key exchange\" problem?"] }
+  ]
+}

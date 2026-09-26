@@ -238,7 +238,7 @@ Everyone writes the finished model into their repo as day10/threat-model.md.
 
 ---
 
-## The assignment — 4 parts
+## The weekend PDF — 4 parts (A–D)
 
 - **A — Integrate:** on your Linux VM — **threat-model it in half a page** (asset, likely
   actor, entry points), then **harden it**: create a non-root user, **find and fix 3 weak
@@ -253,9 +253,19 @@ Everyone writes the finished model into their repo as day10/threat-model.md.
 
 **One PDF, before Monday.**
 
+**Plus — Part E (separate submission, work on it across Days 6–9, not just this weekend):**
+OverTheWire **Bandit** — minimum 10 levels, flags logged locally, **not** uploaded to Drive
+until asked — and a **command explainer**: run every command from your Linux/Windows
+cheat-sheets for real and explain, in your own words, what the output means and what the
+command is for.
+
 <!--
-Walk each part ~3 min. Part A is the whole week (Days 6-9) in one task. Part B is the stretch.
-Emphasise: the SCRIPT is the point of Part A — it's Day 9 applied. Test only your own VM.
+Walk Parts A-D ~3 min each. Part A is the whole week (Days 6-9) in one task. Part B is the
+stretch. Emphasise: the SCRIPT is the point of Part A — it's Day 9 applied. Test only your own VM.
+Then ~2 min on Part E: hand out the Bandit link, say the minimum is 10 levels (stretch 15),
+flags stay LOCAL (not on Drive) until asked, and the command explainer draws on the cheat-sheets
+they've been building since Day 6 — so it should already be mostly done by today, not started
+from scratch this weekend. Full spec for Part E: `week2/student-pack.md`.
 -->
 
 ---
