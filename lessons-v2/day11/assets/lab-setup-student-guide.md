@@ -383,7 +383,8 @@ Then browse to `http://10.89.1.20` (DVWA) and `http://10.89.1.30:3000` (Juice Sh
 | Target shows `Exited` after a reboot | `~/lab.sh up` |
 | `nmap` says *Host seems down* | Add `-Pn`. |
 | `podman network create` / `run --network labnet` fails with an **iptables** or **nftables** error | Make sure `iptables` is installed (Step 3). If it still fails on your WSL kernel: `sudo mkdir -p /etc/containers && printf '[network]\nfirewall_driver = "none"\n' \| sudo tee /etc/containers/containers.conf`, then retry. |
-| `Error: subnet 10.89.1.0/24 already used` / network conflict | Another network uses that range. Check with `sudo podman network ls`; `sudo podman network rm labnet` and recreate (Step 4a), then re-create the targets. |
+| `Error: subnet 10.89.1.0/24 is already used...` / network conflict | Another network uses that range. Check with `sudo podman network ls`; `sudo podman network rm labnet` and recreate (Step 4a), then re-create the targets. |
+| `Error: network name labnet already used: network already exists` | You ran Step 4a twice — `labnet` is already there, that's fine. Skip straight to 4b. |
 | `msf2` keeps restarting (`sudo podman inspect msf2 --format '{{.RestartCount}}'` above 0) | You left off the `sh -c '… tail -f /dev/null'` wrapper. `sudo podman rm -f msf2` and redo 4b exactly. |
 | `10.89.1.x` doesn't answer from **Windows** | Expected — the lab network is inside WSL. Scan from the Ubuntu terminal (or see the optional route step). |
 | WSL is eating my RAM / PC is slow | Check `.wslconfig` (Step 1). `~/lab.sh down` and `wsl --shutdown` when not using the lab. |
@@ -402,7 +403,11 @@ the versions in *this* guide are the ones the course uses). Your instructor will
 
 ---
 
-*Verified on a working instructor lab (Podman 5.7, WSL2): all three targets get their own IP on
-`10.89.1.0/24`, are found by `sudo nmap -sn`, and scan by IP with real service versions. Not tested
-end to end: the Windows-browser route (needs Administrator) and the Ubuntu 24.04 install path —
-dry-run both once before the class.*
+*Dry-run 2026-09-26: every command block in Steps 2–7 was run fresh (all three targets deleted
+and rebuilt from these exact commands, packages reinstalled from scratch), and every output —
+`nmap -sV` versions, `sudo nmap -sn` finding all four hosts, the DVWA/Juice Shop headers, the
+`ppp?` mislabel, `nikto`'s findings, the access-log lines — matched this guide exactly, on
+Podman 5.7 / WSL2. **Not dry-run:** Step 1 itself (`wsl --install -d Ubuntu-24.04` on a laptop
+with no WSL at all — the test lab already had WSL enabled) and the optional Windows-browser
+route (needs Administrator). Do one first-boot laptop before class if you can; otherwise Day 12's
+Path B (shared class Kali) covers anyone who gets stuck on Step 1.*

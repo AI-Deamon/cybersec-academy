@@ -368,6 +368,20 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   added a Part E line (Bandit + command explainer, separate submission) plus a speaker-note
   reminder that Part E is due across the week, not started fresh at the Day 10 briefing.
 
+## 2026-09-26 (4)
+
+- **Dry-run verified `day11/assets/lab-setup-student-guide.md` end to end.** Wiped the instructor
+  lab clean (all containers + the `labnet` network deleted) and rebuilt everything from the
+  guide's exact copy-paste blocks: Step 2 toolbox (nmap/nikto/sqlmap/gobuster/ffuf all installed
+  clean, no missing packages), Step 3 Podman, Step 4 network + all three targets + `lab.sh`, Step
+  5 checks (all outputs matched the guide's shown output verbatim — the `nmap -sV` version list,
+  `sudo nmap -sn` finding four hosts, DVWA/Juice Shop headers), Step 6, and every Step 7 class
+  command including the `ppp?` Juice Shop mislabel and the Nikto/Nmap user-agent lines in DVWA's
+  access log. Fixed one wording mismatch found during the run (the actual Podman subnet-conflict
+  error text) and added a troubleshooting row for re-running Step 4a by accident. Remaining known
+  gap: Step 1 itself (`wsl --install` on a machine with no WSL at all) and the optional
+  Windows-browser route were still not exercised — noted in the guide's own footer.
+
 ## 2026-09-26 (3)
 
 - **Day 12 gate reconciled with the Day 11 personal lab.** The "connect to the lab" gate assumed
