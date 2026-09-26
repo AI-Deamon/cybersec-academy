@@ -368,6 +368,26 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   added a Part E line (Bandit + command explainer, separate submission) plus a speaker-note
   reminder that Part E is due across the week, not started fresh at the Day 10 briefing.
 
+## 2026-09-26 (3)
+
+- **Day 12 gate reconciled with the Day 11 personal lab.** The "connect to the lab" gate assumed
+  a class-hosted Kali + `<LAB_HOST>` model; students now build their own lab as Day 11 homework
+  (WSL2 + Podman, MS2 `10.89.1.10` / DVWA `10.89.1.20` / Juice Shop `10.89.1.30`), so the gate is
+  now a VERIFY pass, not a first-time connect:
+  - `day12.md` "Do it now" slide: Path A = verify own Day-11 lab (`~/lab.sh status`, `sudo nmap
+    -sn`, `nmap -sV`); Path B (shared class Kali + `<LAB_HOST>`) kept as the fallback for
+    stragglers and Mac/ARM laptops that can't run WSL2.
+  - **Snapshot → container reset.** Containers don't snapshot like a VM; replaced "take a VM
+    snapshot" with "know your `podman rm -f <name>` + rebuild" — students locate that command
+    during the gate, not mid-exploit later.
+  - `assets/lab-connect-checklist.md` rewritten: Path A is the Day-11 lab with concrete IPs, Path
+    B is the old Kali/VPN checklist, unchanged, as the fallback.
+  - `assets/roe-template.md` scope table: both own-lab IPs and the shared-Kali placeholder shown
+    side by side.
+  - `teacher-notes.md`: lab-gate logistics, checkpoint, and FAQ updated to match (lighter gate,
+    same 18-min budget — the saved time goes to stragglers).
+  - Rebuilt `day12.html` / `day12.pptx`.
+
 ## 2026-09-26 (2)
 
 - **Lab tool map integrated into Days 13, 14, 16, 17, 19** — each day now names the exact target

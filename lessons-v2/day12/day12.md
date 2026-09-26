@@ -30,8 +30,9 @@ NEVER CUT: the 6 phases, scope/ROE/authorization, the lab connect, the Engagemen
 ANALOGY (kitchen): a pentester = a hired health inspector with WRITTEN permission to try to
 break in, who then reports exactly how — with photos and fixes. Not a burglar. The one
 difference between them is a signed piece of paper.
-LAB: this is the GATE. Every student must reach the lab targets and snapshot today. Stragglers
-go on the shared Kali; fix their own VM after.
+LAB: this is the GATE, but most students already built their lab as Day 11 homework — today
+is mostly VERIFY, not build. Anyone who didn't finish, or is on a Mac/ARM laptop, goes on the
+shared Kali; fix their own lab in office hours.
 -->
 
 ---
@@ -210,17 +211,26 @@ ATT&CK — and every step you take, they can potentially see."
 
 ## Do it now — connect to the lab  *(the gate)*
 
-1. Start your **Kali** (your VM, or log in to the **shared class Kali**).
-2. Confirm you can reach the lab: `ping <LAB_HOST>` and open `http://<LAB_HOST>:8080` in a browser.
-3. Run your Day 9 scanner: `python3 scanner.py <LAB_HOST>` — you should see open ports.
-4. **Take a VM snapshot** now (so you can always roll back).
-5. Note the target details in your Engagement Journal (Phase 1 section).
+**Most of you:** verify your **own lab from Day 11** still works.
+
+1. `~/lab.sh status` — `msf2`, `dvwa`, `juiceshop` all **Up** (`~/lab.sh up` if not).
+2. `sudo nmap -sn 10.89.1.0/24` — finds all three targets.
+3. `nmap -sV 10.89.1.10` — real service versions, not "filtered".
+4. Note the three addresses in your Engagement Journal (Phase 1 section).
+
+**Didn't finish Day 11, or on a Mac/ARM laptop?** Use the **shared class Kali**:
+`ping <LAB_HOST>`, `http://<LAB_HOST>:8080`, `python3 scanner.py <LAB_HOST>`.
+
+Full checklist (both paths): `assets/lab-connect-checklist.md`.
 
 <!--
-18 min — THE GATE. Everyone must finish this. Checklist in assets/lab-connect-checklist.md.
-Stragglers: put them on the shared Kali for today, sort their own VM in office hours.
+18 min — THE GATE, but lighter than it looks: most students already have a working lab from
+Day 11 homework, so this is a VERIFY pass (5-8 min), not a first connect. Spend the saved time
+on stragglers: shared-Kali onboarding for anyone who didn't finish Day 11 or can't run WSL2.
+Containers don't 'snapshot' like a VM - point 5 in the checklist is the reset instead: the
+targets are disposable, `podman rm -f <name>` + the one build command from Day 11's guide
+gets back to clean in under a minute. Say that explicitly so nobody hunts for a snapshot button.
 Nobody starts Day 13 without lab access.
-If ICMP is blocked, `curl -I http://<LAB_HOST>:8080` or the scanner is the reachability test.
 -->
 
 ---

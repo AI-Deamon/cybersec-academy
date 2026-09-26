@@ -20,9 +20,9 @@ Signed: ____________________   Date: __________
 **In scope (test these — and only these):**
 | Target | Address | Notes |
 |--------|---------|-------|
-| Web app 1 (DVWA) | `http://<LAB_HOST>:8080` | |
-| Web app 2 (Juice Shop) | `http://<LAB_HOST>:3000` | |
-| Server (Metasploitable2) | `<LAB_HOST>` (or its own IP) | all TCP ports |
+| Web app 1 (DVWA) | `http://10.89.1.20` (own lab) / `http://<LAB_HOST>:8080` (shared Kali) | |
+| Web app 2 (Juice Shop) | `http://10.89.1.30:3000` (own lab) / `http://<LAB_HOST>:3000` (shared Kali) | |
+| Server (Metasploitable2) | `10.89.1.10` (own lab) / `<LAB_HOST>` (shared Kali) | all TCP ports |
 
 **Out of scope (do NOT touch):**
 - the campus / college network and any device on it

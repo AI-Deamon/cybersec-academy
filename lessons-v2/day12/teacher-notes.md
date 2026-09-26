@@ -4,28 +4,35 @@
 **This file:** the lab-gate logistics (read first), cut-list, background, checkpoint, exit
 check, FAQ.
 
-**Today has one hard requirement: every student reaches the lab and snapshots.** Everything
-else can slip; that cannot. Budget the full 18 minutes and start setup *before* class if you
-can (share the VM image / shared-Kali credentials as Day 11 homework).
+**Today has one hard requirement: every student's lab is reachable, and they know how to
+reset it.** Everything else can slip; that cannot. Most students already built their lab as
+**Day 11 homework** (`day11/assets/lab-setup-student-guide.md` — WSL2 + Podman, three targets
+with their own IPs: Metasploitable2 `10.89.1.10`, DVWA `10.89.1.20`, Juice Shop `10.89.1.30`),
+so today's 18 minutes is mostly a VERIFY pass, not a first-time build. Budget the time anyway —
+stragglers and incompatible laptops (Mac/ARM can't run WSL2) still need the full slot on the
+shared-Kali fallback.
 
 ---
 
 ## Lab-gate logistics
 
 **Before class:**
-- Lab host up, all targets reachable: DVWA `:8080`, Juice Shop `:3000`, Metasploitable2.
-- Decide the reachability path: same LAN, or a VPN (WireGuard/OpenVPN config per student), or
-  SSH to a shared Kali. Write `<LAB_HOST>` and any VPN/creds on the board.
-- Shared class Kali ready with one account per student and `scanner.py` in each home dir.
-- Hand out `assets/lab-connect-checklist.md` with the real values filled in.
+- Have the shared-Kali fallback ready regardless: one account per student, `scanner.py` in each
+  home dir, `<LAB_HOST>` and any VPN/creds on the board. Some students *will* need it — Mac/ARM
+  laptops can't run WSL2, and some Day 11 installs won't have finished.
+- Hand out `assets/lab-connect-checklist.md` (Path A = own Day-11 lab, Path B = shared Kali).
 
 **During the DO:**
-- Circulate. Most failures are: VM won't start (virtualization off in BIOS), no network
-  bridge, VPN not connected, or a typo in `<LAB_HOST>`.
-- **Any student not connected by the end of class → Path B (shared Kali) for now.** They are
-  not behind; fix the VM in office hours before Day 14 (Day 13 is survivable on shared Kali).
-- Everyone runs **VM → Snapshot** named `day12-clean`. Say why: exploitation days can leave
-  the box messy; a snapshot is a 5-second reset.
+- Path A (most students): a quick `~/lab.sh status` + `nmap` pass. Circulate for laptops where
+  the containers didn't survive a reboot (`~/lab.sh up` fixes it) or WSL memory was capped too
+  low over the weekend.
+- **Any student not verified by the end of class → Path B (shared Kali) for now.** They are
+  not behind; fix their own lab in office hours before Day 14 (Day 13 is survivable on shared
+  Kali).
+- **No VM snapshot today** — the targets are containers, not a VM. The equivalent reset (say
+  it explicitly, it's new): `sudo podman rm -f <name>` then re-run that target's one build
+  command from the Day 11 guide. Have students actually locate that command now, so they're
+  not hunting for it mid-exploit on Day 17.
 
 **"Day 12 is the gate" (design doc §7)** — track who's connected on a list. Don't let it slide.
 
@@ -127,7 +134,7 @@ Each student:
 - [ ] can name the 6 phases in order and what "done" looks like for two of them
 - [ ] can state why the out-of-scope list matters as much as the in-scope list
 - [ ] has a completed (or near-complete) mock ROE
-- [ ] **has reached the lab targets and taken a snapshot** (or is on Path B and logged as such)
+- [ ] **has verified their lab and knows the container reset command** (or is on Path B and logged as such)
 - [ ] has the Engagement Journal created with Phase 1 filled
 
 ---
@@ -149,8 +156,9 @@ Each student:
   issues as possible. Red team = one objective, stay hidden, test whether defenders catch you.
 - **"Do I need the authorization letter if my manager said it's fine?"** Yes, in writing,
   signed by someone who owns the systems. Verbal is not protection.
-- **"What if I break the target?"** In this lab: snapshot and roll back. In real life: stop,
-  document, call the contact — it's in the ROE.
+- **"What if I break the target?"** In this lab: `podman rm -f` and rebuild from the Day 11
+  guide — under a minute, no VM snapshot needed. In real life: stop, document, call the
+  contact — it's in the ROE.
 - **"Can I test my own website / home lab?"** Yes — you own it. Anything you don't own needs
   written permission or a bug-bounty scope.
 - **"Why start the report now?"** Because you forget details fast, and the journal doubles as
