@@ -4,6 +4,9 @@
 **This file:** cut-list, background, the two exercise answer keys, demo runbook, checkpoint,
 exit check, FAQ.
 
+**Day 11 also kicks off the student lab** (WSL2 + Podman, three targets with their own IPs) — see
+*Lab kickoff* below and `assets/lab-setup-student-guide.md`.
+
 **Week 3 opens.** Frame the week: the attacker's process is *boring and repeatable* — which is
 why it can be found (Days 12–15) and defended (Week 4). Today = the enemy catalogue.
 
@@ -24,6 +27,7 @@ why it can be found (Days 12–15) and defended (Week 4). Today = the enemy cata
 ## Must-teach vs. cut-if-short
 
 **Never cut:**
+- The **lab-map diagram walk-through** ("Your lab" slide) — it frames Days 12–15.
 - **The short list** (phishing, weak/stolen creds, unpatched, misconfig, supply chain).
 - Phishing anatomy + the **dissection exercise**.
 - The malware taxonomy **by behaviour** (delivery ≠ payload) — the "malware = virus" trap.
@@ -31,8 +35,8 @@ why it can be found (Days 12–15) and defended (Week 4). Today = the enemy cata
 - **Dwell time** (you won't catch it at the door).
 
 **Cut in this order if behind:**
-1. MITM/DoS/supply-chain slide → 3 min (MITM & DoS are Day 3–4 callbacks).
-2. The HIBP "do it now" → tell them to do it as homework.
+1. (Already done by default) MITM/DoS/supply-chain → 3 min; HIBP → homework — both make room for the lab kickoff.
+2. The C2-beacon DO → 5 min (do the beacon as a class).
 3. Credential-attack sub-types → keep spray vs stuffing, drop brute force detail.
 4. Social-engineering "types" table → keep phishing + BEC, drop the rest.
 
@@ -164,6 +168,43 @@ network blocks it, it's fine as homework.
 
 ---
 
+## Lab kickoff (12 min) — the map, then Step 1
+
+### Live diagrams (folder `archify/`, projector)
+
+Open both in browser tabs **before class**; set to **Light** if the projector washes out dark.
+
+| File | When | How to use it (time) |
+|---|---|---|
+| `01-lab-architecture.html` | "Your lab" slide | view 1 *Three networks* → view 2 *Your attack path* → view 3 *Kept private*; read the Class check (5 min) |
+| `02-scan-traffic.html` | right after | step through the 3 views; the four bands = recon → port scan → version → assess (3 min) |
+
+**Talking line for the traffic:** "Your Ubuntu box asks *who has 10.89.1.10?* (ARP), knocks on ports (SYN → SYN-ACK
+means open, RST means closed), reads the banner (`vsFTPd 2.3.4`), then looks that string up offline. No internet, no
+real network. Exploitation later rides the *same* path."
+
+**In class:** only Step 1 (`wsl --install`, reboot). Steps 2–4 are homework (~1 h, ~3 GB). Walk the room for
+virtualization-disabled laptops.
+
+**Instructor pre-flight (once, before Day 11):** run the whole guide on a **clean Windows 11 laptop with Ubuntu 24.04**
+and tick its Step 5 checklist. The guide was verified on the instructor lab (Ubuntu 26.04, Podman 5.7); the Ubuntu 24.04
+path and the optional Windows-browser `route add` step (needs Administrator) are **untested**.
+
+**Failure modes (lab):**
+
+| Symptom | Fix |
+|---|---|
+| `wsl --install` says virtualization off | BIOS/UEFI: enable Intel VT-x / AMD-V (SVM); also *Virtual Machine Platform* |
+| `nmap -sn` shows no targets | they're still starting (DVWA ~60 s) — wait, `~/lab.sh status`, retry |
+| Windows browser can't open `10.89.1.20` | expected — lab network is inside WSL; use the optional route step, or CLI tools |
+| student on a Mac / ARM | VM route (Kali VM) — this guide is Windows/Linux |
+| a student is >90 min in and stuck | shared class lab / office hours — don't let setup eat the week |
+
+**Day 12 note:** the Day 12 "connect to the lab" gate uses `<LAB_HOST>:8080` + Kali. Students now have their own
+lab (`10.89.1.10/.20/.30`) — tell them which they use on Day 12 (own lab, or the class host).
+
+---
+
 ## Checkpoint (by end of class)
 
 Each student can:
@@ -172,6 +213,8 @@ Each student can:
 - [ ] explain why "my password is strong" doesn't stop credential stuffing
 - [ ] separate malware **delivery** from **payload**, and give an example of each
 - [ ] describe what a C2 beacon looks like on the network
+- [ ] say what the three addresses on their laptop are (192.168.x.x / 172.x.x.x / 10.89.1.x) and which one the targets have
+- [ ] (homework) lab built: Step 5 checklist ticked
 
 ---
 
@@ -187,6 +230,9 @@ Each student can:
 ---
 
 ## FAQ
+
+- **"Why not just scan localhost?"** A real target is another machine with its own address. Scanning by IP builds the right habit — and `nmap` output looks the same as on a real network.
+- **"Is my Wi-Fi exposed?"** No — the lab network exists only inside the laptop; nothing is forwarded out.
 
 - **"Isn't antivirus enough?"** No — modern threats use living-off-the-land, fileless
   techniques, and stolen credentials that AV can't see. Defence is layered (EDR + MFA +

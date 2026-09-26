@@ -14,22 +14,28 @@ footer: "Practical Cyber Security (v2) · Week 3 · Day 11"
 **Week 3 · The penetration testing lifecycle**
 
 <!--
-RUN SHEET (~85 min). Hands-on: phishing dissection, HIBP, a connection-log analysis.
+RUN SHEET (~85 min). Hands-on: phishing dissection, a connection-log analysis, then the LAB KICKOFF.
 00:00 Journey check + hook (spot the phish)                    4
 00:04 The short list — how attackers get in                    5
 00:09 Social engineering & phishing (#1)                       9
 00:18 DO: dissect a phishing email                             8
 00:26 Credential attacks                                       7
-00:33 DO: check yourself on HIBP                                4
-00:37 Malware families — by behaviour, not "virus"            10
-00:47 DO: spot the C2 beacon in a connection log               8
-00:55 MITM, DoS/DDoS, supply chain                             6
-01:01 Attack <-> defence: the 6 ways in (the artifact)         6
-01:07 "We'd notice" — dwell time                               4
-01:11 Wrap + homework                                          4
-CUT FIRST IF SHORT: MITM/DoS/supply-chain slide to 3 min (mostly callbacks); the HIBP DO.
+      (HIBP check = HOMEWORK by default, to make room for the lab)
+00:33 Malware families — by behaviour, not "virus"            10
+00:43 DO: spot the C2 beacon in a connection log               8
+00:51 MITM, DoS/DDoS, supply chain (kept to 3 min)             3
+00:54 Attack <-> defence: the 6 ways in (the artifact)         6
+01:00 "We'd notice" — dwell time                               4
+01:04 LAB KICKOFF: the map (2 diagrams) + start Step 1          12
+01:16 Wrap + homework                                          5
+CUT FIRST IF SHORT: the C2 DO to 5 min (do the beacon as a class); the credential sub-types.
 NEVER CUT: the short list, phishing anatomy + the dissection DO, the malware behaviour taxonomy,
-the 6-ways-in table, dwell time.
+the 6-ways-in table, dwell time, the lab-map diagram walk-through (it frames Days 12-15).
+
+LIVE DIAGRAMS (folder archify/ — open both in browser tabs BEFORE class; each has view buttons
+that step through the story, and a light/dark toggle for the projector):
+  01-lab-architecture.html -> 'Your lab' slide (3 views: three networks / attack path / kept private)
+  02-scan-traffic.html     -> same slide, after the map (3 views: find it / knock on ports / read + look up)
 ANALOGY (kitchen): the ways a thief gets into the restaurant — talks past the host (phishing),
 uses a copied key (stolen creds), the back door nobody fixed (unpatched), a window left open
 (misconfig), a poisoned delivery (supply chain), jamming the phone lines (DoS). Malware = what
@@ -43,7 +49,7 @@ they bring in or leave behind.
 - **Weeks 1–2:** you understand the machine and can *reason* about attacks.
 - **This week:** the attacker's actual **process**, start to finish — the pentest lifecycle.
 - **Today:** the catalogue — how they really get in, and the malware they use.
-- **Tomorrow:** the lifecycle framework, and we build the lab.
+- **Tomorrow:** the lifecycle framework — using the lab you start building tonight.
 
 <!--
 Journey Check. Week 3 opens. Frame: "movie hacking" is rare. Real breaches are boring and
@@ -194,7 +200,7 @@ the other site leaked, attackers just log in. MFA is the fix that actually scale
 
 ---
 
-## Do it now — have you been pwned?
+## Your turn (homework) — have you been pwned?
 
 Go to **haveibeenpwned.com** and enter your **email address** (not a password).
 
@@ -202,9 +208,10 @@ Go to **haveibeenpwned.com** and enter your **email address** (not a password).
 - For any account where you **reused** that password — change it, and turn on **MFA**, today.
 
 <!--
-4 min. HIBP is Troy Hunt's breach-aggregation service — safe, reputable, no password entry.
-Most students will have 2-10 hits. Make the action concrete: the reused ones are the danger.
-CUT this DO first if short — but it lands hard, try to keep it.
+HOMEWORK by default now (the lab kickoff needs the time). 30 s to set it up: HIBP is Troy Hunt's
+breach-aggregation service — safe, reputable, email only, never a password. Most students will
+have 2-10 hits. Make the action concrete: the reused ones are the danger.
+If you finish early, run it in class (4 min).
 -->
 
 ---
@@ -260,7 +267,7 @@ On Day 13 you'll see this live in Wireshark. Today: the pattern. This is the bri
 
 <!--
 Mostly callbacks — keep it brisk. Supply chain is the scariest because the malicious code
-arrives *signed and trusted*. CUT to 3 min if behind.
+arrives *signed and trusted*. Keep to 3 min today (lab kickoff needs the time).
 -->
 
 ---
@@ -299,6 +306,62 @@ year on year — say "varies, often longer than you'd think", not a hard stat.
 
 ---
 
+## Your lab — three machines, three addresses
+
+*(open `archify/01-lab-architecture.html` on the projector)*
+
+You'll build a practice network **inside your laptop**:
+
+| Machine | Address | It is… |
+|---|---|---|
+| **Attacker box** (Ubuntu on WSL2) | `172.x.x.x` | where you run `nmap`, `nikto`… |
+| **Metasploitable 2** | `10.89.1.10` | a whole vulnerable server |
+| **DVWA** | `10.89.1.20` | a vulnerable web app (port 80) |
+| **Juice Shop** | `10.89.1.30` | a vulnerable web app (port 3000) |
+
+**Each target is its own machine with its own IP.** You scan it by address — never `localhost`.
+
+<!--
+~7 min. Kitchen analogy: a PRACTICE restaurant built inside our own building, walled off so nobody
+can walk in from the street. We break into it on purpose; nobody real gets hurt.
+DIAGRAM 1 — 01-lab-architecture.html (click the view buttons):
+  view 1 'Three networks': one laptop, THREE addresses — Windows 192.168.x.x (your real Wi-Fi),
+    WSL Ubuntu 172.x.x.x (the attacker box), the lab 10.89.1.0/24 (exists only inside the laptop).
+    Callback to Day 3 'three addresses': same idea, now all in one machine.
+  view 2 'Your attack path': every scan starts in Ubuntu, crosses the lab network, lands on a
+    target's OWN IP and REAL port. 10.89.1.10 = a whole server (many ports); .20 and .30 = web apps.
+  view 3 'Kept private': Wi-Fi never sees the targets. That is why it's safe — and why we never
+    forward them to a real network (Day 1: authorization).
+DIAGRAM 2 — 02-scan-traffic.html: walk the four bands — (1) ARP 'who has 10.89.1.10?' (same
+  network, no router needed); (2) SYN -> SYN-ACK = open, SYN -> RST = closed (Day 4's handshake,
+  nmap just doesn't finish it); (3) connect + banner 'vsFTPd 2.3.4'; (4) searchsploit that string
+  offline. 'That's a whole scan — recon, port scan, version, assess. Days 12-15 do exactly this.'
+  Exploitation comes later and rides the same path. Don't drill the details today.
+Class check cards on each diagram double as the exit questions.
+-->
+
+---
+
+## Do it now — start your lab install
+
+Open **`assets/lab-setup-student-guide.md`**. It's copy-and-paste — no Linux knowledge needed.
+
+1. **In class (5 min): Step 1** — `wsl --install -d Ubuntu-24.04`. It needs a **reboot**, so start it now.
+2. **At home, on good Wi-Fi (~1 hour, ~3 GB): Steps 2–4** — tools, Podman, the three targets.
+3. **Done when** the Step 5 checklist is all ticked. Screenshot the `nmap` output — that's your proof.
+
+**Stuck? Screenshot the whole error.** The targets are disposable — you can't break anything.
+
+<!--
+~5 min. Only Step 1 happens in class; everything else is homework. Walk the room: the common
+blocker is VIRTUALIZATION DISABLED in BIOS/UEFI (Intel VT-x / AMD-V) — note it, they fix it at home
+(guide's troubleshooting has the line). Mac users: point them at the VM route. Remind them the
+reboot is needed before Ubuntu opens. Don't stand there while 25 laptops download — it's homework.
+Gate: Days 12-15 use THIS lab. Anyone who can't finish → office hours / shared class lab.
+-->
+
+---
+
 ## Today's attack / defence / artifact
 
 - **Attack:** get a foot in via the boring five — usually a phished or reused credential — then
@@ -318,6 +381,8 @@ year on year — say "varies, often longer than you'd think", not a hard stat.
    the initial access, and what was the impact?
 4. Add `phishing`, `credential stuffing`, `password spray`, `C2 beacon`, `dwell time`,
    `RAT`, `infostealer` to your cheat-sheet / glossary.
+5. **Build your lab** — follow `assets/lab-setup-student-guide.md` (~1 hour). Bring a screenshot of
+   `sudo nmap -sn 10.89.1.0/24` and `nmap -sV` on `10.89.1.10`. *(Not marked — but Days 12–15 need it.)*
 
 <!--
 Due start of Day 12.
@@ -335,5 +400,6 @@ Due start of Day 12.
 
 <!--
 Say the three lines. Tomorrow: we turn "here are the attacks" into "here is the repeatable
-process an attacker (and a pentester) follows" — the lifecycle — and we stand up the lab.
+process an attacker (and a pentester) follows" — the lifecycle — and use the lab they start
+building tonight.
 -->

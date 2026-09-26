@@ -33,7 +33,9 @@ ANALOGY (kitchen / health inspector): recon = walk the outside first — read th
 public records, look in the windows, note the delivery schedule — before touching anything.
 Scanning = walk up and try every door handle (and the neighbours hear you rattling them).
 ETHICS: passive recon only on the instructor-permitted domain. Active scans only on <LAB_HOST>
-(in the ROE) or scanme.nmap.org (the Nmap project explicitly allows scanning it).
+(in the ROE) or scanme.nmap.org (the Nmap project explicitly allows scanning it). If you built
+your own lab (Day 11), <LAB_HOST> = your Metasploitable2 at 10.89.1.10 — see the Lab tool map
+in teacher-notes.md for which target/tool goes with which technique across Days 13-19.
 -->
 
 ---
@@ -176,13 +178,18 @@ CUT the OS/timing detail first if short.
 ## Do it now — scan the lab, watch the wire
 
 1. Install **Wireshark** (`sudo apt install wireshark`), start a capture on your interface,
-   filter: `ip.addr == <LAB_HOST>`
-2. In another terminal: `nmap -sV -sC <LAB_HOST>`
+   filter: `ip.addr == <LAB_HOST>` (own lab: `10.89.1.10`, your Metasploitable2)
+2. In another terminal: `nmap -sV -sC <LAB_HOST>` — this box has the most ports open, so it's
+   the one worth watching on the wire.
 3. Watch Wireshark while it runs. Find:
    - the **burst of SYN packets** — one per port (the port scan)
    - **SYN-ACK** back from open ports, **RST** from closed ones
    - the **version probes** — Nmap sending real payloads to identify services
 4. Save the scan: `nmap -sV -sC -oA week3/scan-lab <LAB_HOST>`
+5. **Bonus (if time):** your DVWA and Juice Shop are separate machines now (`10.89.1.20`,
+   `10.89.1.30`) — `nmap -sV -p 80,3000 10.89.1.20 10.89.1.30` scans both in one line, and
+   `gobuster dir -u http://10.89.1.30:3000 -w /usr/share/wordlists/dirb/common.txt` finds
+   endpoints Juice Shop never linked to. This is recon for **Day 16's** exploitation.
 
 <!--
 18 min. This is THE blue-team bridge - "here is what a scan looks like from the defender's
@@ -200,10 +207,15 @@ Raw Nmap → the **service inventory** in your Engagement Journal:
 
 | Host | Port | Proto | Service | Version | Notes / worth a look? |
 |------|------|-------|---------|---------|------------------------|
-| `<LAB_HOST>` | 80 | tcp | http | Apache 2.4.x | DVWA login page |
-| `<LAB_HOST>` | 3000 | tcp | http | Node/Express | Juice Shop |
-| `<LAB_HOST>` | 21 | tcp | ftp | vsftpd 2.3.4 | old — check CVEs (Day 14) |
+| `10.89.1.20` | 80 | tcp | http | Apache 2.4.x | DVWA login page |
+| `10.89.1.30` | 3000 | tcp | http | Node/Express | Juice Shop |
+| `10.89.1.10` | 21 | tcp | ftp | vsftpd 2.3.4 | old — check CVEs (Day 14) |
+| `10.89.1.10` | 22 | tcp | ssh | OpenSSH 4.7p1 | old, weak/default creds worth trying |
 | ... | | | | | |
+
+Three separate hosts now (own lab), not one `<LAB_HOST>` with many ports — that's *more*
+realistic, not less: a real network is many machines, and nmap's job is telling you which
+ones are there at all before you fingerprint what's running on each.
 
 This table is the deliverable of Phases 2–3 and the input to everything next.
 
@@ -246,7 +258,8 @@ scans openly *because they're authorised*; an attacker who wants stealth pays a 
 
 ## Homework
 
-1. Complete the **service inventory** for `<LAB_HOST>` in your Engagement Journal — every open
+1. Complete the **service inventory** for `<LAB_HOST>` (all three hosts if you're on your own
+   lab) in your Engagement Journal — every open
    port, service, and version. Commit the `nmap -oA` files too.
 2. Pick the **two most interesting** findings (old version? unusual service?) and write one
    sentence each on why they're interesting.

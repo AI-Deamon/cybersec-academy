@@ -20,6 +20,21 @@ actually matters.
 
 ---
 
+## Lab tool map (this day) — see also Day 13's full table
+
+| Target | Address | Tool | Technique |
+|---|---|---|---|
+| Metasploitable2 | `10.89.1.10` | `nmap --script vuln`, `searchsploit` | version → CVE → public exploit? |
+| DVWA | `10.89.1.20` | `nikto` | web-server-specific vuln checks (vs nmap's generic NSE scripts) |
+
+**Optional instructor demo — default credentials are a finding too:** `hydra -l msfadmin -P
+/usr/share/wordlists/rockyou.txt 10.89.1.10 ssh` (or just try `msfadmin:msfadmin` — MS2's
+well-known default). Point: a scanner reports *open port 22*; it takes a human (or Hydra) to
+notice the password is the login name. Weak/default creds go straight into the ranked findings
+table like any other finding — usually near the top, since "exploit" here is "log in".
+
+---
+
 ## Must-teach vs. cut-if-short
 
 **Never cut:**
@@ -142,7 +157,7 @@ State the two CVSS-9.8 findings (deck). Let them argue. Land: "the score didn't 
 risk did — because of *where the box is*."
 
 ### The DO — scan the lab
-1. `nmap --script vuln -sV <LAB_HOST>` (Metasploitable2 lights up — vsftpd backdoor, Samba,
+1. `nmap --script vuln -sV <LAB_HOST>` (own lab: `10.89.1.10`; Metasploitable2 lights up — vsftpd backdoor, Samba,
    old Apache, etc.).
 2. `searchsploit vsftpd 2.3.4` — one line, a Metasploit module. `searchsploit samba 3.0.20`.
 3. Walk one finding fully on the projector: banner → NVD lookup → CVSS vector → `searchsploit`

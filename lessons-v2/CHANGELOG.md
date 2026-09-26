@@ -367,3 +367,52 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   pack during the live Day 10 briefing. Retitled to "the weekend PDF — 4 parts (A–D)" and
   added a Part E line (Bandit + command explainer, separate submission) plus a speaker-note
   reminder that Part E is due across the week, not started fresh at the Day 10 briefing.
+
+## 2026-09-26 (2)
+
+- **Lab tool map integrated into Days 13, 14, 16, 17, 19** — each day now names the exact target
+  IP (own-lab addresses from Day 11: Metasploitable2 `10.89.1.10`, DVWA `10.89.1.20`, Juice Shop
+  `10.89.1.30`) and the exact tool for that day's technique, replacing generic `<LAB_HOST>`
+  references where a concrete address teaches the point better:
+  - **Day 13 (Recon):** service-inventory table now lists three real hosts instead of one
+    `<LAB_HOST>` with many ports; added a `gobuster` bonus line against Juice Shop.
+  - **Day 14 (Vuln Assessment):** added `nikto` against DVWA alongside `nmap --script vuln` /
+    `searchsploit` on Metasploitable2; added an optional Hydra default-credential demo
+    (`msfadmin:msfadmin` on MS2 SSH) framed as "weak creds are a finding too."
+  - **Day 16 (Web Exploitation):** added `sqlmap` as an explicit "automate it" step *after* the
+    manual SQLi proof (teach-concept-then-tool, per the course's standing pedagogy rule);
+    concrete IPs on the SQLi/XSS DOs; Command Injection framed as the bridge into Day 17.
+  - **Day 17 (Post-Exploitation):** the priv-esc DO is now two named paths — Path A (Metasploit
+    on MS2, existing) and Path B (new: DVWA Command Injection → reverse shell → planted cron
+    persistence — a literal backdoor). Run sheet updated to "pick one."
+  - **Day 19 (Blue Team):** added an optional closing-the-loop extension — pull the student's own
+    DVWA/MS2 logs from their Days 16-17 attacks (`podman exec dvwa tail .../access.log`, `sudo
+    podman exec msf2 tail .../auth.log`) alongside the canned graded `assets/logs/` bundle.
+  - Each day's teacher-notes.md gets a **"Lab tool map"** reference table (target / address / tool
+    / technique); Day 13's is the canonical version, later days point back to it.
+  - Rebuilt `day13/14/16/17` `.html` + `.pptx` from the edited `.md` sources. Day 19 deck/notes
+    text-only (no slide count change, no rebuild needed).
+  - Scope and depth were confirmed with the user first: Days 13/14/16/17/19 (not 15/18/20), kept
+    the existing ~85-min run sheets (no schedule change), and extended existing "Do it now"
+    exercises rather than adding new slides.
+
+## 2026-09-26
+
+- **Student lab built into Day 11.** New `day11/assets/lab-setup-student-guide.md` — a copy-and-paste
+  guide to build a personal pentest lab inside the laptop (WSL2 + Podman). Every target is its own
+  "machine" with its own IP on a private `10.89.1.0/24` network — Metasploitable 2 `.10`, DVWA `.20`,
+  Juice Shop `.30` — scanned by IP on native ports, not `localhost:port`. Built from the instructor lab's
+  tested commands (`assessments/vuln-assessment-lab-handout.md` Part 7). Differs from the root
+  `lab-setup-guide.md` on purpose: no localhost port mappings, `searchsploit` via git clone (`exploitdb`
+  isn't in Ubuntu apt), `whatweb` dropped (broken Ubuntu package), Metasploit / ZAP / Nessus / Burp
+  deferred to the Exploitation days. Reviewed for beginner ambiguity (how to paste, `sudo` password,
+  waiting for containers, optional packages split out so one missing package can't abort the install).
+- **Two archify diagrams added** (`day11/archify/`): `01-lab-architecture.html` (three networks / your
+  attack path / kept private) and `02-scan-traffic.html` (ARP → SYN/SYN-ACK/RST → banner → searchsploit).
+- **`day11/day11.md` (+ `.html`/`.pptx` rebuilt)**: two new slides ("Your lab — three machines, three
+  addresses", "Do it now — start your lab install"), a LIVE DIAGRAMS block, a lab-kickoff slot in the run
+  sheet, and homework item 5. To make room: HIBP moved to homework by default, MITM/DoS/supply-chain kept
+  to 3 min. `day11/teacher-notes.md` gets a Lab kickoff section (live-diagram table, talking line,
+  pre-flight, failure modes) and updated cut list/checkpoint/FAQ. `week3/student-pack.md` Day 11 updated.
+- **Open item:** Day 12's "connect to the lab" gate still points at `<LAB_HOST>:8080` + Kali; decide
+  whether Day 12 uses the students' own lab (`10.89.1.x`) or the class host.

@@ -30,6 +30,25 @@ them rattling every door.
 
 ---
 
+## Lab tool map (Days 13-19) — which tool hits which target, and why
+
+*One reference table, reused (with the technique column changing) in the teacher-notes of Days
+13, 14, 16, 17 and 19. Addresses are the student's own lab (Day 11); on the shared class lab,
+substitute the instructor's `<LAB_HOST>`.*
+
+| Target | Address | Tool (today) | Why this tool, on this target |
+|---|---|---|---|
+| Metasploitable2 | `10.89.1.10` | `nmap -sV -sC` | it's a whole machine with many services — the right target to teach "what's open, what's running" |
+| DVWA | `10.89.1.20` | `nmap -sV -p 80` | one web app, one port — contrast with MS2's spread |
+| Juice Shop | `10.89.1.30` | `nmap -sV -p 3000` + optional `gobuster dir` | modern web app; `gobuster` finds endpoints the site never links to (recon feeds Day 16) |
+
+Later days reuse this same map with new tools in the third column — Day 14 adds `nikto`/`searchsploit`,
+Day 16 adds `sqlmap`/manual, Day 17 adds Metasploit. Same three machines throughout; only the
+question asked of them changes: *what's there? → what's wrong with it? → can I get in? → can I
+go further?* That progression **is** the pentest lifecycle from Day 12.
+
+---
+
 ## Must-teach vs. cut-if-short
 
 **Never cut:**
@@ -150,10 +169,12 @@ links to. "Public record. Zero packets to them from us in a way they'd notice."
 ### The big DO — nmap + Wireshark
 1. `sudo apt install -y wireshark` (say "yes" to non-root capture; add user to `wireshark`
    group; for today `sudo wireshark` is fine if the group change needs a re-login).
-2. Wireshark → capture on the active interface → filter `ip.addr == <LAB_HOST>`.
+2. Wireshark → capture on the active interface → filter `ip.addr == <LAB_HOST>` (own lab: `10.89.1.10`).
 3. Terminal: `nmap -sV -sC <LAB_HOST>` (add `-Pn` if the host ignores pings).
 4. Narrate the capture: the SYN burst, SYN-ACK vs RST, then the `-sV` probe payloads.
 5. `nmap -sV -sC -oA week3/scan-lab <LAB_HOST>` to save.
+6. If time: `nmap -sV -p 80,3000 10.89.1.20 10.89.1.30` — two more hosts, one line; students see a
+   *network*, not one box with lots of ports.
 
 ### Failure modes
 | Symptom | Fix |

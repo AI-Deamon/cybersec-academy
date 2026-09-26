@@ -26,13 +26,15 @@ RUN SHEET (~85 min). Hands-on heavy. DVWA at "low" then "medium"; Juice Shop.
 01:06 #4 & #5 — broken auth/session, SSRF                      5
 01:11 Attack <-> defence — the one pattern                     4
 01:15 Trap + wrap + homework                                   5
-CUT FIRST IF SHORT: the SSRF half of #4-5; the Burp demo to 2 min; DOM XSS detail.
+CUT FIRST IF SHORT: step 4 (sqlmap) of the SQLi DO — narrate/demo it yourself in 60s instead of
+having everyone run it; the SSRF half of #4-5; the Burp demo to 2 min; DOM XSS detail.
 NEVER CUT: the injection mechanism + the SQLi DO, XSS + the stored-XSS DO, IDOR, the
 "parameterize don't filter" trap, the find/prove/fix artifact.
 ANALOGY (kitchen): untrusted input = an order ticket. If the kitchen blindly does whatever the
 ticket says ("table 4: two pastas AND unlock the safe"), that's injection. A parameterized
 query = an order form with fixed fields — the customer fills VALUES, never instructions.
 ETHICS: DVWA / Juice Shop on <LAB_HOST> only (the ROE). These apps are built to be attacked.
+Own lab: DVWA `10.89.1.20`, Juice Shop `10.89.1.30` — see the Day 13 teacher-notes lab tool map.
 -->
 
 ---
@@ -159,12 +161,15 @@ ORMs parameterize by default. Stored procedures help but aren't automatic.
 
 ## Do it now — SQLi
 
-In DVWA (SQL Injection page, security = low) or Juice Shop login:
+In DVWA (`10.89.1.20`, SQL Injection page, security = low) or Juice Shop (`10.89.1.30`) login:
 
 1. **Login bypass:** username `admin' --` (DVWA: `' or '1'='1`) → in without a password.
 2. **Extract:** in the DVWA SQLi box, `1' UNION SELECT user, password FROM users -- -`
    → dump the users table (hashes — Day 5!).
 3. Bump DVWA to **security = medium** and see what still works (and what doesn't).
+4. **Now automate it:** `sqlmap -u "http://10.89.1.20/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="security=low; PHPSESSID=<yours>" --dbs` — same bug, found and mapped in seconds.
+   You do step 4 only *after* 1-3, once you know why it works — a tool that finds bugs you
+   don't understand just gives you output you can't defend.
 
 Screenshot each. Note which payload worked at which security level.
 
@@ -218,7 +223,7 @@ need different encoding. Frameworks (React, Angular) auto-encode in templates - 
 
 ## Do it now — stored XSS
 
-In DVWA (XSS Stored, security = low) or Juice Shop:
+In DVWA (`10.89.1.20`, XSS Stored, security = low) or Juice Shop (`10.89.1.30`):
 
 1. In a comment / feedback / name field, submit:
    `<script>alert(document.cookie)</script>`
@@ -311,8 +316,9 @@ typed became a command — just a shell instead of a database.
 <!--
 OPTIONAL slide — cut first if short, or assign as homework reading. Same "your data became
 code" pattern as the SQLi slide; students should recognise it immediately.
-DVWA has a Command Injection page and a CSRF page — good for extra practice beyond today's
-three DOs, if a student wants more after class.
+DVWA (`10.89.1.20`) has a Command Injection page and a CSRF page — good for extra practice
+beyond today's three DOs. Command Injection there is also the door Day 17 walks through: a
+shell via a web bug, then a backdoor for persistence — same target, later stage.
 -->
 
 ---

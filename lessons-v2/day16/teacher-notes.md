@@ -11,12 +11,27 @@ Everything else supports them.
 
 ## Lab setup
 
-- **DVWA** on `<LAB_HOST>` — log in (`admin` / `password`), set **DVWA Security = Low** to
-  start, bump to **Medium** during the SQLi DO to show filtering isn't the fix.
-- **Juice Shop** on `<LAB_HOST>:3000` — no setup; every challenge is live.
+- **DVWA** on `<LAB_HOST>` (own lab: `10.89.1.20`) — log in (`admin` / `password`), set
+  **DVWA Security = Low** to start, bump to **Medium** during the SQLi DO to show filtering
+  isn't the fix.
+- **Juice Shop** on `<LAB_HOST>:3000` (own lab: `10.89.1.30`) — no setup; every challenge is live.
 - **Burp Suite** — preinstalled on Kali. Students don't *need* it for the core DOs (DevTools +
   URL editing is enough), but demo the 2-minute version so they've seen it.
 - Everything is against deliberately-vulnerable training apps in the ROE. Say it once.
+
+---
+
+## Lab tool map (this day) — see also Day 13's full table
+
+| Target | Address | Tool | Technique |
+|---|---|---|---|
+| DVWA | `10.89.1.20` | manual (URL/form), then `sqlmap` | SQL injection: find by hand, then automate |
+| DVWA | `10.89.1.20` | manual (DevTools/Burp) | Stored XSS, CSRF, Command Injection |
+| Juice Shop | `10.89.1.30` | manual (DevTools Network tab) | IDOR via the REST API |
+
+Same pattern as Day 13/14: manual first (so students understand *why* the bug exists), the
+automated tool second (`sqlmap`) — never the reverse. DVWA's Command Injection page is this
+day's bridge to **Day 17**: the same input-reaches-a-shell bug that gets you a foothold.
 
 ---
 
@@ -197,6 +212,9 @@ first user (admin). "One quote."
 - Switch DVWA to **Medium** (it does `mysqli_real_escape_string` + dropdown) — the naive
   payload fails; show a numeric-context payload still works → "escaping ≠ fixed".
 - Juice Shop: `' OR 1=1--` login; then the "search" field for a UNION.
+- **sqlmap demo (after the manual proof, first cut if the DO is running long):** `sqlmap -u "http://10.89.1.20/vulnerabilities/sqli/?id=1&Submit=Submit" --cookie="security=low; PHPSESSID=<session>" --dbs`, then
+  `--dump -T users -D dvwa` to pull the table straight out. Point: same bug, same result,
+  seconds instead of manual UNION crafting — *because they already know why it works.*
 
 ### Stored XSS DO
 - DVWA XSS (Stored), Low: Name field is length-limited (edit `maxlength` in DevTools), Message:
@@ -217,6 +235,7 @@ first user (admin). "One quote."
 | Juice Shop "0 results" for `' OR 1=1--` | it needs `--` with the right trailing char; try `'--` or `' OR true--` |
 | Burp not intercepting HTTPS | install Burp's CA cert in the browser; or just use DevTools today |
 | student attacks a real site | hard stop — DVWA / Juice Shop on `<LAB_HOST>` only |
+| `sqlmap` finds nothing | check the `--cookie` has a valid `PHPSESSID` and `security=low`; DVWA session cookies expire — log in again |
 
 ---
 

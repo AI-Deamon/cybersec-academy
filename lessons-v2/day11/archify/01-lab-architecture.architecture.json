@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Your Lab Inside Your Laptop",
+    "output": "lessons-v2/day11/archify/01-lab-architecture.html",
+    "viewBox": [1068, 560],
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": {
+      "entries": {
+        "external": { "label": "real network" },
+        "frontend": { "label": "Windows host" },
+        "security": { "label": "attacker box" },
+        "cloud": { "label": "lab network" },
+        "backend": { "label": "target machines" }
+      }
+    },
+    "views": [
+      { "id": "three-networks", "label": "Three networks", "focus": ["wifi", "win", "wsl", "net"], "note": "One laptop, three address ranges: your real 192.168 network, WSL's 172 address, and the private 10.89.1 lab." },
+      { "id": "attack-path", "label": "Your attack path", "focus": ["wsl", "net", "msf2", "dvwa", "juice"], "note": "Every scan starts in Ubuntu, crosses the lab network, and lands on a target's own IP and real port." },
+      { "id": "kept-private", "label": "Kept private", "focus": ["wifi", "net", "msf2"], "note": "The lab network exists only inside the laptop. Your real Wi-Fi never sees these targets." }
+    ]
+  },
+  "components": [
+    { "id": "wifi", "type": "external", "label": "Home Wi-Fi", "sublabel": "real network", "pos": [24, 255], "size": [116, 60] },
+    { "id": "win", "type": "frontend", "label": "Windows", "sublabel": "192.168.x.x", "pos": [230, 255], "size": [116, 60] },
+    { "id": "wsl", "type": "security", "label": "Attacker Box", "sublabel": "Ubuntu 172.x.x.x", "pos": [436, 255], "size": [120, 60] },
+    { "id": "net", "type": "cloud", "label": "Lab Network", "sublabel": "10.89.1.0/24", "pos": [652, 255], "size": [120, 60] },
+    { "id": "msf2", "type": "backend", "label": "Metasploitable 2", "sublabel": "10.89.1.10", "pos": [872, 110], "size": [150, 60] },
+    { "id": "dvwa", "type": "backend", "label": "DVWA", "sublabel": "10.89.1.20 :80", "pos": [872, 255], "size": [150, 60] },
+    { "id": "juice", "type": "backend", "label": "Juice Shop", "sublabel": "10.89.1.30 :3000", "pos": [872, 400], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Your laptop", "wraps": ["win", "wsl", "net", "msf2", "dvwa", "juice"], "pad": 34 },
+    { "kind": "security-group", "label": "Private lab network", "wraps": ["net", "msf2", "dvwa", "juice"], "pad": 14 }
+  ],
+  "connections": [
+    { "id": "wifi-to-win", "from": "wifi", "to": "win", "label": "Wi-Fi", "variant": "dashed" },
+    { "id": "win-to-wsl", "from": "win", "to": "wsl", "label": "WSL2 link" },
+    { "id": "wsl-to-net", "from": "wsl", "to": "net", "label": "scan probes", "variant": "emphasis" },
+    { "id": "net-to-msf2", "from": "net", "to": "msf2", "label": "any port", "variant": "emphasis", "fromSide": "top", "toSide": "left" },
+    { "id": "net-to-dvwa", "from": "net", "to": "dvwa", "label": "port 80", "variant": "emphasis" },
+    { "id": "net-to-juice", "from": "net", "to": "juice", "label": "port 3000", "variant": "emphasis", "fromSide": "bottom", "toSide": "left" }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Remember", "items": ["Each target is its own machine with its own IP", "You scan an IP and a real port, never localhost", "The lab network exists only inside your laptop"] },
+    { "dot": "amber", "title": "Class check", "items": ["Which of the three addresses would a website see?", "Where does a scan start, and where does it land?", "Why is it safe that Wi-Fi cannot reach 10.89.1.10?"] }
+  ]
+}

@@ -45,12 +45,13 @@ Day 13 you install Wireshark. **Only ever test the lab targets or your own machi
 `brute force` · `password spray` · `credential stuffing` · `password reuse` · `infostealer` ·
 `session cookie theft` · `virus / worm / trojan / ransomware / RAT / rootkit / botnet` ·
 `double extortion` · `C2` · `beacon` · `dwell time` · `MITM` · `DoS / DDoS` · `amplification` ·
-`supply chain attack`
+`supply chain attack` · `target` · `attacker box` · `subnet` · `banner`
 
-### In class — the 3 beats
+### In class — the beats
 1. Dissect `assets/phish-sample.txt` — sender, link, urgency, the ask, a header tell.
-2. `haveibeenpwned.com` — your **email** (never a password). How many breaches?
-3. `assets/conn-log.txt` — find the C2 beacon, the payload download, the exfil.
+2. `assets/conn-log.txt` — find the C2 beacon, the payload download, the exfil.
+3. **Lab kickoff:** the map of your lab (three machines, three addresses) and how a scan travels — then start **Step 1** of `assets/lab-setup-student-guide.md` (WSL2 + Ubuntu; needs a reboot).
+4. Homework: `haveibeenpwned.com` — your **email** (never a password). How many breaches?
 
 ### Homework (due start of Day 12)
 1. Write `day11/ways-in.md` — the **6 ways in** (the boring five + malware), with **one
@@ -60,6 +61,7 @@ Day 13 you install Wireshark. **Only ever test the lab targets or your own machi
    initial access, and the impact.
 4. Add `phishing`, `credential stuffing`, `password spray`, `C2 beacon`, `dwell time`, `RAT`,
    `infostealer` to your glossary.
+5. **Build your lab** — follow `assets/lab-setup-student-guide.md` (~1 hour; ~3 GB of downloads, use good Wi-Fi). Bring a screenshot of `sudo nmap -sn 10.89.1.0/24` and `nmap -sV` on `10.89.1.10`. *Not marked — but Days 12–15 need it.* Stuck? Screenshot the whole error.
 
 ### Marking checklist (Day 11 homework, 5 marks)
 - [ ] `ways-in.md` — all 6, each with a valid indicator **and** control, in the student's words (3)

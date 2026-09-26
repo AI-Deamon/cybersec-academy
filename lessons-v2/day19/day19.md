@@ -211,6 +211,10 @@ You're the on-call analyst. `assets/logs/` has `auth.log`, `web-access.log`, and
 account -> wget of a webshell -> a cron persistence entry -> an internal port scan -> a large
 exfil to an external IP. `grep` + a text editor is all they need.
 Answer key + the full timeline in teacher-notes.
+OPTIONAL closing-the-loop extension (if time / as homework): pull the SAME KIND of evidence off
+their own Days 16-17 lab — `podman exec dvwa tail -n 50 /var/log/apache2/access.log` and
+`sudo podman exec msf2 tail -n 50 /var/log/auth.log` — and find their OWN SQLi/XSS payloads and
+exploit attempts in the raw log. Same skill, their own evidence this time. See teacher-notes.
 -->
 
 ---

@@ -33,7 +33,8 @@ the ranked findings table, "more findings != better report".
 ANALOGY (kitchen / inspector): the scanner = a junior who flags EVERYTHING on the checklist
 ("extinguisher expired! chipped plate! walk-in 1 degree warm!"). The assessor = the senior
 who says "the expired extinguisher by the fryer could kill someone; the plate is a note."
-ETHICS: scan only <LAB_HOST> (in the ROE). Metasploitable2 is the target.
+ETHICS: scan only <LAB_HOST> (in the ROE). Metasploitable2 is the primary target; DVWA is the
+web-side target for `nikto`. Own lab: MS2 `10.89.1.10`, DVWA `10.89.1.20`.
 -->
 
 ---
@@ -168,11 +169,12 @@ in-the-wild exploitation. `searchsploit apache 2.4.49` on Kali is the everyday c
 
 ## Do it now — scan the lab
 
-Against `<LAB_HOST>` (Metasploitable2 — in the ROE):
+Against `<LAB_HOST>` (Metasploitable2, own lab `10.89.1.10` — in the ROE):
 
 ```
 nmap --script vuln <LAB_HOST>          # built in, no install
 searchsploit vsftpd 2.3.4             # is there public exploit code?
+nikto -h http://10.89.1.20             # same idea, web-server-specific (DVWA)
 ```
 
 - Read the output. What CVEs does it name?
@@ -183,7 +185,7 @@ searchsploit vsftpd 2.3.4             # is there public exploit code?
 false positives (it often flags things based on version alone without confirming). That's the
 lesson: the scanner is a candidate generator.
 If Nuclei is installed: `nuclei -u http://<LAB_HOST>` for the web side. OpenVAS is heavier -
-optional, instructor demo.
+optional, instructor demo. `nikto` above already covers the everyday web-scanner case.
 No lab? assets/sample-vulnscan.txt.
 -->
 

@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "A Scan, Packet by Packet",
+    "output": "lessons-v2/day11/archify/02-scan-traffic.html",
+    "viewBox": [1068, 600],
+    "column_fit": "spread",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": { "entries": { "emphasis": { "label": "probe sent" }, "return": { "label": "target's reply" }, "default": { "label": "closed port" } } },
+    "views": [
+      { "id": "find-it", "label": "1. Find it", "focus": ["attacker", "target"], "note": "Host discovery: is a machine alive at 10.89.1.10? On the same network, ARP asks directly." },
+      { "id": "knock", "label": "2. Knock on ports", "focus": ["attacker", "target"], "note": "SYN-ACK back means the port is open. A reset means closed. That is the whole port scan." },
+      { "id": "read-and-look-up", "label": "3. Read it, look it up", "focus": ["exploitdb", "attacker", "target"], "note": "The banner names the software and version. That string is what you search in the exploit database." }
+    ]
+  },
+  "participants": [
+    { "id": "exploitdb", "type": "database", "label": "searchsploit", "sublabel": "offline exploit DB" },
+    { "id": "attacker", "type": "security", "label": "Attacker box", "sublabel": "nmap on Ubuntu" },
+    { "id": "target", "type": "backend", "label": "Metasploitable 2", "sublabel": "10.89.1.10" }
+  ],
+  "segments": [
+    { "from": 150, "to": 218, "label": "1. Recon: is it alive?" },
+    { "from": 232, "to": 358, "label": "2. Port scan: which doors are open?" },
+    { "from": 372, "to": 433, "label": "3. Version scan: what is behind the door?" },
+    { "from": 447, "to": 508, "label": "4. Assess: is that version known-vulnerable?" }
+  ],
+  "messages": [
+    { "id": "arp-ask", "from": "attacker", "to": "target", "y": 175, "label": "ARP: who has 10.89.1.10?", "variant": "emphasis" },
+    { "id": "arp-reply", "from": "target", "to": "attacker", "y": 205, "label": "I do, here is my MAC", "variant": "return" },
+    { "id": "syn-21", "from": "attacker", "to": "target", "y": 250, "label": "SYN to port 21", "variant": "emphasis" },
+    { "id": "synack-21", "from": "target", "to": "attacker", "y": 280, "label": "SYN-ACK: open", "variant": "return" },
+    { "id": "syn-9999", "from": "attacker", "to": "target", "y": 315, "label": "SYN to port 9999", "variant": "emphasis" },
+    { "id": "rst-9999", "from": "target", "to": "attacker", "y": 345, "label": "RST: closed", "variant": "default" },
+    { "id": "connect-21", "from": "attacker", "to": "target", "y": 390, "label": "connect to 21: who are you?", "variant": "emphasis" },
+    { "id": "banner-21", "from": "target", "to": "attacker", "y": 420, "label": "220 (vsFTPd 2.3.4)", "variant": "return" },
+    { "id": "lookup", "from": "attacker", "to": "exploitdb", "y": 465, "label": "searchsploit vsftpd 2.3.4", "variant": "emphasis" },
+    { "id": "lookup-result", "from": "exploitdb", "to": "attacker", "y": 495, "label": "Backdoor Command Execution", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "attacker", "from": 170, "to": 500, "type": "security" },
+    { "participant": "target", "from": 170, "to": 428, "type": "backend" }
+  ],
+  "cards": [
+    { "dot": "violet", "title": "What just happened", "items": ["ARP finds machines on the same network", "SYN-ACK means open; RST means closed", "The banner gives the version to look up"] },
+    { "dot": "amber", "title": "Class check", "items": ["Which reply tells nmap a port is open?", "What did the banner give you to search for?", "Where would this scan show up in the target's logs?"] }
+  ]
+}

@@ -19,6 +19,25 @@ you lose the footage and tip off the intruder.
 
 ---
 
+## Lab tool map / closing the loop (optional)
+
+The canned `assets/logs/` bundle stays the graded exercise — it guarantees every student sees
+the same six-event story and the answer key applies to everyone. As an **optional add-on** (time
+permitting, or set as homework), have students pull the equivalent evidence off their **own**
+lab, from attacks they ran themselves on Days 16-17:
+
+| Target | Address | Command | Finds |
+|---|---|---|---|
+| DVWA | `10.89.1.20` | `podman exec dvwa tail -n 50 /var/log/apache2/access.log` | their Day 16 SQLi/XSS requests, by timestamp and payload |
+| Metasploitable2 | `10.89.1.10` | `sudo podman exec msf2 tail -n 50 /var/log/auth.log` | their Day 17 login/exploit attempts |
+
+The point: this is the same `grep`-and-read skill as the canned exercise, but the "IOCs" are
+their own fingerprints. Ask: *could you tell your own Day 16 SQLi apart from a real attacker's,
+just from the log line?* (Usually not — which is exactly why logging alone isn't detection;
+Day 19's SIEM/IOC framing is what adds the "is this normal" judgement.)
+
+---
+
 ## Must-teach vs. cut-if-short
 
 **Never cut:**
