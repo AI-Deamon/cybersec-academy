@@ -38,6 +38,35 @@ Day 19's SIEM/IOC framing is what adds the "is this normal" judgement.)
 
 ---
 
+## Kill chain ↔ pentest lifecycle ↔ Blue — background for the new opening slide
+
+The deck's new "One map, two ends" slide reuses Day 12's exact Kill Chain and pentest-phase
+names on purpose — it's meant to read as the same map from the other end, not a new one. Live
+diagram: `archify/01-kill-chain-pentest-blue.workflow.html` (open it instead of, or alongside,
+the slide's table).
+
+**Live-alert framing for the log-analysis DO** (costs nothing, makes the exercise feel real):
+instead of just handing out `assets/logs/`, read the first `auth.log` line out loud as if a SIEM
+alert just fired — *"Alert: repeated failed SSH logins against `deploy` from `203.0.113.66`."*
+Then run the DO exactly as written below. That's literally how a SOC shift starts: an alert,
+then you go to the logs.
+
+**This incident, mapped to the Kill Chain** — ties the new slide's abstract table to the same
+evidence/answer key already in this file:
+
+| Kill Chain stage | Where it shows up in `assets/logs/` | ATT&CK |
+|---|---|---|
+| Reconnaissance | **not present** — the attacker starts mid-chain, straight into brute force. Real, honest gap: recon (and weaponization) are usually invisible; the first thing you *see* is often already Exploitation. | — |
+| Exploitation | 02:14–02:19 brute force → successful login as `deploy` | T1110 Brute Force, T1078 Valid Accounts |
+| Installation | 02:21 web shell uploaded; 02:27 `wget` of `ls.tgz`; 02:32–33 cron persistence | T1505.003, T1105, T1053.003 |
+| Command & Control | 03:12 `/tmp/.sync` beacons every 10 min | T1071 |
+| Actions on Objectives | 02:39–53 internal port scan (Discovery — T1046 has no Kill Chain stage of its own, it folds in here); 02:55 MySQL connection; 03:05–26 ~1.4 GB exfil | T1046, T1041 |
+
+Use this table if a student asks "wait, where's recon in this log set?" — it's a real gap in
+*this* incident, not something the exercise skipped.
+
+---
+
 ## Must-teach vs. cut-if-short
 
 **Never cut:**
@@ -48,11 +77,13 @@ Day 19's SIEM/IOC framing is what adds the "is this normal" judgement.)
 - **"Contain ≠ pull the plug."**
 
 **Cut in this order if behind:**
-1. AD event-IDs slide → 2 min ("Windows logs a numbered event for every security action; know
+1. The "One map, two ends" slide → 1 min, say the line, skip the table (it's a recap of Day 12,
+   not new material — safe to compress hard).
+2. AD event-IDs slide → 2 min ("Windows logs a numbered event for every security action; know
    4625 failed logon and 4688 process creation").
-2. The tabletop → 10 min, first 3 stages only.
-3. SIEM slide → 3 min (collect → search → alert; a SIEM without rules is just storage).
-4. The Pyramid diagram → keep IOC-vs-TTP, drop the drawing.
+3. The tabletop → 10 min, first 3 stages only.
+4. SIEM slide → 3 min (collect → search → alert; a SIEM without rules is just storage).
+5. The Pyramid diagram → keep IOC-vs-TTP, drop the drawing.
 
 ---
 

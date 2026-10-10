@@ -155,24 +155,26 @@ the weekend assignment, so getting the shape right now saves them Saturday.
 
 ---
 
-## The assignment — 4 parts
+## The assignment — learn it, scan it, break it, fix it
 
-- **A — Integrate:** a full **mini-engagement** on a **fresh** target (assigned — different
-  from today's). Deliver a short **engagement report**: scope → scan summary / service
-  inventory → your **ranked findings table** (Day 14) → **one finding taken to proof**
-  (screenshot + repro steps) → remediation. ~3–4 pages.
-- **B — R&D stretch:** pick **one CVE** from your scan. In ~half a page: the **root cause**
-  (injection? overflow? auth bypass?), how the **public exploit works step by step**, what
-  **CVSS / KEV** say, and the **fix**. Cite NVD + the exploit source.
-- **C — Hands-on evidence:** the `nmap -oA` files, the proof screenshot(s) **with captions**,
-  and the **exact commands** used.
-- **D — Reflection:** 3–4 sentences.
+- **A — Learn (3):** five **Hacksplaining** lessons — SQL Injection, XSS, Command Execution,
+  Directory Traversal, Broken Access Control. Screenshot + *attack · how · fix* for each.
+- **B — Recon & scan (4):** `nmap -sV -sC -oA`, then `nikto` + `nmap --script vuln` on the
+  web app. **Validate** each finding (real / false positive) → **ranked findings table**, ≥ 4.
+- **C — Exploit (4):** prove **3** findings, **≥ 2 from the Hacksplaining list**. Captioned
+  screenshot + numbered repro steps each.
+- **D — Fix & retest (3):** fix each one, **re-run the same test**, before/after screenshots,
+  re-run the scan, reset the lab.
+- **E — Reflection (1):** easiest vs hardest attack, and why.
+- *Unmarked stretch:* one CVE explained (root cause, exploit, CVSS/KEV, fix).
 
 **One PDF, before Monday. Only your assigned target. Snapshot first.**
 
 <!--
-Walk each part ~3 min. Part A = today's exercise, done solo, written properly. Part B is the
-"understand the exploit, don't just run it" stretch. Emphasise: reproducible commands, captioned
+Walk each part ~3 min. The loop is the point: learn the attack, find it with a scanner, prove it,
+fix it, prove the fix. Part B reuses the Day 14 findings table (their homework). Part C: at least
+two proofs must come from the Hacksplaining five so the theory shows up in the lab. Part D is the
+defensive half -- do not let anyone skip it. Emphasise: reproducible commands, captioned
 evidence, and STAY IN SCOPE.
 -->
 

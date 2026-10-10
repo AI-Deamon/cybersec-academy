@@ -9,6 +9,7 @@ const bs = { top: b, bottom: b, left: b, right: b };
 const cm = { top: 80, bottom: 80, left: 120, right: 120 };
 const PW = 12240, M = 1440, CW = PW - 2*M;
 
+
 function hc(t, w) {
   return new TableCell({
     borders: bs, width: { size: w, type: WidthType.DXA },

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Cloud Attack Chain: SSRF to Account Takeover",
+    "output": "lessons-v2/day17/archify/01-ssrf-metadata-creds.sequence.html",
+    "viewBox": [1068, 500],
+    "column_fit": "spread",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "legend": {
+      "entries": {
+        "emphasis": { "label": "the exploit step" },
+        "return": { "label": "response" },
+        "security": { "label": "attacker action" },
+        "default": { "label": "normal step" }
+      }
+    },
+    "views": [
+      { "id": "ssrf-trick", "label": "Trick the app", "focus": ["attacker", "app"], "note": "The payload isn't code — it's a URL the vulnerable app fetches on the attacker's behalf." },
+      { "id": "reach-metadata", "label": "Reach the metadata service", "focus": ["app", "metadata"], "note": "Acting as the attacker's proxy, the app asks the instance metadata service for role credentials." },
+      { "id": "creds-leak", "label": "Credentials leak back", "focus": ["metadata", "app", "attacker"], "note": "The temporary credentials ride the SSRF response all the way back to the attacker." },
+      { "id": "cloud-takeover", "label": "Stolen creds hit the cloud API", "focus": ["attacker", "cloudapi"], "note": "If the instance role is over-privileged, those credentials are the whole account." }
+    ]
+  },
+  "participants": [
+    { "id": "attacker", "type": "external", "label": "Attacker", "sublabel": "outside the VPC" },
+    { "id": "app", "type": "backend", "label": "Vulnerable App", "sublabel": "has an SSRF bug" },
+    { "id": "metadata", "type": "cloud", "label": "Metadata Service", "sublabel": "169.254.169.254" },
+    { "id": "cloudapi", "type": "cloud", "label": "Cloud API", "sublabel": "IAM / S3" }
+  ],
+  "segments": [
+    { "from": 170, "to": 300, "label": "1. SSRF steals IAM credentials" },
+    { "from": 315, "to": 380, "label": "2. Stolen creds hit the cloud API" }
+  ],
+  "messages": [
+    { "id": "ssrf-payload", "from": "attacker", "to": "app", "y": 185, "label": "SSRF: fetch http://169.254.169.254/...", "variant": "emphasis", "note": "the payload is just a URL parameter the app fetches on the attacker's behalf" },
+    { "id": "metadata-request", "from": "app", "to": "metadata", "y": 218, "label": "GET .../iam/security-credentials/<role>", "variant": "default", "note": "IMDSv1: no token required to ask" },
+    { "id": "metadata-creds", "from": "metadata", "to": "app", "y": 250, "label": "temp creds: AccessKeyId + Secret + Token", "variant": "return" },
+    { "id": "ssrf-response", "from": "app", "to": "attacker", "y": 282, "label": "SSRF response body leaks the JSON", "variant": "return", "note": "the attacker now holds valid temporary credentials" },
+    { "id": "stolen-call", "from": "attacker", "to": "cloudapi", "y": 330, "label": "aws s3 ls --profile stolen", "variant": "security", "note": "creds are valid until they expire — often hours" },
+    { "id": "takeover", "from": "cloudapi", "to": "attacker", "y": 365, "label": "200 OK: full account access", "variant": "return", "note": "an over-privileged instance role = blast radius is the whole account" }
+  ],
+  "activations": [
+    { "participant": "app", "from": 190, "to": 288, "type": "backend" },
+    { "participant": "metadata", "from": 222, "to": 255, "type": "cloud" },
+    { "participant": "cloudapi", "from": 333, "to": 369, "type": "cloud" }
+  ],
+  "cards": [
+    {
+      "dot": "rose",
+      "title": "SSRF -> cloud takeover",
+      "items": [
+        "The exploit never touches code — it's one URL the vulnerable app fetches for the attacker",
+        "169.254.169.254 is the instance metadata service: no auth, reachable only from inside the box",
+        "An over-privileged role turns one SSRF bug into full account access"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Class check",
+      "items": [
+        "Why doesn't the metadata endpoint need a password?",
+        "What single setting (IMDSv2) blocks this exact chain?",
+        "Why does the instance role's privilege level decide the blast radius?"
+      ]
+    }
+  ]
+}

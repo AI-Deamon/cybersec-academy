@@ -97,15 +97,42 @@ not steps; the module name, the options set, and the command that proved it, is.
 
 Full spec + checklist: `week3/student-pack.md`. Walk each part ~3 min.
 
-- **Part A** = today's exercise, **solo**, on a **fresh assigned target**, written as a proper
-  3–4 page engagement report (scope → inventory → ranked findings table from Day 14 → one
-  finding to proof → remediation).
-- **Part B** = the stretch: take **one CVE** and actually understand it — root cause, how the
-  public exploit works step by step, CVSS/KEV, the fix. This is "don't just run tools".
-- **Part C** = `nmap -oA` files + captioned proof screenshots + exact commands.
-- **Part D** = reflection.
+- **Part A (3)** = five Hacksplaining lessons: SQLi, XSS, Command Execution, Directory
+  Traversal, Broken Access Control. Completion screenshot + attack / how / fix lines.
+- **Part B (4)** = `nmap -sV -sC -oA`, then `nikto` + `nmap --script vuln` on a **fresh
+  assigned target**; validate findings (real / false positive); ranked table ≥ 4 (their Day 14
+  homework table feeds this).
+- **Part C (4)** = prove 3 findings, **≥ 2 from the Hacksplaining five**; captioned screenshot
+  + numbered repro steps each.
+- **Part D (3)** = fix each, re-run the same test, before/after screenshots, re-run the scan,
+  reset the lab. This is the defensive half — don't let it be skipped.
+- **Part E (1)** = reflection: easiest vs hardest attack and why.
+- *Unmarked stretch:* one CVE explained.
 - **One PDF, before Monday. Assigned target only. Snapshot first.**
-- Markable in ~5 min from the checklist.
+- Markable in ~5 min from the checklist (15 marks).
+
+### Which Hacksplaining category lives where (assign targets with this in mind)
+
+*Mapping from the lab design — **not yet run end to end**; spot-check before relying on it.*
+
+| Target | Hacksplaining categories students can prove |
+|---|---|
+| DVWA `10.89.1.20` | SQLi, XSS, Command Execution, Directory Traversal (File Inclusion) |
+| Juice Shop `10.89.1.30:3000` | SQLi (login), XSS, Broken Access Control, traversal-style file exposure |
+| Metasploitable2 `10.89.1.10` | web apps at `/dvwa` and `/mutillidae` (SQLi, XSS, Command Execution) + vsftpd 2.3.4 for the non-web proof |
+
+### Fix-and-retest cheat sheet (Part D)
+
+*Unverified — confirm each against a running lab before class.*
+
+- **DVWA:** DVWA Security page, `low` → `high`, then repeat the same payload; it should fail.
+  (It ships on `low` per the Day 15 notes.)
+- **Metasploitable2:** stop or reconfigure the service in the container, re-run `nmap -sV` and the
+  proof; the port or the exploit should no longer work.
+- **Juice Shop:** no security switch. Accept a written fix (parameterised query, output encoding,
+  server-side authorisation check) and re-run the scan to show current state. Mark on whether the
+  fix is specific and correct, not on a working patch.
+- Reset any target from the student's snapshot afterwards.
 
 ---
 

@@ -14,19 +14,21 @@ footer: "Practical Cyber Security (v2) · Week 4 · Day 19"
 **Week 4 · Applying it, and choosing a direction**
 
 <!--
-RUN SHEET (~85 min). Two DOs: log analysis, then a tabletop.
+RUN SHEET (~88 min). Two DOs: log analysis, then a tabletop.
 00:00 Journey check + hook (the attack chain, in the logs)     4
-00:04 Prevention fails — so what's the job                     4
-00:08 Logs are ground truth                                    7
-00:15 SIEM — the concept                                       5
-00:20 IOCs vs TTPs (the Pyramid of Pain)                       6
-00:26 Windows / AD event IDs a SOC watches                     4
-00:30 The IR lifecycle                                         6
-00:36 DO: analyse the log set -> IOCs + timeline              22
-00:58 Containment done right (the trap)                        5
-01:03 DO: 15-min ransomware tabletop                          15
-01:18 Wrap + artifact + homework                               4
-CUT FIRST IF SHORT: the AD event-IDs slide to 2 min; the tabletop to 10 min.
+00:04 One map, two ends — kill chain + pentest lifecycle       3
+00:07 Prevention fails — so what's the job                     4
+00:11 Logs are ground truth                                    7
+00:18 SIEM — the concept                                       5
+00:23 IOCs vs TTPs (the Pyramid of Pain)                       6
+00:29 Windows / AD event IDs a SOC watches                     4
+00:33 The IR lifecycle                                         6
+00:39 DO: analyse the log set -> IOCs + timeline              22
+01:01 Containment done right (the trap)                        5
+01:06 DO: 15-min ransomware tabletop                          15
+01:21 Wrap + artifact + homework                               4
+CUT FIRST IF SHORT: the kill-chain/pentest-lifecycle recap to 1 min (just say the
+line, skip the table); the AD event-IDs slide to 2 min; the tabletop to 10 min.
 NEVER CUT: logs-as-ground-truth, IOC vs TTP, the IR lifecycle, the log-analysis DO,
 "contain != pull the plug".
 ANALOGY (kitchen): the SOC = the security office watching the camera feeds and the door logs.
@@ -72,6 +74,41 @@ exfil       -> a large outbound transfer to a new IP
 <!--
 The framing: attackers aren't invisible - they're just usually unwatched. The Blue team's job
 is to watch the right things and know what "wrong" looks like.
+-->
+
+---
+
+## One map, two ends
+
+Day 12 gave you the **Cyber Kill Chain** and the **pentest lifecycle** you then *ran*, week 3-4.
+Today is the same map, read from the other end:
+
+| Kill Chain stage (Lockheed Martin) | The pentest phase you ran | Blue sees it as... |
+|---|---|---|
+| Reconnaissance | Ph.2-3 — Day 13-14 | scan/probe noise — proxy, DNS, `auth.log` |
+| Weaponize & Deliver | Ph.4 prep — Day 15-16 | *(usually invisible — off your network)* |
+| Exploitation | Ph.4 — Day 15-16 | exploit succeeds — `4688`, an odd child process |
+| Installation | Ph.5 — Day 17 | persistence planted — `7045`, file-integrity |
+| Command & Control | Ph.5 — Day 17 | beaconing — DNS anomalies, egress |
+| Actions on Objectives | Ph.5-6 — Day 17 + report | exfil / impact — DLP, a large outbound transfer |
+
+**Security isn't Red *or* Blue — it's one loop.** Red's "report" (Day 12) and Blue's "lessons
+learned" (today) are the same move: write it down so the next pass catches it sooner.
+
+<!--
+Live diagram: archify/01-kill-chain-pentest-blue.workflow.html — open it instead of/alongside
+this table if presenting from a browser tab.
+This is the payoff of the Day 12 seed ("defenders have the same map; every step you take, they
+can potentially see" — teacher-notes.md:119-120 that day). Don't introduce new vocabulary here;
+reuse the exact Kill Chain and pentest-phase names from Day 12 so it reads as the same map, not
+a new one.
+Note explicitly: Weaponization has no Blue column on purpose — it happens on the attacker's own
+systems, before anything touches your network. That's a real, teachable gap, not an omission.
+MITRE ATT&CK (Day 12) is the fine-grained version of this same map — point out that Discovery,
+Lateral Movement, and Collection are ATT&CK tactics with no dedicated Kill Chain stage; they all
+get folded into "Actions on Objectives" here. If a student asks "where's the recon-to-exploit
+gap", that's the answer.
+CUT to 1 min if behind: say the line, skip the table.
 -->
 
 ---

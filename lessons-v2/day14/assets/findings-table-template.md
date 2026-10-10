@@ -1,6 +1,6 @@
 # Ranked findings — <host>
 
-*Day 14 artifact + Week 3 assignment Part A. One row per candidate finding, ranked by priority.*
+*Day 14 artifact + Week 3 assignment Part B. One row per candidate finding, ranked by priority.*
 
 ## Triage table
 

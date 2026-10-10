@@ -1,0 +1,148 @@
+/* @theme mist */
+@import 'default';
+/* Mist design system for Marp. Tokens mirror the Mist design system (light theme).
+   Slide canvas 1280 x 720. Body >= 24px, code >= 20px. No shadows, no gradients. */
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&family=JetBrains+Mono:wght@400..700&display=swap');
+
+:root {
+  --primary: #141414;
+  --on-primary: #ffffff;
+  --ink: #141414;
+  --ink-soft: #262626;
+  --text-muted: #707070;
+  --text-faint: #767676;
+  --on-primary-muted: #adadad;
+  --canvas: #ffffff;
+  --canvas-soft: #f3f3f3;
+  --field: #f0f0f0;
+  --hairline-soft: #f0f0f0;
+  --hairline: #e0e0e0;
+  --accent: #0066ff;
+  --code-bg: #141414;
+  --code-line: #262626;
+  --code-text: #f3f3f3;
+  --code-muted: #adadad;
+  --code-comment: #939393;
+  --code-signal: #7ab0ff;
+  --font-sans: "Hanken Grotesk", "Saans", -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+section {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 450;
+  font-size: 30px;
+  line-height: 1.38;
+  letter-spacing: 0;
+  padding: 64px 72px 88px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-sans);
+  font-weight: 650;
+  letter-spacing: 0;
+  color: var(--ink);
+  margin: 0 0 0.45em;
+}
+h1 { font-size: 72px; line-height: 1; }
+h2 { font-size: 54px; line-height: 1.1; margin-bottom: 0.6em; }
+h3 { font-size: 32px; line-height: 1.13; }
+h4 { font-size: 24px; line-height: 1.25; }
+
+p { margin: 0.45em 0; }
+strong { font-weight: 650; }
+em { font-style: italic; }
+a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+ul, ol { margin: 0.35em 0; padding-left: 1.2em; }
+li { margin: 0.4em 0; }
+li::marker { color: var(--text-muted); }
+
+/* blockquote: a canvas-soft card, never a coloured left rule */
+blockquote {
+  background: var(--canvas-soft);
+  border: 0;
+  border-radius: 24px;
+  margin: 0.6em 0;
+  padding: 20px 28px;
+  color: var(--ink);
+}
+blockquote p { margin: 0; }
+
+/* inline code */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  background: var(--canvas-soft);
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+pre {
+  background: var(--code-bg);
+  color: var(--code-text);
+  border-radius: 24px;
+  padding: 24px 32px;
+  font-size: 24px;
+  line-height: 1.55;
+  margin: 0.6em 0;
+}
+pre code { background: none; color: inherit; padding: 0; font-size: inherit; border-radius: 0; }
+
+/* tables: soft header row, hairline-free rows divided by canvas-soft rules */
+table { border-collapse: collapse; width: 100%; font-size: 26px; margin: 0.5em 0; }
+th {
+  background: var(--canvas-soft);
+  color: var(--ink);
+  font-weight: 650;
+  text-align: left;
+  padding: 12px 18px;
+  border: 0;
+}
+th:first-child { border-radius: 16px 0 0 16px; }
+th:last-child { border-radius: 0 16px 16px 0; }
+td { padding: 12px 18px; border: 0; border-bottom: 1px solid var(--canvas-soft); vertical-align: top; }
+tr:nth-child(even) td, tbody tr td { background: transparent; }
+
+/* footer + page number */
+footer, section::after {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 450;
+  color: var(--text-muted);
+}
+footer { position: absolute; left: 72px; right: auto; bottom: 32px; }
+section::after { position: absolute; right: 72px; bottom: 32px; background: none; }
+section.lead footer, section.inverse footer { color: var(--text-muted); }
+
+/* lead: title / section slides. canvas-soft ground, heading at the bottom */
+section.lead {
+  background: var(--canvas-soft);
+  justify-content: flex-end;
+  padding-bottom: 104px;
+}
+section.lead h1 { font-size: 96px; margin-bottom: 0.25em; }
+section.lead h2 { font-size: 40px; font-weight: 300; color: var(--text-muted); margin-bottom: 0.7em; line-height: 1.2; }
+section.lead p { font-size: 32px; font-weight: 300; color: var(--ink-soft); }
+section.lead strong { font-weight: 600; }
+
+/* inverse: demo / terminal slides (use <!-- _class: inverse -->) */
+section.inverse { background: var(--primary); color: var(--on-primary); }
+section.inverse h1, section.inverse h2, section.inverse h3, section.inverse strong { color: var(--on-primary); }
+section.inverse footer, section.inverse::after { color: var(--on-primary-muted); }
+section.inverse blockquote { background: var(--code-line); color: var(--on-primary); }
+section.inverse code { background: var(--code-line); color: var(--on-primary); }
+section.inverse th { background: var(--code-line); color: var(--on-primary); }
+section.inverse td { border-bottom-color: var(--code-line); }
+section.inverse p, section.inverse.lead p { color: var(--on-primary-muted); }
+
+/* dense: text-heavy slides (use <!-- _class: dense -->). Body never below 24px. */
+section.dense { font-size: 25px; }
+section.dense h2 { font-size: 46px; margin-bottom: 0.4em; }
+section.dense li { margin: 0.25em 0; }
+section.dense p { margin: 0.35em 0; }

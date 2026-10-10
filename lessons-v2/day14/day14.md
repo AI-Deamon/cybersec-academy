@@ -268,7 +268,7 @@ first" list for free.
    `compensating control` to your glossary.
 
 <!--
-Due start of Day 15 (the practice day). This table becomes Week 3 assignment Part A.
+Due start of Day 15 (the practice day). This table becomes Week 3 assignment Part B.
 -->
 
 ---

@@ -209,7 +209,7 @@ Day 13 you install Wireshark. **Only ever test the lab targets or your own machi
 ### Homework (due start of Day 15)
 1. Build the **ranked findings table** for `<LAB_HOST>` — **≥ 5 findings**, each walked
    through CVE → CVSS → exploit? → KEV? → context → priority → fix
-   (`assets/findings-table-template.md`). Commit it. **This becomes Week 3 assignment Part A.**
+   (`assets/findings-table-template.md`). Commit it. **This becomes Week 3 assignment Part B.**
 2. Top finding: look it up on nvd.nist.gov + check CISA KEV. 4 sentences — what it is, how
    it's exploited, KEV status, the fix.
 3. Mark false positives from your scan; say how you'd verify each.
@@ -250,45 +250,55 @@ time. Then each student writes a 2-page mini report (`assets/mini-report-templat
 
 ---
 
-## Weekend Assignment — Week 3
+## Weekend Assignment — Week 3: Learn it, scan it, break it, fix it
 
 *Briefed at the end of Day 15. **One PDF before Monday. Only your assigned target. Snapshot first.***
+Student handout (same content, ready to share): `assessments/week03-assignment-handout.pdf`.
 
-### Part A — Integrate (a solo mini-engagement)
-A full mini-engagement on a **fresh** target (assigned — different from your team's Day 15
-one). Deliver a **3–4 page engagement report**:
-1. **Scope** — a one-paragraph scope statement (target, authorization = the class ROE, goal).
-2. **Recon & scan** — your `nmap -sV -sC` summary → the **service inventory** table.
-3. **Ranked findings table** — the Day 14 pipeline for every notable finding
-   (CVE → CVSS → public exploit? → KEV? → context → priority → fix).
-4. **One finding taken to proof** — a captioned screenshot of a shell / extracted data / a
-   bypass, plus **numbered steps to reproduce**.
-5. **Remediation** — the specific fix for that finding.
+**The loop you run this weekend:** learn the attack → scan the target → prove the flaw → fix it →
+prove the fix works. Offence is always paired with its defence.
 
-### Part B — R&D stretch (understand one CVE deeply)
-Pick **one CVE** from your scan. In ~half a page:
-- the **root cause** — what class of flaw is it? (injection / buffer overflow / auth bypass /
-  path traversal / deserialization / ...)
-- how the **public exploit works, step by step**
-- what **CVSS** and **CISA KEV** say about it
-- the **fix**
+### Part A — Learn (3 marks)
+Complete these five free, sandboxed lessons at **hacksplaining.com/lessons**:
+**SQL Injection · Cross-Site Scripting · Command Execution · Directory Traversal · Broken Access Control.**
+For each, submit a **completion screenshot** plus three one-liners: **the attack · how it works · the fix.**
 
-Cite the **NVD** page and the exploit source (Exploit-DB ID / Metasploit module / GitHub).
+### Part B — Recon & scan (4 marks)
+On your **assigned** target (a fresh one, not your Day 15 team's):
+1. `nmap -sV -sC -oA recon <ip>` → fill a **service inventory** table.
+2. Scan the web app: `nikto -h http://<ip>[:port]` and `nmap --script vuln <ip>`.
+3. **Validate** — mark each scanner finding *real*, *false positive*, or *informational*, with a reason.
+4. Build a **ranked findings table**, ≥ 4 findings, using the Day 14 pipeline
+   (CVE → CVSS → public exploit? → KEV? → context → priority → fix). Justify your order — it must not
+   be plain CVSS order.
 
-### Part C — Hands-on evidence
-- the `nmap -oA` output files;
-- the proof screenshot(s), **each with a one-line caption**;
-- the **exact commands** you ran (so it's reproducible).
+### Part C — Exploit (4 marks)
+Prove **three** findings on your target. **At least two must be Hacksplaining categories from Part A**
+(so the theory shows up in the lab). For each: a **captioned screenshot** + **numbered steps to
+reproduce**.
 
-### Part D — Reflection
-3–4 sentences: what clicked, what was hard, what you'd do differently.
+### Part D — Fix & retest (3 marks)
+For each of your three proofs: apply the fix where you can (DVWA: raise the security level;
+Metasploitable2: stop or reconfigure the service; Juice Shop: write the exact code/config fix),
+**re-run the same test**, and show **before / after** screenshots. Re-run your Part B scan once and show
+the finding gone or reduced. Then **reset your lab from the snapshot.**
+
+### Part E — Reflection (1 mark)
+3–4 sentences: which Hacksplaining attack was **easiest** and which **hardest** to exploit in the lab, and
+why? What would you do differently?
+
+*Include with your PDF: the `nmap -oA` files, the `nikto` output, and the **exact commands** you ran.*
+
+### Optional R&D stretch (unmarked)
+Pick **one CVE** from your scan. In ~half a page: root cause (injection / overflow / auth bypass / ...),
+how the public exploit works step by step, what **CVSS** and **CISA KEV** say, and the fix. Cite the
+NVD page and the exploit source (Exploit-DB ID / Metasploit module / GitHub).
 
 ### Marking checklist (15 marks)
-- [ ] Part A1 — scope statement: target, authorization, goal (1)
-- [ ] Part A2 — service inventory table, complete, from a real scan (2)
-- [ ] Part A3 — ranked findings table, ≥ 4 findings, priorities justified (not just CVSS order) (3)
-- [ ] Part A4 — one finding proven: captioned screenshot **and** numbered reproduction steps (3)
-- [ ] Part A5 — a specific, correct remediation for that finding (1)
-- [ ] Part B — CVE explained: root cause + exploit mechanism + CVSS/KEV + fix, with citations (3)
-- [ ] Part C — nmap output + captioned evidence + exact commands (1)
-- [ ] Part D — genuine reflection (1)
+- [ ] Part A — 5 lessons: completion screenshot + attack / how / fix lines (3)
+- [ ] Part B — service inventory from a real scan (1)
+- [ ] Part B — nikto + `nmap --script vuln` run, findings validated (real / false positive) (1)
+- [ ] Part B — ranked findings table, ≥ 4 findings, priorities justified (not just CVSS order) (2)
+- [ ] Part C — 3 findings proven, ≥ 2 from the Hacksplaining list; captioned screenshot **and** numbered steps (4)
+- [ ] Part D — fix + re-test + before/after for each of the 3, scan re-run, lab reset (3)
+- [ ] Part E — genuine reflection (1)

@@ -461,3 +461,48 @@ Per-week: `weekN/student-pack.md`. Topic-specific PDF handouts added only when a
   pre-flight, failure modes) and updated cut list/checkpoint/FAQ. `week3/student-pack.md` Day 11 updated.
 - **Open item:** Day 12's "connect to the lab" gate still points at `<LAB_HOST>:8080` + Kali; decide
   whether Day 12 uses the students' own lab (`10.89.1.x`) or the class host.
+
+## 2026-10-01
+
+- **Week 3 weekend assignment redesigned: "Learn it, scan it, break it, fix it"** (owner-requested; hands-on
+  instead of report-writing, with a defensive half). Replaces the old 4-part mini-engagement report.
+  New parts (15 marks): **A Learn (3)** five Hacksplaining lessons — SQL Injection, XSS, Command Execution,
+  Directory Traversal, Broken Access Control; **B Recon & scan (4)** `nmap -sV -sC -oA` + `nikto` +
+  `nmap --script vuln`, validate findings, ranked table ≥ 4; **C Exploit (4)** prove 3 findings, ≥ 2 from
+  the Hacksplaining five; **D Fix & retest (3)** fix, re-run the same test, before/after, re-run scan,
+  reset lab; **E Reflection (1)**. The CVE deep-dive is now an unmarked stretch.
+- Updated: `week3/student-pack.md` (assignment + checklist; Day 14 homework now feeds Part B),
+  `day15/day15.md` (assignment slide; `.html`/`.pptx` rebuilt), `day15/teacher-notes.md` (brief guide,
+  target-to-category table, fix-and-retest cheat sheet), `week3/quiz.md` and the Day 14 findings-table
+  references (Part A → Part B).
+- New student handout: `assessments/week03-assignment-handout.md` → `.pdf`.
+- **Open items:** the target-to-category table and fix-and-retest cheat sheet in Day 15 teacher notes are
+  design-based and **not yet run against a live lab** — verify before class. `assessments/week03-assignment.md`
+  is the stale v1 "Lab Security Posture Review" and was left untouched.
+
+## 2026-10-07
+
+- **Day 17 live diagram added:** `day17/archify/01-ssrf-metadata-creds.sequence.html` — the
+  SSRF → instance metadata (`169.254.169.254`) → stolen IAM creds → cloud-API takeover chain
+  already written into `day17.md`'s cloud section, as an interactive sequence diagram for the
+  live class (not wired into the deck/run-sheet yet — opened directly as a browser tab).
+- **New reference file:** `day17/teacher.md` — a security-lens explainer for the AWS services on
+  an architecture diagram the owner is teaching from (identity: IAM/Identity Center/Cognito;
+  network+edge: VPC/VPN/PrivateLink/Route 53/WAF/Shield/ACM/Load Balancer/API
+  Gateway/CloudFront; monitoring: CloudWatch/CloudTrail/Config/X-Ray), each with a
+  misconfiguration-scenario + fix, plus a hop-by-hop attack/defence table tying back to the
+  SSRF→IAM diagram above. Scoped to the security-relevant subset only — compute/DB/CI-CD/AI/
+  analytics services on that diagram are out of scope for this course. Optional background, not
+  new required teaching material.
+
+## 2026-10-08
+
+- **Day 19 live diagram + new slide:** `day19/archify/01-kill-chain-pentest-blue.workflow.html`
+  — a two-lane workflow correlating the Lockheed Martin Cyber Kill Chain, the pentest lifecycle
+  phases students ran in Days 12-17, and where Day 19's Blue team catches each stage. Reuses Day
+  12's exact Kill Chain/pentest vocabulary (owner-requested: "security isn't Red or Blue, it's
+  both hand in hand"). Wired into `day19.md` as a new "One map, two ends" slide (+3 min, run
+  sheet rebalanced to ~88 min; marked as the first thing to cut if short). `teacher-notes.md`
+  gets a matching background section that maps the existing `assets/logs/` incident's ATT&CK IDs
+  onto the same Kill Chain stages, plus a "live alert" framing tip for the log-analysis DO (read
+  the first `auth.log` line aloud as if a SIEM alert just fired, then run the DO as written).

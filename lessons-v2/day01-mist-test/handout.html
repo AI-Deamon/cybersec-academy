@@ -1,0 +1,150 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Day 1 handout (Mist test)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&family=JetBrains+Mono:wght@400..700&display=swap">
+<style>
+:root{--ink:#141414;--ink-soft:#262626;--muted:#707070;--canvas:#fff;--soft:#f3f3f3;--hair:#f0f0f0;--primary:#141414;--on-primary:#fff;
+--sans:"Hanken Grotesk","Saans",-apple-system,"Helvetica Neue",Arial,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--sans);font-weight:450;font-size:16px;line-height:1.5}
+.doc{max-width:794px;margin:24px auto;padding:56px 56px 40px;border:1px solid var(--hair);border-radius:24px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:650;font-size:16px;margin-bottom:32px}
+.brand svg{width:28px;height:28px}
+h1,h2,h3{font-weight:650;letter-spacing:0;margin:0 0 .5em}h1{font-size:32px;line-height:1.13}h2{font-size:24px;line-height:1.25;margin-top:1.6em}h3{font-size:20px;margin-top:1.3em}
+p{margin:.6em 0}strong{font-weight:650}ul,ol{padding-left:1.3em}li{margin:.35em 0}li::marker{color:var(--muted)}
+blockquote{background:var(--soft);border:0;border-radius:16px;margin:1em 0;padding:14px 18px}blockquote p{margin:.2em 0}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:1em 0}th{background:var(--soft);text-align:left;font-size:12px;font-weight:600;padding:10px 14px}
+th:first-child{border-radius:16px 0 0 16px}th:last-child{border-radius:0 16px 16px 0}td{padding:10px 14px;border-bottom:1px solid var(--soft);vertical-align:top}
+code{font-family:var(--mono);font-size:.88em;background:var(--soft);border-radius:6px;padding:1px 6px}
+pre{background:#141414;color:#f3f3f3;border-radius:16px;padding:14px 18px;overflow:auto}pre code{background:none;padding:0;color:inherit}
+hr{border:0;border-top:1px solid var(--hair);margin:2em 0}
+.foot{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;border-top:1px solid var(--hair);padding-top:12px;margin-top:2.4em}
+@media print{.doc{border:0;margin:0;padding:0;max-width:none}}
+</style></head><body><div class="doc">
+<div class="brand"><svg viewBox="0 0 96 96" aria-hidden="true"><rect width="96" height="96" rx="28.8" fill="#141414"/><path d="M19 66V30l22 22 22-22v36" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><rect x="72" y="55" width="9" height="15.5" rx="2.5" fill="#adadad"/></svg>Mist · Practical Cyber Security</div>
+<h1>Authorization &amp; the Law — keep this</h1>
+<p><em>Practical Cyber Security · Day 1 · one-page reference (export to PDF)</em></p>
+<hr />
+<h2>The one rule</h2>
+<blockquote>
+<p><strong>No scope, no test.</strong>
+Testing a system you do not own or have <strong>written permission</strong> to test is illegal —
+even with no damage, even with good intentions, even out of curiosity.</p>
+</blockquote>
+<hr />
+<h2>Hacker vs cracker</h2>
+<ul>
+<li><strong>Hacker (in this course)</strong> — a skill: understanding a system better than the person who
+  built it. Neutral. The word started at MIT in the 1960s as a <em>compliment</em>.</li>
+<li><strong>Cracker</strong> — coined ~1985 for someone who breaks security maliciously (also: someone who
+  breaks software licensing).</li>
+<li>News headlines use "hacker" to mean "criminal." The field judges by <strong>intent + authorization</strong>,
+  not skill.</li>
+</ul>
+<h2>The three hats</h2>
+<table>
+<thead>
+<tr>
+<th>Hat</th>
+<th>Has permission?</th>
+<th>Malicious?</th>
+<th>Legal?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>White</strong></td>
+<td>Yes (contract / bounty scope / own lab)</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Grey</strong></td>
+<td>No</td>
+<td>No ("just checking")</td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td><strong>Black</strong></td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p>The technical action can be identical. Only the authorization changes.</p>
+<hr />
+<h2>India — Information Technology Act, 2000</h2>
+<table>
+<thead>
+<tr>
+<th>Section</th>
+<th>Civil / Criminal</th>
+<th>Covers</th>
+<th>Penalty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>§43</strong></td>
+<td>Civil</td>
+<td>Unauthorized access, download, damage, disruption, denial of access. <strong>No intent required.</strong></td>
+<td>Compensation to the affected party</td>
+</tr>
+<tr>
+<td><strong>§66</strong></td>
+<td>Criminal</td>
+<td>A §43 act done <strong>dishonestly or fraudulently</strong></td>
+<td>Up to <strong>3 years</strong> and/or <strong>₹5 lakh</strong></td>
+</tr>
+<tr>
+<td><strong>§66C</strong></td>
+<td>Criminal</td>
+<td>Identity theft (password, e-signature, unique ID)</td>
+<td>Up to 3 years + fine</td>
+</tr>
+<tr>
+<td><strong>§66F</strong></td>
+<td>Criminal</td>
+<td>Cyber-terrorism</td>
+<td>Up to life imprisonment</td>
+</tr>
+</tbody>
+</table>
+<p>Other countries have equivalents: <strong>US</strong> — Computer Fraud and Abuse Act; <strong>UK</strong> — Computer
+Misuse Act 1990.</p>
+<hr />
+<h2>What counts as authorized</h2>
+<ul>
+<li>A <strong>signed engagement contract</strong> with a written scope (targets, dates, methods, limits).</li>
+<li>A <strong>bug bounty / Vulnerability Disclosure Program</strong> — and only within its published rules.</li>
+<li><strong>Your own lab</strong> — machines you own, network-isolated, not exposed to the internet.</li>
+</ul>
+<p>Everything else — the college portal, a friend's website, a company that "probably won't mind" —
+is off-limits.</p>
+<hr />
+<h2>The CIA triad</h2>
+<p>Every security incident is one or more of these three failing:</p>
+<ul>
+<li><strong>Confidentiality</strong> — <em>who can see this?</em> (leaks, sniffed passwords, stolen databases)</li>
+<li><strong>Integrity</strong> — <em>is this still what it should be?</em> (tampering, defacement, ransomware)</li>
+<li><strong>Availability</strong> — <em>can I reach it when I need it?</em> (DDoS, ransomware lockout, dead server, no backup)</li>
+</ul>
+<hr />
+<h2>Authorization Pledge — sign and submit</h2>
+<blockquote>
+<p>I understand that accessing or testing computer systems without authorization is unlawful
+under the Information Technology Act, 2000, regardless of intent or outcome.</p>
+<p><strong>I will only test systems I am authorized to test</strong> — my own isolated lab, or systems for
+which I hold explicit written permission or a valid bug-bounty scope.</p>
+<p>I will report vulnerabilities responsibly and will not use anything taught in this course to
+cause harm.</p>
+</blockquote>
+<p style="display:flex;gap:24px;margin-top:1.2em"><span style="flex:1;border-bottom:1.5px solid #141414;padding-bottom:2px;font-size:14px">Name</span><span style="flex:1;border-bottom:1.5px solid #141414;padding-bottom:2px;font-size:14px">Roll no</span><span style="flex:1;border-bottom:1.5px solid #141414;padding-bottom:2px;font-size:14px">Signature</span><span style="flex:1;border-bottom:1.5px solid #141414;padding-bottom:2px;font-size:14px">Date</span></p>
+<hr />
+<h2>Go deeper (optional)</h2>
+<ul>
+<li>IT Act §43 &amp; §66 — full text: https://www.indiacode.nic.in/handle/123456789/1999</li>
+<li>Steven Levy, <em>Hackers: Heroes of the Computer Revolution</em> (1984) — the culture's origin</li>
+<li>The Morris Worm (1988): https://en.wikipedia.org/wiki/Morris_worm</li>
+<li>WannaCry (2017): https://en.wikipedia.org/wiki/WannaCry_ransomware_attack</li>
+<li>CIA triad primer (NIST): https://csrc.nist.gov/glossary/term/confidentiality</li>
+</ul>
+<div class="foot"><span>Practical Cyber Security (v2) · Week 1 · Day 1</span><span>Authorized targets only.</span></div></div></body></html>

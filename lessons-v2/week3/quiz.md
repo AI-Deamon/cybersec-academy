@@ -1,6 +1,6 @@
 # Week 3 — Formative Quiz
 
-*10 questions. The Week-3 assignment (a solo mini-engagement + a deep CVE explainer) assumes this.*
+*10 questions. The Week-3 assignment (learn five attacks on Hacksplaining, scan a target, exploit three findings, then fix and retest them) assumes this.*
 
 ---
 
